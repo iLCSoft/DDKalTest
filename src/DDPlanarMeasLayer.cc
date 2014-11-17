@@ -15,8 +15,8 @@
 #include <iostream>
 #include <cmath>
 
-#include "DDPlanarMeasLayer.h"
-#include "DDPlanarHit.h"
+#include "DDKalTest/DDPlanarMeasLayer.h"
+#include "DDKalTest/DDPlanarHit.h"
 
 #include "TVTrack.h"
 #include "TVector3.h"

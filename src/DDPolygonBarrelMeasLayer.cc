@@ -1,8 +1,7 @@
-
-#include "DDPolygonBarrelMeasLayer.h"
+#include "DDKalTest/DDPolygonBarrelMeasLayer.h"
 
 #include <UTIL/BitField64.h>
-#include <DDKalTestConf.h>
+#include <DDKalTest/DDKalTestConf.h>
 
 #include "TVTrack.h"
 #include "TVector3.h"

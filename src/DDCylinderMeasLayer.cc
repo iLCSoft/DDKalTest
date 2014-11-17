@@ -6,8 +6,8 @@
 
 #include "TKalTrack.h" 
 
-#include "DDCylinderMeasLayer.h"
-#include "DDCylinderHit.h"
+#include "DDKalTest/DDCylinderMeasLayer.h"
+#include "DDKalTest/DDCylinderHit.h"
 
 #include <lcio.h>
 #include <EVENT/TrackerHit.h>

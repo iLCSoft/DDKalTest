@@ -1,8 +1,8 @@
 
-#include "DDVMeasLayer.h"
+#include "DDKalTest/DDVMeasLayer.h"
 
 #include <UTIL/BitField64.h>
-#include <DDKalTestConf.h>
+#include <DDKalTest/DDKalTestConf.h>
 
 #include "streamlog/streamlog.h"
 

@@ -1,8 +1,8 @@
 
-#include "DDPlanarStripHit.h"
-#include "DDPlanarMeasLayer.h"
-#include "DDSegmentedDiscMeasLayer.h"
-#include "DDDiscMeasLayer.h"
+#include "DDKalTest/DDPlanarStripHit.h"
+#include "DDKalTest/DDPlanarMeasLayer.h"
+#include "DDKalTest/DDSegmentedDiscMeasLayer.h"
+#include "DDKalTest/DDDiscMeasLayer.h"
 #include "TMath.h"
 
 #include <iostream>

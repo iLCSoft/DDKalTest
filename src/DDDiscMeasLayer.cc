@@ -1,8 +1,8 @@
 
 #include <iostream>
 
-#include "DDDiscMeasLayer.h"
-#include "DDPlanarHit.h"
+#include "DDKalTest/DDDiscMeasLayer.h"
+#include "DDKalTest/DDPlanarHit.h"
 
 #include "TVTrack.h"
 #include "TVector3.h"

@@ -1,10 +1,10 @@
 
-#include "DDSegmentedDiscStripMeasLayer.h"
+#include "DDKalTest/DDSegmentedDiscStripMeasLayer.h"
 
-#include "DDPlanarStripHit.h"
+#include "DDKalTest/DDPlanarStripHit.h"
 
 #include <UTIL/BitField64.h>
-#include <DDKalTestConf.h>
+#include <DDKalTest/DDKalTestConf.h>
 
 #include "TVTrack.h"
 #include "TVector3.h"

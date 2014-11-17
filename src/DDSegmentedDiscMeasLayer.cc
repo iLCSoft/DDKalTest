@@ -1,9 +1,8 @@
-
-#include "DDSegmentedDiscMeasLayer.h"
-#include "DDPlanarHit.h"
+#include "DDKalTest/DDSegmentedDiscMeasLayer.h"
+#include "DDKalTest/DDPlanarHit.h"
 
 #include <UTIL/BitField64.h>
-#include <DDKalTestConf.h>
+#include <DDKalTest/DDKalTestConf.h>
 
 #include "TVTrack.h"
 #include "TVector3.h"

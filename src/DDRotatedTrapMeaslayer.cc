@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "DDRotatedTrapMeaslayer.h"
-#include "DDPlanarHit.h"
+#include "DDKalTest/DDRotatedTrapMeaslayer.h"
+#include "DDKalTest/DDPlanarHit.h"
 
 #include "TVTrack.h"
 #include "TVector3.h"
