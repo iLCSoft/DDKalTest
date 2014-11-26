@@ -13,10 +13,40 @@
 
 #include "DDParallelPlanarMeasLayer.h"
 
+#include "streamlog/streamlog.h"
+
 class DDParallelPlanarStripMeasLayer : public DDParallelPlanarMeasLayer {
   
 public:
   
+  /// c'tor using a DDRec::Surface
+  DDParallelPlanarStripMeasLayer( DD4hep::DDRec::Surface* surf, Double_t   Bz) :  
+    DDParallelPlanarMeasLayer( surf , Bz )
+  { 
+    
+    double angle = surf->v().theta() * 2. ; // FIXME: had 3.5 in SIT_SimplePlanar_geo !!!
+    
+    // check sign of rotation via helper vector cerated from cross product w/ z-axis
+    DDSurfaces::Vector3D n  =  surf->v().cross(  DDSurfaces::Vector3D( 0, 0, 1.)  ) ;
+    
+    // does this point into the same hemisphere as the normal ?
+    double ndot = n.dot( surf->normal()  ) ; 
+    
+    if( ndot < 0 )
+      angle = - angle ;
+
+
+
+    streamlog_out( DEBUG1 ) << "  DDParallelPlanarStripMeasLayer : set strip angle to " << angle*180./M_PI 
+			    << " ndot : " << ndot
+			    << std::endl ; 
+
+    _stripAngle = angle ;
+    
+  }
+
+
+
   /** Constructor Taking inner and outer materials, distance and phi of plane pca to origin, B-Field, Sorting policy, plane transverse witdth and offset of centre, longitudinal width, whether the layer is sensitive, Cell ID, and an optional name */
   DDParallelPlanarStripMeasLayer(TMaterial &min,
                              TMaterial &mout,

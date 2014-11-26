@@ -25,27 +25,33 @@
 #include "TMath.h"
 #include <sstream>
 
+#include "DDRec/Surface.h"
+
 class TVTrackHit;
 
 class DDPlanarMeasLayer : public DDVMeasLayer, public TPlane {
 public:
   // Ctors and Dtor
   
-  DDPlanarMeasLayer(TMaterial &min,
-                     TMaterial &mout,
-                     const TVector3  &center,
-                     const TVector3  &normal,
-                     Double_t   Bz,
-                     Double_t   SortingPolicy,
-                     Double_t   xiwidth,
-                     Double_t   zetawidth,
-                     Double_t   xioffset,
-                     Double_t   fUOrigin,
-                     Bool_t     is_active,
-                     Int_t      CellID = -1,
-                     const Char_t    *name = "DDPlanarMeasL");
+  DDPlanarMeasLayer(DD4hep::DDRec::Surface* surf,
+		    Double_t   Bz,		    
+		    const Char_t    *name = "DDPlanarMeasL");
   
-  virtual ~DDPlanarMeasLayer();
+  DDPlanarMeasLayer(TMaterial &min,
+		    TMaterial &mout,
+		    const TVector3  &center,
+		    const TVector3  &normal,
+		    Double_t   Bz,
+		    Double_t   SortingPolicy,
+		    Double_t   xiwidth,
+		    Double_t   zetawidth,
+		    Double_t   xioffset,
+		    Double_t   fUOrigin,
+		    Bool_t     is_active,
+		    Int_t      CellID = -1,
+		    const Char_t    *name = "DDPlanarMeasL");
+
+ virtual ~DDPlanarMeasLayer();
   
   // Parrent's pure virtuals that must be implemented
   
@@ -76,6 +82,8 @@ protected:
   Double_t fZetawidth;
   Double_t fXioffset; //determines how far the centre of the plane is translated in the direction positive rotation
   Double_t fUOrigin;  //determines origin of the transverse coordinate
+
+  DD4hep::DDRec::Surface* _surf ;
   
 };
 

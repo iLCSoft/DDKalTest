@@ -17,6 +17,10 @@
 
 #include "DDKalTest/DDPlanarMeasLayer.h"
 #include "DDKalTest/DDPlanarHit.h"
+#include "DDKalTest/MaterialMap.h"
+#include "DDKalTest/DDKalTestConf.h"
+
+#include "DD4Hep/DD4hepUnits.h"
 
 #include "TVTrack.h"
 #include "TVector3.h"
@@ -29,31 +33,87 @@
 #include "DDSurfaces/Vector3D.h"
 
 #include <EVENT/TrackerHitPlane.h>
+#include <UTIL/BitField64.h>
+#include <UTIL/Operators.h>
 
 #include "streamlog/streamlog.h"
 
-DDPlanarMeasLayer::DDPlanarMeasLayer(TMaterial &min,
-                                       TMaterial &mout,
-                                       const TVector3  &center,
-                                       const TVector3  &normal,
-                                       Double_t   Bz,
-                                       Double_t   SortingPolicy,
-                                       Double_t   xiwidth,
-                                       Double_t   zetawidth,
-                                       Double_t   xioffset,
-                                       Double_t   UOrigin,
-                                       Bool_t     is_active,
-                                       Int_t      CellID,
-                                       const Char_t    *name)
-: DDVMeasLayer(min, mout, Bz, is_active, CellID, name),
-TPlane(center, normal),
-fSortingPolicy(SortingPolicy),
-fXiwidth(xiwidth),
-fZetawidth(zetawidth),
-fXioffset(xioffset),
-fUOrigin(UOrigin)
+
+using namespace UTIL ;
+
+DDPlanarMeasLayer::DDPlanarMeasLayer(DD4hep::DDRec::Surface* surf, Double_t   Bz, const Char_t *name) :
+  
+  DDVMeasLayer(  MaterialMap::get( surf->innerMaterial() ) , 
+		 MaterialMap::get( surf->outerMaterial() ) ,
+		 Bz, 
+		 surf->type().isSensitive() ,
+		 surf->id(), 
+		 name ),
+  
+  TPlane( TVector3( surf->origin()[0]/dd4hep::mm, 
+		    surf->origin()[1]/dd4hep::mm , 
+		    surf->origin()[2]/dd4hep::mm ) , TVector3( surf->normal() ) ),
+  
+  fSortingPolicy(  surf->origin().rho()/dd4hep::mm ),
+  
+  fXiwidth( -1. ),
+  fZetawidth( -1. ),
+  fXioffset( -1. ),
+  fUOrigin( 0. ),
+
+  _surf( surf )
 
 {
+  static const int count=0 ;
+  static double epsilon=1e-8 ;
+
+  fSortingPolicy = surf->origin().rho()/dd4hep::mm + count*epsilon ;
+
+  fXiwidth   = 30. ;   //  width 
+  fZetawidth = 100. ;  //  sensor_length
+  fXioffset  = 0. ;     //  offset
+  fUOrigin   = 0. ;     //  offset 
+
+  UTIL::BitField64 encoder( DDKalTest::CellIDEncoding::instance().encoding_string() ) ;
+  encoder.setValue( surf->id()  ) ;
+  
+  streamlog_out(DEBUG1) << "DDPlanarMeasLayer created" 
+			<< " Layer x0 = " << this->GetXc().X() 
+			<< " y0 = " << this->GetXc().Y() 
+			<< " z0 = " << this->GetXc().Z() 
+			<< " R = " << this->GetXc().Perp() 
+			<< " phi = " << this->GetXc().Phi() 
+			<< " xiwidth = " << fXiwidth 
+			<< " zetawidth = " << fZetawidth 
+			<< " xioffset = " << fXioffset 
+			<< " UOrigin = " << fUOrigin
+			<< " is_active = " << surf->type().isSensitive()  
+			<< " CellID = " << surf->id() << " [" << encoder.valueString() << "]"  
+			<< " name = " << this->DDVMeasLayer::GetName()  
+			<< std::endl ;
+  
+  
+}
+DDPlanarMeasLayer::DDPlanarMeasLayer(TMaterial &min,
+				     TMaterial &mout,
+				     const TVector3  &center,
+				     const TVector3  &normal,
+				     Double_t   Bz,
+				     Double_t   SortingPolicy,
+				     Double_t   xiwidth,
+				     Double_t   zetawidth,
+				     Double_t   xioffset,
+				     Double_t   UOrigin,
+				     Bool_t     is_active,
+				     Int_t      CellID,
+				     const Char_t    *name) :  
+  DDVMeasLayer(min, mout, Bz, is_active, CellID, name),
+  TPlane(center, normal),
+  fSortingPolicy(SortingPolicy),
+  fXiwidth(xiwidth),
+  fZetawidth(zetawidth),
+  fXioffset(xioffset),
+  fUOrigin(UOrigin)  {
   
   streamlog_out(DEBUG0) << "DDPlanarMeasLayer created" 
   << " Layer x0 = " << this->GetXc().X() 
@@ -190,7 +250,11 @@ void DDPlanarMeasLayer::CalcDhDa(const TVTrackHit &vht,
 Bool_t DDPlanarMeasLayer::IsOnSurface(const TVector3 &xx) const
 {
   
+  return _surf->insideBounds( DDSurfaces::Vector3D( xx.x()*dd4hep::mm , xx.Y()*dd4hep::mm,  xx.Z()*dd4hep::mm ) )  ;
   
+  //*************************************************
+  
+
   Double_t xi   = (xx.Y()-GetXc().Y())*GetNormal().X()/GetNormal().Perp() - (xx.X()-GetXc().X())*GetNormal().Y()/GetNormal().Perp() ;
   Double_t zeta = xx.Z() - GetXc().Z();
     
@@ -285,8 +349,9 @@ DDVTrackHit* DDPlanarMeasLayer::ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) co
   
   bool hit_on_surface = IsOnSurface(hit);
   
-  streamlog_out(DEBUG1) << "DDPlanarMeasLayer::ConvertLCIOTrkHit DDPlanarHit created" 
-  << " for CellID " << trkhit->getCellID0()
+  streamlog_out(DEBUG1) << "DDPlanarMeasLayer::ConvertLCIOTrkHit DDPlanarHit created : " 
+			<< *plane_hit 
+			<< *_surf 
   << " Layer R = " << this->GetXc().Perp() 
   << " Layer phi = " << this->GetXc().Phi() 
   << " Layer z0 = " << this->GetXc().Z() 

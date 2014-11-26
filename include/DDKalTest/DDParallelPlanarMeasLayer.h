@@ -6,13 +6,19 @@
  * @author S.Aplin DESY
  */
 
-
 #include "DDPlanarMeasLayer.h"
+#include "DDRec/Surface.h"
+
 
 class DDParallelPlanarMeasLayer : public DDPlanarMeasLayer {
   
 public:
   
+  /// c'tor using a DDRec::Surface
+  DDParallelPlanarMeasLayer( DD4hep::DDRec::Surface* surf, Double_t   Bz) :  DDPlanarMeasLayer( surf , Bz )  {}
+
+
+
   /** Constructor Taking inner and outer materials, distance and phi of plane pca to origin, B-Field, Sorting policy, plane transverse witdth and offset of centre, longitudinal width, whether the layer is sensitive, Cell ID, and an optional name */
   DDParallelPlanarMeasLayer(TMaterial &min,
                              TMaterial &mout,
@@ -46,11 +52,7 @@ public:
   virtual Int_t    CalcXingPointWith(const TVTrack  &hel,
                                      TVector3 &xx,
                                      Double_t &phi,
-                                     Double_t  eps = 1.e-8) const{
-    
-    return CalcXingPointWith(hel,xx,phi,0,eps);
-    
-  }
+                                     Double_t  eps = 1.e-8) const ; 
   
   /** Get the intersection and the CellID, needed for multilayers */
   virtual int getIntersectionAndCellID(const TVTrack  &hel,
