@@ -99,11 +99,11 @@ target_link_libraries( printSurfaces ${DD4hep_LIBRARIES} ${PackageName})
 
 #---Rootmap generation--------------------------------------------------------------
 
-if(APPLE)
-  dd4hep_generate_rootmap_apple(${PackageName} )
-else()
-  dd4hep_generate_rootmap(${PackageName} )
-endif()
+#if(APPLE)
+#  dd4hep_generate_rootmap_apple(${PackageName} )
+#else()
+#  dd4hep_generate_rootmap(${PackageName} )
+#endif()
 
 
 #---- configure run environment ---------------
