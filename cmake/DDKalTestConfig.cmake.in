@@ -1,0 +1,72 @@
+##############################################################################
+# cmake configuration file for DDKalTest
+#
+# requires:
+#   MacroCheckPackageLibs.cmake for checking package libraries
+#
+# returns following variables:
+#
+#   DDKalTest_FOUND      : set to TRUE if DDKalTest found
+#       if FIND_PACKAGE called with REQUIRED and COMPONENTS arguments
+#       DDKalTest_FOUND is only set to TRUE if ALL components are also found
+#       if REQUIRED is NOT set components may or may not be available
+#
+#   DDKalTest_ROOT       : path to this DDKalTest installation
+#   DDKalTest_VERSION    : package version
+#   DDKalTest_LIBRARIES  : list of DDKalTest libraries (NOT including COMPONENTS)
+#   DDKalTest_INCLUDE_DIRS  : list of paths to be used with INCLUDE_DIRECTORIES
+#   DDKalTest_LIBRARY_DIRS  : list of paths to be used with LINK_DIRECTORIES
+#   DDKalTest_COMPONENT_LIBRARIES      : list of DDKalTest component libraries
+#   DDKalTest_${COMPONENT}_FOUND       : set to TRUE or FALSE for each library
+#   DDKalTest_${COMPONENT}_LIBRARY     : path to individual libraries
+#   DDKalTest_${COMPONENT}_LIB_DEPENDS : individual library dependencies
+#
+# @author Jan Engels, Desy
+##############################################################################
+
+SET( DDKalTest_ROOT "@CMAKE_INSTALL_PREFIX@" )
+SET( DDKalTest_VERSION "@DDKalTest_VERSION@" )
+
+
+# ---------- include dirs -----------------------------------------------------
+# do not store find results in cache
+SET( DDKalTest_INCLUDE_DIRS DDKalTest_INCLUDE_DIRS-NOTFOUND )
+MARK_AS_ADVANCED( DDKalTest_INCLUDE_DIRS )
+
+FIND_PATH( DDKalTest_INCLUDE_DIRS
+	NAMES DDKalTest/DDVMeasLayer.h
+	PATHS ${DDKalTest_ROOT}/include
+	NO_DEFAULT_PATH
+)
+
+# fix for backwards compatibility
+#IF( DDKalTest_INCLUDE_DIRS )
+#    LIST( APPEND DDKalTest_INCLUDE_DIRS ${DDKalTest_INCLUDE_DIRS}/DDKalTest )
+#ENDIF( DDKalTest_INCLUDE_DIRS )
+
+
+# ---------- libraries --------------------------------------------------------
+INCLUDE( "@ILCSOFT_CMAKE_MODULES_ROOT@/MacroCheckPackageLibs.cmake" )
+
+# only standard libraries should be passed as arguments to CHECK_PACKAGE_LIBS
+# additional components are set by cmake in variable PKG_FIND_COMPONENTS
+# first argument should be the package name
+CHECK_PACKAGE_LIBS( DDKalTest DDKalTest )
+
+
+
+
+# ---------- libraries dependencies -------------------------------------------
+# this sets DDKalTest_${COMPONENT}_LIB_DEPENDS variables
+INCLUDE( "${DDKalTest_ROOT}/lib/cmake/DDKalTestLibDeps.cmake" )
+ 
+
+
+
+# ---------- final checking ---------------------------------------------------
+INCLUDE( FindPackageHandleStandardArgs )
+# set KALDET_FOUND to TRUE if all listed variables are TRUE and not empty
+# DDKalTest_COMPONENT_VARIABLES will be set if FIND_PACKAGE is called with REQUIRED argument
+FIND_PACKAGE_HANDLE_STANDARD_ARGS( DDKalTest DEFAULT_MSG DDKalTest_ROOT DDKalTest_INCLUDE_DIRS DDKalTest_LIBRARIES ${DDKalTest_COMPONENT_VARIABLES} )
+
+SET( DDKalTest_FOUND ${KALDET_FOUND} )
