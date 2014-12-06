@@ -54,7 +54,7 @@ FIND_PACKAGE( LCIO REQUIRED )
 FIND_PACKAGE( KalTest 1.5 REQUIRED )
 FIND_PACKAGE( streamlog REQUIRED )
 FIND_PACKAGE( aidaTT REQUIRED )
-FIND_PACKAGE( gsl REQUIRED )
+FIND_PACKAGE( GSL REQUIRED )
 
 #NB: need ROOT before KalTest (needed on case sensitive systems and classes that differ only in capitalization)
 FOREACH( pkg KalTest LCIO streamlog aidaTT GSL)
