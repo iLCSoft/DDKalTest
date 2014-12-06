@@ -1,15 +1,20 @@
 #ifndef __DDParallelPlanarMeasLayer__
 #define __DDParallelPlanarMeasLayer__
 
-/** DDParallelPlanarMeasLayer: User defined KalTest measurement layer class 
- *
- * @author S.Aplin DESY
- */
-
 #include "DDPlanarMeasLayer.h"
 #include "DDRec/Surface.h"
 
 
+/** DDParallelPlanarMeasLayer: specialization of DDPlanarMeasruement layer 
+ *  for planes that are parallel to the z-axis, where the crossing point
+ *  with a helix can be comuted analytically. 
+ *  We use the DD4hep::DDRec::Surface and aidaTT::trajectory for the implementation 
+ *  of CalcXingPointWith(). 
+ * 
+ * @author F. Gaede CERN/DESY, S.Aplin DESY
+ * @date Dec 2014
+ * @version $Id:$
+ */
 class DDParallelPlanarMeasLayer : public DDPlanarMeasLayer {
   
 public:
@@ -17,27 +22,6 @@ public:
   /// c'tor using a DDRec::Surface
   DDParallelPlanarMeasLayer( DD4hep::DDRec::Surface* surf, Double_t   Bz) :  DDPlanarMeasLayer( surf , Bz )  {}
 
-
-
-  /** Constructor Taking inner and outer materials, distance and phi of plane pca to origin, B-Field, Sorting policy, plane transverse witdth and offset of centre, longitudinal width, whether the layer is sensitive, Cell ID, and an optional name */
-  DDParallelPlanarMeasLayer(TMaterial &min,
-                             TMaterial &mout,
-                             Double_t   r,
-                             Double_t   phi,
-                             Double_t   Bz,
-                             Double_t   SortingPolicy,
-                             Double_t   xiwidth,
-                             Double_t   zetawidth,
-                             Double_t   xioffset,
-                             Double_t   zoffset,
-                             Double_t   UOrigin,
-                             Bool_t     is_active,
-                             Int_t      CellID = -1,
-                             const Char_t    *name = "DDParallelPlanarMeasLayer")
-  :
-  DDPlanarMeasLayer(min,mout,TVector3(r*cos(phi),r*sin(phi),zoffset),TVector3(cos(phi),sin(phi),0.0),Bz,SortingPolicy,xiwidth,zetawidth,xioffset,UOrigin,is_active,CellID,name), _r(r),_phi(phi),_cos_phi(cos(_phi)),_sin_phi(sin(_phi))
-  { /* no op */ }
-  
   
   // Parent's pure virtuals that must be implemented
   
@@ -64,18 +48,16 @@ public:
   
     CellID = this->getCellIDs()[0]; // not multilayer
     return CalcXingPointWith(hel,xx,phi,0,eps);
-  
   }
   
   
-protected:
+// protected:
   
-  Double_t _r;
-  Double_t _phi;
-  Double_t _cos_phi;
-  Double_t _sin_phi;
-  
-  
+//   Double_t _r;
+//   Double_t _phi;
+//   Double_t _cos_phi;
+//   Double_t _sin_phi;
+
 };
 
 #endif

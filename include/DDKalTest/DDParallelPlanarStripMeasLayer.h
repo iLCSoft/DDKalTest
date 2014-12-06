@@ -47,25 +47,25 @@ public:
 
 
 
-  /** Constructor Taking inner and outer materials, distance and phi of plane pca to origin, B-Field, Sorting policy, plane transverse witdth and offset of centre, longitudinal width, whether the layer is sensitive, Cell ID, and an optional name */
-  DDParallelPlanarStripMeasLayer(TMaterial &min,
-                             TMaterial &mout,
-                             Double_t   r,
-                             Double_t   phi,
-                             Double_t   Bz,
-                             Double_t   SortingPolicy,
-                             Double_t   xiwidth,
-                             Double_t   zetawidth,
-                             Double_t   xioffset,
-                             Double_t   zoffset,
-                             Double_t   UOrigin,
-                             Double_t   stripAngle,
-                             Int_t      CellID = -1,
-                             const Char_t    *name = "DDParallelPlanarStripMeasLayer")
-  :
-  DDParallelPlanarMeasLayer(min,mout,r,phi,Bz,SortingPolicy,xiwidth,zetawidth,xioffset,zoffset,UOrigin,true,CellID,name), _stripAngle(stripAngle)
+  // /** Constructor Taking inner and outer materials, distance and phi of plane pca to origin, B-Field, Sorting policy, plane transverse witdth and offset of centre, longitudinal width, whether the layer is sensitive, Cell ID, and an optional name */
+  // DDParallelPlanarStripMeasLayer(TMaterial &min,
+  //                            TMaterial &mout,
+  //                            Double_t   r,
+  //                            Double_t   phi,
+  //                            Double_t   Bz,
+  //                            Double_t   SortingPolicy,
+  //                            Double_t   xiwidth,
+  //                            Double_t   zetawidth,
+  //                            Double_t   xioffset,
+  //                            Double_t   zoffset,
+  //                            Double_t   UOrigin,
+  //                            Double_t   stripAngle,
+  //                            Int_t      CellID = -1,
+  //                            const Char_t    *name = "DDParallelPlanarStripMeasLayer")
+  // :
+  // DDParallelPlanarMeasLayer(min,mout,r,phi,Bz,SortingPolicy,xiwidth,zetawidth,xioffset,zoffset,UOrigin,true,CellID,name), _stripAngle(stripAngle)
   
-  { /* no op */ }
+  // { /* no op */ }
   
   
   // Parent's pure virtuals that must be implemented

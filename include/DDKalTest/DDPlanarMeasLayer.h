@@ -1,5 +1,5 @@
-#ifndef __DDPLANARMEASLAYER__
-#define __DDPLANARMEASLAYER__
+#ifndef DDPlanarMeasLayer_h
+#define DDPlanarMeasLayer_h
 //*************************************************************************
 //* ===================
 //*  DDPlanarMeasLayer Class
@@ -17,41 +17,33 @@
 //*   2011/06/17  D.Kamai           Modified to handle ladder structure.
 //*************************************************************************
 //
-#include "TVector3.h"
-#include "TKalMatrix.h"
-#include "TPlane.h"
+
 #include "DDVMeasLayer.h"
-#include "KalTrackDim.h"
-#include "TMath.h"
-#include <sstream>
+#include "TPlane.h"
 
 #include "DDRec/Surface.h"
 
 class TVTrackHit;
+class TVector3 ;
 
+/** DDPlanarMeasLayer provides a generic planar measurment for 1-dim and 2-dim hits
+ *  using a DD4hep::DDRec::Surface.
+ *  
+ *  @author F.Gaede CERN/DESY
+ *  @date Dec 2014
+ *  @version $Id:$
+ */
 class DDPlanarMeasLayer : public DDVMeasLayer, public TPlane {
+  
 public:
   // Ctors and Dtor
   
   DDPlanarMeasLayer(DD4hep::DDRec::Surface* surf,
 		    Double_t   Bz,		    
-		    const Char_t    *name = "DDPlanarMeasL");
+		    const Char_t  *name = "DDPlanarMeasL");
   
-  DDPlanarMeasLayer(TMaterial &min,
-		    TMaterial &mout,
-		    const TVector3  &center,
-		    const TVector3  &normal,
-		    Double_t   Bz,
-		    Double_t   SortingPolicy,
-		    Double_t   xiwidth,
-		    Double_t   zetawidth,
-		    Double_t   xioffset,
-		    Double_t   fUOrigin,
-		    Bool_t     is_active,
-		    Int_t      CellID = -1,
-		    const Char_t    *name = "DDPlanarMeasL");
-
- virtual ~DDPlanarMeasLayer();
+  
+  virtual ~DDPlanarMeasLayer() {} ;
   
   // Parrent's pure virtuals that must be implemented
   
@@ -69,22 +61,14 @@ public:
   
   virtual DDVTrackHit* ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) const ;
   
-  virtual Bool_t   IsOnSurface (const TVector3 &xx) const;
+  virtual Bool_t IsOnSurface (const TVector3 &xx) const;
   
   Double_t GetSortingPolicy() const { return fSortingPolicy; }
-  Double_t GetXiwidth() const { return fXiwidth; }
-  Double_t GetZetawidth() const { return fZetawidth; }
-  Double_t GetXioffset() const { return fXioffset; }
   
 protected:
+  unsigned fMDim ;
   Double_t fSortingPolicy;
-  Double_t fXiwidth;
-  Double_t fZetawidth;
-  Double_t fXioffset; //determines how far the centre of the plane is translated in the direction positive rotation
-  Double_t fUOrigin;  //determines origin of the transverse coordinate
-
   DD4hep::DDRec::Surface* _surf ;
-  
 };
 
 #endif

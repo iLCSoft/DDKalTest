@@ -2,6 +2,7 @@
 #define DDKalTestConf_h 1
 
 #include <string>
+#include "UTIL/BitField64.h"
 
 namespace DDKalTest{
 
@@ -34,6 +35,13 @@ namespace DDKalTest{
     // get the current encoding string
     const std::string& encoding_string() { return _encoding ; }
 
+    /// return a string with the details of the given id:
+    static std::string valueString( unsigned val ){
+      UTIL::BitField64 encoder( instance().encoding_string() ) ;
+      encoder.setValue( val ) ;
+      return encoder.valueString() ;
+    }
+
     // void set_encoding_string( const std::string& enc_str )  { _encoding = enc_str ; }
 
     /// index of subdet in cellID
@@ -59,7 +67,6 @@ namespace DDKalTest{
     int _sensor ;
     std::string _encoding ;
   } ;
-
 
 }
 

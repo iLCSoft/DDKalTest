@@ -1,17 +1,3 @@
-//*************************************************************************
-//* ===================
-//*  DDPlanarMeasLayer Class
-//* ===================
-//*
-//* (Description)
-//*   Sample measurement layer class used by DDPlanarHit.
-//* (Requires)
-//*     DDVMeasLayer
-//* (Provides)
-//*     class DDPlanarMeasLayer
-//*
-//*************************************************************************
-//
 #include <iostream>
 #include <cmath>
 
@@ -21,19 +7,9 @@
 #include "DDKalTest/DDKalTestConf.h"
 
 #include "DD4Hep/DD4hepUnits.h"
-
-#include "TVTrack.h"
-#include "TVector3.h"
-#include "TMath.h"
-#include "TRotMatrix.h"
-#include "TBRIK.h"
-#include "TNode.h"
-#include "TString.h"
-
 #include "DDSurfaces/Vector3D.h"
 
 #include <EVENT/TrackerHitPlane.h>
-#include <UTIL/BitField64.h>
 #include <UTIL/Operators.h>
 
 #include "streamlog/streamlog.h"
@@ -54,28 +30,19 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(DD4hep::DDRec::Surface* surf, Double_t   Bz
 		    surf->origin()[1]/dd4hep::mm , 
 		    surf->origin()[2]/dd4hep::mm ) , TVector3( surf->normal() ) ),
   
-  fSortingPolicy(  surf->origin().rho()/dd4hep::mm ),
+  fMDim( surf->type().isMeasurement1D() ?  1 :  2 ) ,
+  fSortingPolicy( 0.),
+  _surf( surf ) {
+
+  static int count=0 ;
+  static double epsilon=1e-4 ;
   
-  fXiwidth( -1. ),
-  fZetawidth( -1. ),
-  fXioffset( -1. ),
-  fUOrigin( 0. ),
-
-  _surf( surf )
-
-{
-  static const int count=0 ;
-  static double epsilon=1e-8 ;
-
-  fSortingPolicy = surf->origin().rho()/dd4hep::mm + count*epsilon ;
-
-  fXiwidth   = 30. ;   //  width 
-  fZetawidth = 100. ;  //  sensor_length
-  fXioffset  = 0. ;     //  offset
-  fUOrigin   = 0. ;     //  offset 
-
-  UTIL::BitField64 encoder( DDKalTest::CellIDEncoding::instance().encoding_string() ) ;
-  encoder.setValue( surf->id()  ) ;
+  //fg: the sorting policy is used to find the measurment layers that are going to be hit by a track ...
+  //    simply add an epslion to the radius in order to have a loop over all sensors in a layer
+  //    NB:  this does not deal with the overlap region, e.g. in the VTX
+  //         so in this region we might loose on of two hits on a layer
+  //         -> to be done ...
+  fSortingPolicy = surf->origin().rho()/dd4hep::mm +  epsilon * count++ ;
   
   streamlog_out(DEBUG1) << "DDPlanarMeasLayer created" 
 			<< " Layer x0 = " << this->GetXc().X() 
@@ -83,139 +50,74 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(DD4hep::DDRec::Surface* surf, Double_t   Bz
 			<< " z0 = " << this->GetXc().Z() 
 			<< " R = " << this->GetXc().Perp() 
 			<< " phi = " << this->GetXc().Phi() 
-			<< " xiwidth = " << fXiwidth 
-			<< " zetawidth = " << fZetawidth 
-			<< " xioffset = " << fXioffset 
-			<< " UOrigin = " << fUOrigin
+			<< " soting policy : " << fSortingPolicy
 			<< " is_active = " << surf->type().isSensitive()  
-			<< " CellID = " << surf->id() << " [" << encoder.valueString() << "]"  
+			<< " CellID = " << DDKalTest::CellIDEncoding::valueString( _surf->id() ) 
 			<< " name = " << this->DDVMeasLayer::GetName()  
 			<< std::endl ;
-  
-  
-}
-DDPlanarMeasLayer::DDPlanarMeasLayer(TMaterial &min,
-				     TMaterial &mout,
-				     const TVector3  &center,
-				     const TVector3  &normal,
-				     Double_t   Bz,
-				     Double_t   SortingPolicy,
-				     Double_t   xiwidth,
-				     Double_t   zetawidth,
-				     Double_t   xioffset,
-				     Double_t   UOrigin,
-				     Bool_t     is_active,
-				     Int_t      CellID,
-				     const Char_t    *name) :  
-  DDVMeasLayer(min, mout, Bz, is_active, CellID, name),
-  TPlane(center, normal),
-  fSortingPolicy(SortingPolicy),
-  fXiwidth(xiwidth),
-  fZetawidth(zetawidth),
-  fXioffset(xioffset),
-  fUOrigin(UOrigin)  {
-  
-  streamlog_out(DEBUG0) << "DDPlanarMeasLayer created" 
-  << " Layer x0 = " << this->GetXc().X() 
-  << " y0 = " << this->GetXc().Y() 
-  << " z0 = " << this->GetXc().Z() 
-  << " R = " << this->GetXc().Perp() 
-  << " phi = " << this->GetXc().Phi() 
-  << " xiwidth = " << fXiwidth 
-  << " zetawidth = " << fZetawidth 
-  << " xioffset = " << fXioffset 
-  << " UOrigin = " << UOrigin
-  << " is_active = " << is_active 
-  << " CellID = " << CellID 
-  << " name = " << this->DDVMeasLayer::GetName()  
-  << std::endl ;
-  
-  
-}
+  }
 
-DDPlanarMeasLayer::~DDPlanarMeasLayer()
-{
-}
 
-TKalMatrix DDPlanarMeasLayer::XvToMv(const TVector3 &xv) const
-{
-  // Calculate hit coordinate information:
-  //    mv(0,0) = xi 
-  //     (1,0) = zeta
+TKalMatrix DDPlanarMeasLayer::XvToMv(const TVector3 &xv) const {
   
-//  streamlog_out(DEBUG0) << "\t DDPlanarMeasLayer::XvToMv: "
-//  << " x = " << xv.X() 
-//  << " y = " << xv.Y() 
-//  << " z = " << xv.Z() 
-//  << std::endl;
+  TKalMatrix mv( fMDim , 1 );
   
-  TKalMatrix mv(kMdim,1);
+  DDSurfaces::ISurface::Vector2D lv = _surf->globalToLocal( DDSurfaces::Vector3D( xv.X()*dd4hep::mm ,  xv.Y()*dd4hep::mm ,  xv.Z()*dd4hep::mm ) ) ;
   
-  double cos_phi = GetNormal().X()/GetNormal().Perp();
-  double sin_phi = GetNormal().Y()/GetNormal().Perp();
+  mv(0,0) = lv[0] / dd4hep::mm ; 
   
-  double delta_x = xv.X() - GetXc().X();
-  double delta_y = xv.Y() - GetXc().Y();
-  double delta_z = xv.Z() - GetXc().Z();
+  if( fMDim == 2 )
+    mv(1,0) = lv[1] / dd4hep::mm ;
+  
+  streamlog_out(DEBUG0) << "\t DDPlanarMeasLayer::XvToMv: "
+			<< " x = " << xv.X() 
+			<< " y = " << xv.Y() 
+			<< " z = " << xv.Z() 
+			<< " mv(0,0) = " << mv(0,0) 
+			<< " mv(1,0) = " << ( fMDim==2 ?  mv(1,0) : -42 ) 
+			<< std::endl;
 
-  double delta_t = (delta_x * sin_phi - delta_y * cos_phi) ;
-  
-  mv(0,0) = delta_t + fUOrigin;
+  // streamlog_out(DEBUG0) <<"\t surface : " << *_surf  << std::endl ;
 
-  mv(1,0) = delta_z ;
-  
-//  streamlog_out(DEBUG0) << "\t DDPlanarMeasLayer::XvToMv: "
-//  << " mv(0,0) = " << mv(0,0)
-//  << " mv(1,0) = " << mv(1,0)
-//  << std::endl;
-
-  
   return mv;
 }
 
 TKalMatrix DDPlanarMeasLayer::XvToMv(const TVTrackHit &,
-                                      const TVector3   &xv) const
-{
+				     const TVector3   &xv) const {
+
   return XvToMv(xv);
 }
 
-TVector3 DDPlanarMeasLayer::HitToXv(const TVTrackHit &vht) const
-{
- 
+TVector3 DDPlanarMeasLayer::HitToXv(const TVTrackHit &vht) const {
   
-//  streamlog_out(DEBUG0) << "\t DDPlanarMeasLayer::HitToXv: "
-//  << " vht(0,0) = " << vht(0,0)
-//  << " vht(1,0) = " << vht(1,0)
-//  << std::endl;
+  DDSurfaces::Vector3D v = ( fMDim == 2 ? 
+			     _surf->localToGlobal( DDSurfaces::ISurface::Vector2D (  vht(0,0)*dd4hep::mm, vht(1,0) *dd4hep::mm ) )  :
+			     _surf->localToGlobal( DDSurfaces::ISurface::Vector2D (  vht(0,0)*dd4hep::mm,    0.  ) ) 
+			     ) ;
   
-
-  //const DDPlanarHit &ht = dynamic_cast<const DDPlanarHit &>(vht);
+  double x = v[0] / dd4hep::mm ;
+  double y = v[1] / dd4hep::mm ;
+  double z = v[2] / dd4hep::mm ;
   
-  double cos_phi = GetNormal().X()/GetNormal().Perp();
-  double sin_phi = GetNormal().Y()/GetNormal().Perp();
-
-  double delta_t = vht(0,0) - fUOrigin;
   
-  double x =  delta_t * sin_phi + this->GetXc().X();
-  double y = -delta_t * cos_phi + this->GetXc().Y();
+  streamlog_out(DEBUG0) << "\t DDPlanarMeasLayer::HitToXv: "
+			<< " vht(0,0) = " << vht(0,0)
+			<< " vht(1,0) = " << ( fMDim==2 ? vht(1,0) : -42. )
+			<< " x = " << x 
+			<< " y = " << y 
+			<< " z = " << z 
+			<< std::endl;
   
-  double z =  vht(1,0) + this->GetXc().Z();
-  
-//  streamlog_out(DEBUG0) << "\t DDPlanarMeasLayer::HitToXv: "
-//  << " x = " << x 
-//  << " y = " << y 
-//  << " z = " << z 
-//  << std::endl;
-
   
   return TVector3(x,y,z);
 }
 
+
 void DDPlanarMeasLayer::CalcDhDa(const TVTrackHit &vht,
-                                  const TVector3   &xxv,
-                                  const TKalMatrix &dxphiada,
-                                  TKalMatrix &H)  const
-{
+				 const TVector3   &xxv,
+				 const TKalMatrix &dxphiada,
+				 TKalMatrix &H)  const {
+
   // Calculate
   //    H = (@h/@a) = (@phi/@a, @z/@a)^t
   // where
@@ -223,90 +125,50 @@ void DDPlanarMeasLayer::CalcDhDa(const TVTrackHit &vht,
   //        a = (drho, phi0, kappa, dz, tanl, t0)
   //
   
-  double cos_phi = GetNormal().X()/GetNormal().Perp();
-  double sin_phi = GetNormal().Y()/GetNormal().Perp();
-  
-  
   Int_t sdim = H.GetNcols();
   Int_t hdim = TMath::Max(5,sdim-1);
   
-  // Set H = (@h/@a) = (@d/@a, @z/@a)^t
+
+  //----------------------------------------------------
+  //fixme: the derivatives should be stored either in the surface class or here
+  DDSurfaces::Vector3D u = _surf->u() ;
+  DDSurfaces::Vector3D v = _surf->v() ;
+  
+  double uv = u * v ;
+  DDSurfaces::Vector3D uprime = ( u - uv * v ).unit() ; 
+  DDSurfaces::Vector3D vprime = ( v - uv * u ).unit() ; 
+  double uup = u * uprime ;
+  double vvp = v * vprime ;
+  
+  
+  DDSurfaces::Vector3D dudx =  1./uup * uprime  ;
+  DDSurfaces::Vector3D dvdx =  1./vvp * vprime;
+  
+  //------------------------------------------------------
   
   for (Int_t i=0; i<hdim; i++) {
-
-    H(0,i) =  sin_phi * dxphiada(0,i) - cos_phi * dxphiada(1,i) ;   
-    H(1,i) =  dxphiada(2,i);
+    
+    H(0,i) =  dudx[0] * dxphiada(0,i) + dudx[1] * dxphiada(1,i) + dudx[2] * dxphiada(2,i) ;   
+    
+    if( fMDim == 2 )  
+      H(1,i) =  dvdx[0] * dxphiada(0,i) + dvdx[1] * dxphiada(1,i) + dvdx[2] * dxphiada(2,i) ;   
     
   }
+
   if (sdim == 6) {
+    
     H(0,sdim-1) = 0.;
-    H(1,sdim-1) = 0.;
+    
+    if( fMDim == 2 ) H(1,sdim-1) = 0.;
   }
-  
+
 }
 
-
-//#define DEBUG_ISONSURFACE 1 
-Bool_t DDPlanarMeasLayer::IsOnSurface(const TVector3 &xx) const
-{
+Bool_t DDPlanarMeasLayer::IsOnSurface(const TVector3 &xx) const {
   
+  //fg: here we ask the surface implementation for the bounds (using the volume) 
+  //    this could be optimized by a faster algorithm (for simple bounds) 
   return _surf->insideBounds( DDSurfaces::Vector3D( xx.x()*dd4hep::mm , xx.Y()*dd4hep::mm,  xx.Z()*dd4hep::mm ) )  ;
-  
-  //*************************************************
-  
-
-  Double_t xi   = (xx.Y()-GetXc().Y())*GetNormal().X()/GetNormal().Perp() - (xx.X()-GetXc().X())*GetNormal().Y()/GetNormal().Perp() ;
-  Double_t zeta = xx.Z() - GetXc().Z();
-    
-  bool onSurface = false ;
-  
-  if( (xx.X()-GetXc().X())*GetNormal().X() + (xx.Y()-GetXc().Y())*GetNormal().Y() < 1e-4){
-    if( xi <= GetXioffset() + GetXiwidth()/2  && xi >= GetXioffset() - GetXiwidth()/2  && TMath::Abs(zeta) <= GetZetawidth()/2){
-      onSurface = true;
-    }
-    
-#ifdef DEBUG_ISONSURFACE
-    else{
-      streamlog_out(DEBUG4) << "DDPlanarMeasLayer::IsOnSurface: Point not within boundary x = " << xx.x() << " y = " << xx.y() << " z = " << xx.z() << " r = " << xx.Perp() << " phi = " << xx.Phi() << std::endl;   
-      streamlog_out(DEBUG4) << "xi = " << xi << " xi_max = " << GetXioffset() + GetXiwidth()/2 << " xi_min = " << GetXioffset() - GetXiwidth()/2 << " zeta = " << zeta << " zeta_min = " << -GetZetawidth()/2 << " zeta_max " << GetZetawidth()/2 << " Xioffset = " << GetXioffset() << std::endl;     
-      onSurface = false;
-      streamlog_out(DEBUG4) << " xi <= GetXioffset() + GetXiwidth()/2 = " << (xi <= GetXioffset() + GetXiwidth()/2) << std::endl ;
-      streamlog_out(DEBUG4) << " xi >= GetXioffset() - GetXiwidth()/2 = " << (xi >= GetXioffset() - GetXiwidth()/2) << std::endl;
-      streamlog_out(DEBUG4) << " TMath::Abs(zeta) <= GetZetawidth()/2 = " << (TMath::Abs(zeta) <= GetZetawidth()/2) << std::endl;
-    }
-#endif
-
-  }
-
-#ifdef DEBUG_ISONSURFACE  
-  else{
-    streamlog_out(DEBUG4) << "DDPlanarMeasLayer::IsOnSurface: Point not on surface x = " << xx.x() << " y = " << xx.y() << " z = " << xx.z() << " r = " << xx.Perp() << " phi = " << xx.Phi() << std::endl;   
-    streamlog_out(DEBUG4) << "Distance from plane " << (xx.X()-GetXc().X())*GetNormal().X() + (xx.Y()-GetXc().Y())*GetNormal().Y() << std::endl;
-  }
-  if( onSurface == false ) {
-    streamlog_out(DEBUG) << "x0 " <<  GetXc().X() << std::endl;  
-    streamlog_out(DEBUG) << "y0 " <<  GetXc().Y() << std::endl;  
-    streamlog_out(DEBUG) << "z0 " <<  GetXc().Z() << std::endl;  
-    streamlog_out(DEBUG) << "GetNormal().X() " <<  GetNormal().X() << std::endl;  
-    streamlog_out(DEBUG4) << "GetNormal().Y() " <<  GetNormal().Y() << std::endl;  
-    streamlog_out(DEBUG4) << "GetNormal().Perp() " << GetNormal().Perp() << std::endl;  
-    streamlog_out(DEBUG4) << "GetNormal().X()/GetNormal().Perp() " << GetNormal().X()/GetNormal().Perp() << std::endl;  
-    streamlog_out(DEBUG4) << "GetNormal().Y()/GetNormal().Perp() " << GetNormal().Y()/GetNormal().Perp() << std::endl;  
-    streamlog_out(DEBUG4) << "xx.X()-GetXc().X() " <<  xx.X()-GetXc().X() << std::endl;  
-    streamlog_out(DEBUG4) << "xx.Y()-GetXc().Y() " <<  xx.Y()-GetXc().Y() << std::endl;  
-    
-    streamlog_out(DEBUG4) << "zeta " << zeta << std::endl;  
-    streamlog_out(DEBUG4) << "xi "   << xi   << std::endl;  
-    streamlog_out(DEBUG4) << "zeta half width " << GetZetawidth()/2 << std::endl;  
-    streamlog_out(DEBUG4) << "xi half width " << GetXiwidth()/2 << std::endl;  
-    streamlog_out(DEBUG4) << "offset  " << GetXioffset() << std::endl;  
-    
-    streamlog_out(DEBUG4) << "distance from plane " << (xx.X()-GetXc().X())*GetNormal().X() + (xx.Y()-GetXc().Y())*GetNormal().Y() << std::endl; 
-  }
-#endif
-  
-  return onSurface;
-  
 }
 
 
@@ -314,60 +176,67 @@ DDVTrackHit* DDPlanarMeasLayer::ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) co
   
   EVENT::TrackerHitPlane* plane_hit = dynamic_cast<EVENT::TrackerHitPlane*>( trkhit ) ;
   
-  if( plane_hit == NULL )  return NULL; // SJA:FIXME: should be replaced with an exception  
-
-  DDSurfaces::Vector3D U(1.0,plane_hit->getU()[1],plane_hit->getU()[0],DDSurfaces::Vector3D::spherical);
-  DDSurfaces::Vector3D V(1.0,plane_hit->getV()[1],plane_hit->getV()[0],DDSurfaces::Vector3D::spherical);
-  DDSurfaces::Vector3D Z(0.0,0.0,1.0);
-  
-  const float eps = 1.0e-07;
-  // U must be the global z axis 
-  if( fabs(1.0 - V.dot(Z)) > eps ) {
-    streamlog_out(ERROR) << "DDPlanarMeasLayer: TrackerHitPlane measurment vectors V is not equal to the global Z axis. \n\n exit(1) called from file " << __FILE__ << " and line " << __LINE__ << std::endl;
-    exit(1);
+  if( plane_hit == NULL ){
+    streamlog_out( ERROR ) << " DDPlanarMeasLayer::ConvertLCIOTrkHit called with something that isn't an EVENT::TrackerHitPlane : " << *trkhit << std::endl ;
+    return NULL; 
   }
   
-  if( fabs(U.dot(Z)) > eps ) {
-    streamlog_out(ERROR) << "DDPlanarMeasLayer: TrackerHitPlane measurment vectors U is not in the global X-Y plane. \n\n exit(1) called from file " << __FILE__ << " and line " << __LINE__ << std::endl;
-    exit(1);
-  }
-
+  
+  // get the measurment durections from the surface ( should of course be identical to the ones in the lcio hit ...)
+  DDSurfaces::Vector3D u = _surf->u() ;
+  DDSurfaces::Vector3D v = _surf->v() ;
+  
+  // DDSurfaces::Vector3D U(1.0,plane_hit->getU()[1],plane_hit->getU()[0],DDSurfaces::Vector3D::spherical);
+  // DDSurfaces::Vector3D V(1.0,plane_hit->getV()[1],plane_hit->getV()[0],DDSurfaces::Vector3D::spherical);
+  // DDSurfaces::Vector3D Z(0.0,0.0,1.0);
+  // streamlog_out(DEBUG1) << "DDPlanarMeasLayer::ConvertLCIOTrkHit : " 
+  // 			// << "\n U : " << U  
+  // 			<< "\n u : " << u 
+  // 			<< "\n V : " << V 
+  // 			<< "\n v : " << v
+  // 			<< std::endl ; 
+  
   // remember here the "position" of the hit in fact defines the origin of the plane it defines so u and v are per definition 0. 
   const TVector3 hit( plane_hit->getPosition()[0], plane_hit->getPosition()[1], plane_hit->getPosition()[2]) ;
   
   // convert to layer coordinates       
   TKalMatrix h    = this->XvToMv(hit);
   
-  Double_t  x[2] ;
-  Double_t dx[2] ;
+  Double_t  x[ fMDim ] ;
+  Double_t dx[ fMDim ] ;
   
   x[0] = h(0, 0);
-  x[1] = h(1, 0);
-  
   dx[0] = plane_hit->getdU() ;
-  dx[1] = plane_hit->getdV() ;
+  
+  if( fMDim ==2 ) {
+    x[1] = h(1, 0);
+    dx[1] = plane_hit->getdV() ;
+  }
   
   bool hit_on_surface = IsOnSurface(hit);
   
-  streamlog_out(DEBUG1) << "DDPlanarMeasLayer::ConvertLCIOTrkHit DDPlanarHit created : " 
+  streamlog_out(DEBUG1) << "DDPlanarMeasLayer::ConvertLCIOTrkHit creating DDPlanarHit " 
 			<< *plane_hit 
 			<< *_surf 
-  << " Layer R = " << this->GetXc().Perp() 
-  << " Layer phi = " << this->GetXc().Phi() 
-  << " Layer z0 = " << this->GetXc().Z() 
-  << " u = "  <<  x[0]
-  << " v = "  <<  x[1]
-  << " du = " << dx[0]
-  << " dv = " << dx[1]
-  << " x = " << plane_hit->getPosition()[0]
-  << " y = " << plane_hit->getPosition()[1]
-  << " z = " << plane_hit->getPosition()[2]
-  << " r = " << sqrt( plane_hit->getPosition()[0]*plane_hit->getPosition()[0] + plane_hit->getPosition()[1]*plane_hit->getPosition()[1])
-  << " onSurface = " << hit_on_surface
-  << std::endl ;
+			<< " Layer R = " << this->GetXc().Perp() 
+			<< " Layer phi = " << this->GetXc().Phi() 
+			<< " Layer z0 = " << this->GetXc().Z() 
+			<< " u = "  <<  x[0]
+			<< " v = "  <<  x[1]
+			<< " du = " << dx[0]
+			<< " dv = " << dx[1]
+			<< " x = " << plane_hit->getPosition()[0]
+			<< " y = " << plane_hit->getPosition()[1]
+			<< " z = " << plane_hit->getPosition()[2]
+			<< " r = " << sqrt( plane_hit->getPosition()[0]*plane_hit->getPosition()[0] + plane_hit->getPosition()[1]*plane_hit->getPosition()[1])
+			<< std::endl ;
   
+  if( ! hit_on_surface )   
+    streamlog_out( WARNING )  << "DDPlanarMeasLayer::ConvertLCIOTrkHit: hit is not on surface : " 
+			      <<  *plane_hit 
+			      << " cellID: " << DDKalTest::CellIDEncoding::valueString( plane_hit->getCellID0() ) 
+			      << std::endl ;
   
-  return hit_on_surface ? new DDPlanarHit( *this , x, dx, this->GetBz(), trkhit) : NULL; 
-  
-  
+  return hit_on_surface ? new DDPlanarHit( *this , x, dx, this->GetBz(), trkhit, fMDim ) : NULL; 
+
 }

@@ -37,9 +37,9 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
     
     DD4hep::DDRec::Surface* surf =  *it ;
     
-    streamlog_out( DEBUG ) << " ------------------------- "
-			   << " surface: "  << *surf         << std::endl
-			   << " ------------------------- "  << std::endl ;
+    // streamlog_out( DEBUG ) << " ------------------------- "
+    // 			   << " surface: "  << *surf         << std::endl
+    // 			   << " ------------------------- "  << std::endl ;
 
 
     if( surf->type().isCylinder() ) {
@@ -56,14 +56,14 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
     
     if( surf->type().isPlane() && surf->type().isParallelToZ() ) {
       
-      if( surf->v().rho() > 0.001 ){
+      // if( surf->v().rho() > 0.001 ){
 
-	Add( new DDParallelPlanarStripMeasLayer( surf , Bz ) ) ;
+      // 	Add( new DDParallelPlanarStripMeasLayer( surf , Bz ) ) ;
 
-      } else {
+      // } else {
 
  	Add( new DDParallelPlanarMeasLayer( surf , Bz ) ) ;
-     }
+     // }
 
 
     }
