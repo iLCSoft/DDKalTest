@@ -3,7 +3,7 @@
 
 #include "DDKalTest/DDPlanarMeasLayer.h"
 #include "DDKalTest/DDPlanarHit.h"
-#include "DDKalTest/MaterialMap.h"
+//include "DDKalTest/MaterialMap.h"
 #include "DDKalTest/DDKalTestConf.h"
 
 #include "DD4Hep/DD4hepUnits.h"
@@ -19,20 +19,21 @@ using namespace UTIL ;
 
 DDPlanarMeasLayer::DDPlanarMeasLayer(DD4hep::DDRec::Surface* surf, Double_t   Bz, const Char_t *name) :
   
-  DDVMeasLayer(  MaterialMap::get( surf->innerMaterial() ) , 
-		 MaterialMap::get( surf->outerMaterial() ) ,
-		 Bz, 
-		 surf->type().isSensitive() ,
-		 surf->id(), 
-		 name ),
+  DDVMeasLayer(  surf, Bz, name ),
+  // DDVMeasLayer(  surf,
+  // 		 MaterialMap::get( surf->innerMaterial() ) , 
+  // 		 MaterialMap::get( surf->outerMaterial() ) ,
+  // 		 Bz, 
+  // 		 surf->type().isSensitive() ,
+  // 		 surf->id(), 
+  // 		 name ),
   
   TPlane( TVector3( surf->origin()[0]/dd4hep::mm, 
 		    surf->origin()[1]/dd4hep::mm , 
 		    surf->origin()[2]/dd4hep::mm ) , TVector3( surf->normal() ) ),
   
   fMDim( surf->type().isMeasurement1D() ?  1 :  2 ) ,
-  fSortingPolicy( 0.),
-  _surf( surf ) {
+  fSortingPolicy( 0.) {
 
   static int count=0 ;
   static double epsilon=1e-4 ;
@@ -52,7 +53,7 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(DD4hep::DDRec::Surface* surf, Double_t   Bz
 			<< " phi = " << this->GetXc().Phi() 
 			<< " soting policy : " << fSortingPolicy
 			<< " is_active = " << surf->type().isSensitive()  
-			<< " CellID = " << DDKalTest::CellIDEncoding::valueString( _surf->id() ) 
+			<< " CellID = " << DDKalTest::CellIDEncoding::valueString( surf->id() ) 
 			<< " name = " << this->DDVMeasLayer::GetName()  
 			<< std::endl ;
   }

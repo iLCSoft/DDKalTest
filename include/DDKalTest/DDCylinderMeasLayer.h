@@ -19,18 +19,18 @@ public:
   
   /** Constructor Taking inner and outer materials, radius and half length, B-Field, whether the layer is sensitive, Cell ID, and an optional name */
   DDCylinderMeasLayer(TMaterial &min,
-                       TMaterial &mout,
-                       Double_t   r0,
-                       Double_t   lhalf,
-                       Double_t   x0,
-                       Double_t   y0,
-                       Double_t   z0,
-                       Double_t   Bz,
-                       Bool_t     is_active,
-                       Int_t      CellID = -1,
-                       const Char_t    *name = "DDCylinderMeasL") 
-  : DDVMeasLayer(min, mout, Bz, is_active, CellID, name),
-  TCylinder(r0, lhalf,x0,y0,z0)
+		      TMaterial &mout,
+		      Double_t   r0,
+		      Double_t   lhalf,
+		      Double_t   x0,
+		      Double_t   y0,
+		      Double_t   z0,
+		      Double_t   Bz,
+		      Bool_t     is_active,
+		      Int_t      CellID = -1,
+		      const Char_t    *name = "DDCylinderMeasL") : 
+    DDVMeasLayer( 0 /*FIXME*/, min, mout, Bz, is_active, CellID, name),
+    TCylinder(r0, lhalf,x0,y0,z0)  
   { /* no op */ }
   
 

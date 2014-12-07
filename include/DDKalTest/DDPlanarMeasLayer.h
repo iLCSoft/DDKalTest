@@ -38,9 +38,9 @@ class DDPlanarMeasLayer : public DDVMeasLayer, public TPlane {
 public:
   // Ctors and Dtor
   
-  DDPlanarMeasLayer(DD4hep::DDRec::Surface* surf,
-		    Double_t   Bz,		    
-		    const Char_t  *name = "DDPlanarMeasL");
+  DDPlanarMeasLayer( DD4hep::DDRec::Surface* surf,
+		     Double_t   Bz,		    
+		     const Char_t  *name = "DDPlanarMeasL");
   
   
   virtual ~DDPlanarMeasLayer() {} ;
@@ -68,7 +68,7 @@ public:
 protected:
   unsigned fMDim ;
   Double_t fSortingPolicy;
-  DD4hep::DDRec::Surface* _surf ;
+
 };
 
 #endif
