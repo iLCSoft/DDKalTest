@@ -4,8 +4,8 @@
 #include "DDKalTest/DDParallelPlanarMeasLayer.h"
 #include "DDKalTest/DDParallelPlanarStripMeasLayer.h"
 
-#include "DD4Hep/LCDD.h"
-#include "DD4Hep/DD4hepUnits.h"
+#include "DD4hep/LCDD.h"
+#include "DD4hep/DD4hepUnits.h"
 #include "DDRec/SurfaceManager.h"
 
 #include "streamlog/streamlog.h"

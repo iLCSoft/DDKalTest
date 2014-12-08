@@ -6,7 +6,7 @@
 //include "DDKalTest/MaterialMap.h"
 #include "DDKalTest/DDKalTestConf.h"
 
-#include "DD4Hep/DD4hepUnits.h"
+#include "DD4hep/DD4hepUnits.h"
 #include "DDSurfaces/Vector3D.h"
 
 #include <EVENT/TrackerHitPlane.h>
