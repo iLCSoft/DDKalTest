@@ -41,6 +41,7 @@ if(DD4HEP_USE_XERCESC)
   find_package(XercesC)
 endif()
 
+include(DD4hep_XML_setup)
 
 #-------------------------------------------------------------
 # add additional packages here
@@ -75,16 +76,6 @@ include_directories( ${CMAKE_SOURCE_DIR}/include
  )
 
 file(GLOB sources ./src/*cc )
-
-if(DD4HEP_USE_XERCESC)
-  find_package(XercesC)
-endif()
-include(DD4hep_XML_setup)
-
-#if(DD4HEP_USE_PYROOT)
-#  ROOT_GENERATE_DICTIONARY(G__ILDEx ${headers} LINKDEF include/ROOT/LinkDef.h)
-#  list(APPEND sources G__ILDEx.cxx)
-#endif()
 
 add_library(${PackageName} SHARED ${sources})
 
