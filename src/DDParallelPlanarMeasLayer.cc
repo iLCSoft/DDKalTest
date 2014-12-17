@@ -101,7 +101,7 @@ Int_t DDParallelPlanarMeasLayer::CalcXingPointWith(const TVTrack  &hel,
     streamlog_out( DEBUG0 ) << " ++++  intersection found for surface : " << DDKalTest::CellIDEncoding::valueString(_surf->id()) << std::endl 
      			    << "       at s = " << s 
      			    << "       xx   = ( " << xx.X() << ", " << xx.Y() << ", " << xx.Z() << ") " << std::endl 
-			    << " track parameters: " << trkParam 
+        		    << " track parameters: " << trkParam 
 			    << " mode: " << mode
      			    <<  std::endl ;
     

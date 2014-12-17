@@ -75,7 +75,7 @@ TKalMatrix DDPlanarMeasLayer::XvToMv(const TVector3 &xv) const {
 			<< " y = " << xv.Y() 
 			<< " z = " << xv.Z() 
 			<< " mv(0,0) = " << mv(0,0) 
-			<< " mv(1,0) = " << ( fMDim==2 ?  mv(1,0) : -42 ) 
+			<< " mv(1,0) = " << ( fMDim==2 ?  mv(1,0) : 0.0 ) 
 			<< std::endl;
 
   // streamlog_out(DEBUG0) <<"\t surface : " << *_surf  << std::endl ;
@@ -103,7 +103,7 @@ TVector3 DDPlanarMeasLayer::HitToXv(const TVTrackHit &vht) const {
   
   streamlog_out(DEBUG0) << "\t DDPlanarMeasLayer::HitToXv: "
 			<< " vht(0,0) = " << vht(0,0)
-			<< " vht(1,0) = " << ( fMDim==2 ? vht(1,0) : -42. )
+			<< " vht(1,0) = " << ( fMDim==2 ? vht(1,0) : 0. )
 			<< " x = " << x 
 			<< " y = " << y 
 			<< " z = " << z 
@@ -203,8 +203,8 @@ DDVTrackHit* DDPlanarMeasLayer::ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) co
   // convert to layer coordinates       
   TKalMatrix h    = this->XvToMv(hit);
   
-  Double_t  x[ fMDim ] ;
-  Double_t dx[ fMDim ] ;
+  Double_t  x[ 2 ] ;
+  Double_t dx[ 2 ] ;
   
   x[0] = h(0, 0);
   dx[0] = plane_hit->getdU() ;
@@ -216,7 +216,7 @@ DDVTrackHit* DDPlanarMeasLayer::ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) co
   
   bool hit_on_surface = IsOnSurface(hit);
   
-  streamlog_out(DEBUG1) << "DDPlanarMeasLayer::ConvertLCIOTrkHit creating DDPlanarHit " 
+  streamlog_out(DEBUG0) << "DDPlanarMeasLayer::ConvertLCIOTrkHit creating DDPlanarHit " 
 			<< *plane_hit 
 			<< *_surf 
 			<< " Layer R = " << this->GetXc().Perp() 
