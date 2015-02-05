@@ -173,6 +173,18 @@ Bool_t DDPlanarMeasLayer::IsOnSurface(const TVector3 &xx) const {
 }
 
 
+int DDPlanarMeasLayer::getIntersectionAndCellID(const TVTrack  &hel,
+						TVector3 &xx,
+						Double_t &phi,
+						Int_t    &CellID,
+						Int_t     mode,
+						Double_t  eps ) const {
+  
+  CellID = this->getCellIDs()[0]; // not multilayer
+  return this->CalcXingPointWith(hel,xx,phi,0,eps);
+}
+  
+ 
 DDVTrackHit* DDPlanarMeasLayer::ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) const {
   
   EVENT::TrackerHitPlane* plane_hit = dynamic_cast<EVENT::TrackerHitPlane*>( trkhit ) ;

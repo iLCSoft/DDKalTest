@@ -2,7 +2,8 @@
 #include "DDKalTest/DDKalDetector.h"
 #include "DDKalTest/DDCylinderMeasLayer.h"
 #include "DDKalTest/DDParallelPlanarMeasLayer.h"
-#include "DDKalTest/DDParallelPlanarStripMeasLayer.h"
+#include "DDKalTest/DDDiscMeasLayer.h"
+//#include "DDKalTest/DDParallelPlanarStripMeasLayer.h"
 
 #include "DD4hep/LCDD.h"
 #include "DD4hep/DD4hepUnits.h"
@@ -54,17 +55,20 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
     
     }
     
-    if( surf->type().isPlane() && surf->type().isParallelToZ() ) {
+    else if( surf->type().isPlane() ){ 
+
+      if( surf->type().isParallelToZ() ) {
       
-      // if( surf->v().rho() > 0.001 ){
-
-      // 	Add( new DDParallelPlanarStripMeasLayer( surf , Bz ) ) ;
-
-      // } else {
-
  	Add( new DDParallelPlanarMeasLayer( surf , Bz ) ) ;
-     // }
 
+      } else if(  surf->type().isOrthogonalToZ() ){
+	
+	Add( new DDDiscMeasLayer( surf , Bz ) ) ;
+
+      } else{ 
+
+ 	Add( new DDPlanarMeasLayer( surf , Bz ) ) ;
+      }
 
     }
 

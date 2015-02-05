@@ -38,17 +38,18 @@ public:
                                      Double_t &phi,
                                      Double_t  eps = 1.e-8) const ; 
   
-  /** Get the intersection and the CellID, needed for multilayers */
-  virtual int getIntersectionAndCellID(const TVTrack  &hel,
-                                       TVector3 &xx,
-                                       Double_t &phi,
-                                       Int_t    &CellID,
-                                       Int_t     mode,
-                                       Double_t  eps = 1.e-8) const {
+  //fg: now implemented in DDVMeasLayer ...
+  // // /** Get the intersection and the CellID, needed for multilayers */
+  // // virtual int getIntersectionAndCellID(const TVTrack  &hel,
+  // //                                      TVector3 &xx,
+  // //                                      Double_t &phi,
+  // //                                      Int_t    &CellID,
+  // //                                      Int_t     mode,
+  // //                                      Double_t  eps = 1.e-8) const {
   
-    CellID = this->getCellIDs()[0]; // not multilayer
-    return CalcXingPointWith(hel,xx,phi,0,eps);
-  }
+  // //   CellID = this->getCellIDs()[0]; // not multilayer
+  // //   return CalcXingPointWith(hel,xx,phi,0,eps);
+  // // }
   
   
 // protected:

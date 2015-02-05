@@ -1,100 +1,22 @@
-#ifndef __DDDISCMEASLAYER__
-#define __DDDISCMEASLAYER__
+#ifndef __DDDiscMeasLayer__
+#define __DDDiscMeasLayer__
 
-/** DDDiscMeasLayer: User defined KalTest Disc measurement layer class used with DDPLanarTrackHit. 
- *
- * @author S.Aplin DESY
+#include "DDParallelPlanarMeasLayer.h"
+
+
+/** DDDiscMeasLayer: specialization of DDPlanarMeasruement layer 
+ *  As we use the DD4hep::DDRec::Surface and aidaTT::trajectory for the implementation 
+ *  of CalcXingPointWith() and the disctinction between parallel and orthogonal
+ *  planes is done there, this class is currently identical to  DDParallelPlanarMeasLayer
+ *  and we simply create a typedef for now.
+ * 
+ * @author F. Gaede CERN/DESY
+ * @date Feb 2015
+ * @version $Id:$
  */
 
-#include "TVector3.h"
-#include "TKalMatrix.h"
-#include "TPlane.h"
-#include "DDVMeasLayer.h"
-#include "KalTrackDim.h"
-#include "TMath.h"
-#include <sstream>
+typedef DDParallelPlanarMeasLayer DDDiscMeasLayer ;
 
-class TVTrackHit;
-
-
-class DDDiscMeasLayer : public DDVMeasLayer, public TPlane {
-  
-public:
-  
-  /** Constructor Taking inner and outer materials, center and normal to the plane, B-Field, sorting policy, min and max r, whether the layer is sensitive, Cell ID, and an optional name */
-  
-  DDDiscMeasLayer(TMaterial &min,
-                   TMaterial &mout,
-                   const TVector3  &center,
-                   const TVector3  &normal,
-                   double   Bz,
-                   double   SortingPolicy,
-                   double   rMin,
-                   double   rMax,
-                   Bool_t     is_active,
-                   Int_t      CellID = -1,
-                   const Char_t    *name = "DDDiscMeasL")
-  : DDVMeasLayer(min, mout, Bz, is_active, CellID, name),
-  TPlane(center, normal),
-  _sortingPolicy(SortingPolicy), _rMin(rMin), _rMax(rMax)
-  { /* no op */ }
-  
-  
-  
-  // Parrent's pure virtuals that must be implemented
-  
-  /** Global to Local coordinates */
-  virtual TKalMatrix XvToMv    (const TVTrackHit &ht,
-                                const TVector3   &xv) const 
-  { return this->XvToMv(xv); }
-  
-  /** Global to Local coordinates */
-  virtual TKalMatrix XvToMv    (const TVector3   &xv) const;
-  
-  /** Local to Global coordinates */  
-  virtual TVector3   HitToXv   (const TVTrackHit &ht) const;
-  
-  /** Calculate Projector Matrix */
-  virtual void       CalcDhDa  (const TVTrackHit &ht,
-                                const TVector3   &xv,
-                                const TKalMatrix &dxphiada,
-                                TKalMatrix &H)  const;
-  
-  
-  virtual Int_t CalcXingPointWith(const TVTrack  &hel,
-                                  TVector3 &xx,
-                                  Double_t &phi,
-                                  Int_t     mode,
-                                  Double_t  eps) const;
-    
-  
-  /** Convert LCIO Tracker Hit to an DDPLanarTrackHit  */
-  virtual DDVTrackHit* ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) const ;
-  
-  /** Check if global point is on surface  */
-  inline virtual Bool_t   IsOnSurface (const TVector3 &xx) const;
-  
-  /** Get sorting policy for this plane  */
-  double GetSortingPolicy() const { return _sortingPolicy; }
-  
-  /** Get the intersection and the CellID, needed for multilayers */
-  virtual int getIntersectionAndCellID(const TVTrack  &hel,
-                                       TVector3 &xx,
-                                       Double_t &phi,
-                                       Int_t    &CellID,
-                                       Int_t     mode,
-                                       Double_t  eps = 1.e-8) const {
-    
-    CellID = this->getCellIDs()[0]; // not multilayer
-    return this->CalcXingPointWith(hel,xx,phi,0,eps);
-  
-  }
-  
-private:
-  double _sortingPolicy;
-  double _rMin;
-  double _rMax;
-  
-};
 
 #endif
+

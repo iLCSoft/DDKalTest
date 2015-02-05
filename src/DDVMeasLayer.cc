@@ -97,7 +97,6 @@ DDVMeasLayer::DDVMeasLayer(  DD4hep::DDRec::Surface* surf,
 
 
 
-
 /** Function to compute the energy loss per path length and density.
  *  Could make this a global static function that could be modified 
  *  if needed ...
@@ -200,14 +199,13 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   
   Double_t edep = dedx * dnsty * projectedPath ;
 
-  streamlog_out( DEBUG1) << "\n ** in  DDVMeasLayer::GetEnergyLoss: " 
+  streamlog_out( DEBUG6) << "\n ** in  DDVMeasLayer::GetEnergyLoss: " 
 			 << "\n outer material: " << mat_o.GetName()  
 			 << "\n dedx: " << dedx 
 			 << "\n path: " << path
 			 << "\n projectedPath: " << projectedPath 
 			 << "\n edep: " << edep
 			 << "\n isoutgoing: " << isoutgoing
-			 << "\n surface: " << *_surf
 			 << "\n up : " << up
 			 << "\n normal: " << n
 			 << "\n cosTrk: " << cosTrk
@@ -227,7 +225,7 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   
   edep += dedx * dnsty * projectedPath ;
 
-  streamlog_out( DEBUG1) << "\n ** in  DDVMeasLayer::GetEnergyLoss: " 
+  streamlog_out( DEBUG6) << "\n ** in  DDVMeasLayer::GetEnergyLoss: " 
 			 << "\n inner material: " << mat_i.GetName()  
 			 << "\n dedx: " << dedx 
 			 << "\n path: " << path

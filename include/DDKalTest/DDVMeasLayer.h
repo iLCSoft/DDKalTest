@@ -57,7 +57,8 @@ public:
   /** Check whether the measurement layer represents a series of detector elements */
   bool isMultilayer() const { return _isMultiLayer; } 
   
-  /** Get the intersection and the CellID, needed for multilayers */
+  /** Get the intersection and the CellID, needed for multilayers 
+   */
   virtual int getIntersectionAndCellID(const TVTrack  &hel,
                                TVector3 &xx,
                                Double_t &phi,
