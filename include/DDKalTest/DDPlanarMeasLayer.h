@@ -1,22 +1,5 @@
 #ifndef DDPlanarMeasLayer_h
 #define DDPlanarMeasLayer_h
-//*************************************************************************
-//* ===================
-//*  DDPlanarMeasLayer Class
-//* ===================
-//*
-//* (Description)
-//*   Planar measurement layer class used with DDPLanarTrackHit.
-//* (Requires)
-//*   DDVMeasLayer
-//* (Provides)
-//*     class DDPlanarMeasLayer
-//* (Update Recored)
-//*   2003/09/30  Y.Nakashima       Original version.
-//*
-//*   2011/06/17  D.Kamai           Modified to handle ladder structure.
-//*************************************************************************
-//
 
 #include "DDVMeasLayer.h"
 #include "TPlane.h"
@@ -36,8 +19,8 @@ class TVector3 ;
 class DDPlanarMeasLayer : public DDVMeasLayer, public TPlane {
   
 public:
-  // Ctors and Dtor
-  
+
+  /// Ctor: initialize with Surface
   DDPlanarMeasLayer( DD4hep::DDRec::Surface* surf,
 		     Double_t   Bz,		    
 		     const Char_t  *name = "DDPlanarMeasL");

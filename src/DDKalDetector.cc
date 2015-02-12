@@ -44,15 +44,8 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
 
 
     if( surf->type().isCylinder() ) {
-      
-      // double  lhalf, x0, y0, z0, bz, dummy ;
 
-      // Add( new DDCylinderMeasLayer( MaterialMap::get( surf->innerMaterial() ) ,
-      // 				    MaterialMap::get( surf->outerMaterial()  ) ,
-      // 				    surf->origin().rho() , // radius of cylinder 
-      // 				    surf-> ,
-      // 				    x0, y0, z0, bz, dummy,-1,"TPCInnerFCInr" ) );
-    
+      Add( new DDCylinderMeasLayer( surf , Bz ) ) ;
     }
     
     else if( surf->type().isPlane() ){ 

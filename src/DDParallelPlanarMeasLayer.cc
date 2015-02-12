@@ -137,7 +137,10 @@ Int_t DDParallelPlanarMeasLayer::CalcXingPointWith(const TVTrack  &hel,
     }
   }
     
-  return (IsOnSurface(xx) ? 1 : 0);
+  
+  return 1 ;
+  //already checked above
+  //  return (IsOnSurface(xx) ? 1 : 0);
 }
 
 

@@ -1,52 +1,56 @@
-#ifndef DDCYLINDERMEASLAYER_H
-#define DDCYLINDERMEASLAYER_H
-
-/** DDCylinderMeasLayer: User defined KalTest measurement layer class 
- *
- * @author S.Aplin DESY
- */
-
+#ifndef DDCylinderMeasLayer_H
+#define DDCylinderMeasLayer_H
 
 #include "DDVMeasLayer.h"
 #include <iostream>
 #include <cmath>
-#include "streamlog/streamlog.h"
+//#include "streamlog/streamlog.h"
 
+#include "DDRec/Surface.h"
 
+/** DDPlanarMeasLayer provides a generic planar measurment for 1-dim and 2-dim hits
+ *  using a DD4hep::DDRec::Surface.
+ *  
+ *  @author F.Gaede CERN/DESY
+ *  @date Feb 2015
+ *  @version $Id:$
+ */
 class DDCylinderMeasLayer : public DDVMeasLayer, public TCylinder {
   
 public:
   
-  /** Constructor Taking inner and outer materials, radius and half length, B-Field, whether the layer is sensitive, Cell ID, and an optional name */
-  DDCylinderMeasLayer(TMaterial &min,
-		      TMaterial &mout,
-		      Double_t   r0,
-		      Double_t   lhalf,
-		      Double_t   x0,
-		      Double_t   y0,
-		      Double_t   z0,
+  /// Constructor: initialize with Surface and B-field
+  DDCylinderMeasLayer(DD4hep::DDRec::Surface* surf,
 		      Double_t   Bz,
-		      Bool_t     is_active,
-		      Int_t      CellID = -1,
-		      const Char_t    *name = "DDCylinderMeasL") : 
-    DDVMeasLayer( 0 /*FIXME*/, min, mout, Bz, is_active, CellID, name),
-    TCylinder(r0, lhalf,x0,y0,z0)  
-  { /* no op */ }
+		      const Char_t    *name = "DDCylinderMeasL") ; 
   
-
+  
   Bool_t IsOnSurface(const TVector3 &xx) const {
-
+    
+    //fg: leave this code for now - we are restricted to cylinders around the z-axis
     bool z = (xx.Z() >= GetZmin() && xx.Z() <= GetZmax());
     bool r = std::fabs( (xx-this->GetXc()).Perp() - this->GetR() ) < 1.e-3; // for very short, very stiff tracks this can be poorly defined, so we relax this here a bit to 1 micron
-
-//    streamlog_out(DEBUG0) << "DDCylinderMeasLayer IsOnSurface for " << this->TVMeasLayer::GetName() << " R =  " << this->GetR() << "  GetZmin() = " << GetZmin() << " GetZmax() = " << GetZmax()
-//    << " dr = " << std::fabs( (xx-this->GetXc()).Perp() - this->GetR() ) << " r = " << r << " z = " << z 
-//    << std::endl;
+    
+    //    streamlog_out(DEBUG0) << "DDCylinderMeasLayer IsOnSurface for " << this->TVMeasLayer::GetName() << " R =  " << this->GetR() 
+    //    << "  GetZmin() = " << GetZmin() << " GetZmax() = " << GetZmax()
+    //    << " dr = " << std::fabs( (xx-this->GetXc()).Perp() - this->GetR() ) << " r = " << r << " z = " << z 
+    //    << std::endl;
     
     return r && z;
   }
 
-  
+  /** overloaded version of CalcXingPointWith using closed solution */
+  virtual Int_t    CalcXingPointWith(const TVTrack  &hel,
+                                     TVector3 &xx,
+                                     Double_t &phi,
+                                     Int_t     mode,
+                                     Double_t  eps = 1.e-8) const;  
+
+  /** overloaded version of CalcXingPointWith using closed solution */
+  virtual Int_t    CalcXingPointWith(const TVTrack  &hel,
+                                     TVector3 &xx,
+                                     Double_t &phi,
+                                     Double_t  eps = 1.e-8) const ; 
 
   // Parent's pure virtuals that must be implemented
   
@@ -86,6 +90,11 @@ public:
     
   }
 
+  Double_t GetSortingPolicy() const { return fSortingPolicy; }
+ 
+protected:
+  unsigned fMDim ;
+  Double_t fSortingPolicy;
   
 private:
   
