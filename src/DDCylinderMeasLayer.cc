@@ -105,6 +105,8 @@ TKalMatrix DDCylinderMeasLayer::XvToMv(const TVector3 &xv) const
 			<< " z = " << xv.Z() 
 			<< " mv(0,0) = " << mv(0,0) 
 			<< " mv(1,0) = " << ( fMDim==2 ?  mv(1,0) : 0.0 ) 
+			// << " old code : mv(0,0) = " << GetR() * phi
+			// << " mv(1,0) = " <<  xxv.Z()
 			<< std::endl;
 
   // streamlog_out(DEBUG0) <<"\t surface : " << *_surf  << std::endl ;
@@ -119,10 +121,10 @@ TVector3 DDCylinderMeasLayer::HitToXv(const TVTrackHit &vht) const
 {
   
   // Double_t phi = vht(0, 0) / GetR() ;
-  // Double_t z   = vht(1, 0);
+  // Double_t z0   = vht(1, 0);
   // // account for cylinder not centered at x=0.0, y=0.0
-  // Double_t x   = GetR() * TMath::Cos(phi) + GetXc().X();
-  // Double_t y   = GetR() * TMath::Sin(phi) + GetXc().Y();
+  // Double_t x0   = GetR() * TMath::Cos(phi) + GetXc().X();
+  // Double_t y0   = GetR() * TMath::Sin(phi) + GetXc().Y();
   // return TVector3(x, y, z);
 
   DDSurfaces::Vector3D v = ( fMDim == 2 ? 
@@ -141,6 +143,9 @@ TVector3 DDCylinderMeasLayer::HitToXv(const TVTrackHit &vht) const
 			<< " x = " << x 
 			<< " y = " << y 
 			<< " z = " << z 
+			// << " x_old = " << x0 
+			// << " y_old = " << y0 
+			// << " z_old = " << z0 
 			<< std::endl;
   
   
@@ -399,7 +404,7 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
   TVector3 xxDeb ;
   TCylinder::CalcXingPointWith( hel,xxDeb,phi,mode,eps) ;
 
-   streamlog_out(DEBUG1) << "TCylinder::CalcXingPointWith:on surface:" <<  IsOnSurface(xxDeb) 
+   streamlog_out(DEBUG1) << "TCylinder::CalcXingPointWith:on surface:          " <<  IsOnSurface(xxDeb) 
 			<< "  (chg*phi*mode)<0: " <<  ((chg*phi*mode)<0)
 			<< " x = " << xxDeb.X()
 			<< " y = " << xxDeb.Y()
@@ -409,6 +414,15 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
 			<< " dphi = " <<  phi
 			<< " " << this->TVMeasLayer::GetName() 
 			<< std::endl;
+
+   streamlog_out( DEBUG ) << "DDCylinderMeasLayer::CalcXingPointWith: point on trajectory at given s (aidaTT ): " << traj.pointAt( s * dd4hep::mm ) << std::endl ;
+   streamlog_out( DEBUG ) << "DDCylinderMeasLayer::CalcXingPointWith: point on trajectory at given s (KalTest): " << traj.pointAt( - phi / omega * dd4hep::mm ) << std::endl ;
+
+   streamlog_out( DEBUG ) << "DDCylinderMeasLayer::CalcXingPointWith: distance to surface (aidaTT ): " <<  _surf->distance( xxV3 ) << std::endl ;
+
+   streamlog_out( DEBUG ) << "DDCylinderMeasLayer::CalcXingPointWith: distance to surface (KalTest): " <<  _surf->distance( aidaTT::Vector3D( xxDeb.X() *dd4hep::mm,  xxDeb.Y()*dd4hep::mm ,   xxDeb.Z()*dd4hep::mm  )  ) << std::endl ;
+
+
 #endif
  
 
@@ -419,10 +433,9 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
   }
 
 
-  return 1 ; // on surface already checked above
 
   //  return TCylinder::CalcXingPointWith( hel,xx,phi,mode,eps) ;
 
-  //  return (IsOnSurface(xx) ? 1 : 0);
+  return (IsOnSurface(xx) ? 1 : 0);
 
 }
