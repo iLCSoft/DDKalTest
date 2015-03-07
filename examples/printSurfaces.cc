@@ -75,9 +75,9 @@ int main(int argc, char** argv ){
 
     std::cout << "DetElement: " << de.name() <<  " surfaces : " <<  ( sL.empty() ? 0 : sL.size()  ) << std::endl ;
 
-    for( SurfaceList::const_iterator it = sL.begin() ; it != sL.end() ; ++it ){
+    for( SurfaceList::const_iterator sit = sL.begin() ; sit != sL.end() ; ++sit ){
     
-      Surface* surf =  *it ;
+      Surface* surf =  *sit ;
     
       std::cout << " ------------------------- " 
 		<< " surface: "  << *surf         << std::endl

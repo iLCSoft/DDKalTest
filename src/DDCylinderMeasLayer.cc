@@ -90,7 +90,7 @@ TKalMatrix DDCylinderMeasLayer::XvToMv(const TVector3 &xv) const
 
   TKalMatrix mv( fMDim , 1 );
   
-  DDSurfaces::ISurface::Vector2D lv = _surf->globalToLocal( DDSurfaces::Vector3D( xv.X()*dd4hep::mm ,  
+  DDSurfaces::Vector2D lv = _surf->globalToLocal( DDSurfaces::Vector3D( xv.X()*dd4hep::mm ,  
 										  xv.Y()*dd4hep::mm ,  
 										  xv.Z()*dd4hep::mm ) ) ;
   
@@ -128,8 +128,8 @@ TVector3 DDCylinderMeasLayer::HitToXv(const TVTrackHit &vht) const
   // return TVector3(x, y, z);
 
   DDSurfaces::Vector3D v = ( fMDim == 2 ? 
-			     _surf->localToGlobal( DDSurfaces::ISurface::Vector2D (  vht(0,0)*dd4hep::mm, vht(1,0) *dd4hep::mm ) )  :
-			     _surf->localToGlobal( DDSurfaces::ISurface::Vector2D (  vht(0,0)*dd4hep::mm,    0.  ) ) 
+			     _surf->localToGlobal( DDSurfaces::Vector2D (  vht(0,0)*dd4hep::mm, vht(1,0) *dd4hep::mm ) )  :
+			     _surf->localToGlobal( DDSurfaces::Vector2D (  vht(0,0)*dd4hep::mm,    0.  ) ) 
 			     ) ;
   
   double x = v[0] / dd4hep::mm ;
