@@ -195,7 +195,7 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   // not sure if this is really needed (or even correct) as the surface thicknesses
   // should be small compared to the distance from the previous mesurement ...
   //-------------
-  path = ( projectedPath < path  ?  projectedPath  : path ) ; 
+  // path = ( projectedPath < path  ?  projectedPath  : path ) ; 
   
   Double_t edep = dedx * dnsty * projectedPath ;
 
@@ -221,7 +221,7 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   projectedPath /= cosTrk ; 
 
   // take the smaller of the complete step and the one projected to the surface
-  path = ( projectedPath < path  ?  projectedPath  : path ) ; 
+  //  path = ( projectedPath < path  ?  projectedPath  : path ) ; 
   
   edep += dedx * dnsty * projectedPath ;
 
@@ -239,6 +239,9 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
 			 << std::endl ;
 
   //-----------------------
+  // FIXME: Debug hack:
+  //  edep *= 1.2 ;
+  //----------------------
 
   if(!hel.IsInB()) return edep;
 

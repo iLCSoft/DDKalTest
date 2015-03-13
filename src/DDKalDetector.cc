@@ -38,10 +38,10 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
     
     DD4hep::DDRec::Surface* surf =  *it ;
     
-    // streamlog_out( DEBUG ) << " ------------------------- "
-    // 			   << " surface: "  << *surf         << std::endl
-    // 			   << " ------------------------- "  << std::endl ;
 
+    // streamlog_out( DEBUG ) << " ------------------------- "
+    // 			    << "  surface: "  << *surf         << std::endl
+    // 			    << " ------------------------- "  << std::endl ;
 
     if( surf->type().isCylinder() ) {
 
