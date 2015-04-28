@@ -7,7 +7,7 @@
 
 #include "DD4hep/LCDD.h"
 #include "DD4hep/DD4hepUnits.h"
-#include "DDRec/SurfaceManager.h"
+#include "DDRec/SurfaceHelper.h"
 
 #include "streamlog/streamlog.h"
 
@@ -30,7 +30,7 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
   streamlog_out( DEBUG4 ) << " - use Bz = " << Bz << " Tesla " << std::endl ;
   //-------------
 
-  DD4hep::DDRec::SurfaceManager ds( det ) ;
+  DD4hep::DDRec::SurfaceHelper ds( det ) ;
   
   const DD4hep::DDRec::SurfaceList& detSL = ds.surfaceList() ;
   

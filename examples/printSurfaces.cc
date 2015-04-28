@@ -13,7 +13,7 @@
 
 #include "DDRec/Surface.h"
 #include "DDRec/DetectorSurfaces.h"
-#include "DDRec/SurfaceManager.h"
+#include "DDRec/SurfaceHelper.h"
 
 #include <list>
 
@@ -69,7 +69,7 @@ int main(int argc, char** argv ){
 
     DetElement de = (*it) ;
     
-    SurfaceManager surfMan( de ) ;
+    SurfaceHelper surfMan( de ) ;
 
     const SurfaceList& sL = surfMan.surfaceList() ;
 
