@@ -7,7 +7,9 @@
 
 #include "DD4hep/LCDD.h"
 #include "DD4hep/DD4hepUnits.h"
-#include "DDRec/SurfaceHelper.h"
+#include "DDRec/SurfaceManager.h"
+
+#include "Exceptions.h"
 
 #include "streamlog/streamlog.h"
 
@@ -21,7 +23,9 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
   // --- get B field :
   double origin[3] = { 0., 0., 0. } , bfield[3] ;
 
-  DD4hep::Geometry::OverlayedField ovField = DD4hep::Geometry::LCDD::getInstance().field() ;
+  DD4hep::Geometry::LCDD& lcdd = DD4hep::Geometry::LCDD::getInstance();
+
+ DD4hep::Geometry::OverlayedField ovField = lcdd.field() ;
 
   ovField.magneticField( origin , bfield ) ;
 
@@ -30,18 +34,33 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
   streamlog_out( DEBUG4 ) << " - use Bz = " << Bz << " Tesla " << std::endl ;
   //-------------
 
-  DD4hep::DDRec::SurfaceHelper ds( det ) ;
-  
-  const DD4hep::DDRec::SurfaceList& detSL = ds.surfaceList() ;
-  
-  for( DD4hep::DDRec::SurfaceList::const_iterator it = detSL.begin() ; it != detSL.end() ; ++it ){
-    
-    DD4hep::DDRec::Surface* surf =  *it ;
+  // DD4hep::DDRec::SurfaceHelper ds( det ) ;
+  // const DD4hep::DDRec::SurfaceList& detSL = ds.surfaceList() ;
+  // for( DD4hep::DDRec::SurfaceList::const_iterator it = detSL.begin() ; it != detSL.end() ; ++it ){
     
 
-    // streamlog_out( DEBUG ) << " ------------------------- "
-    // 			    << "  surface: "  << *surf         << std::endl
-    // 			    << " ------------------------- "  << std::endl ;
+  //===========  get the surface map from the SurfaceManager ================
+
+  DD4hep::DDRec::SurfaceManager& surfMan = *lcdd.extension<DD4hep::DDRec::SurfaceManager>() ;
+
+  typedef DD4hep::DDRec::SurfaceMap SMap ;
+
+  const SMap* sMap = surfMan.map( det.name() ) ;
+
+  if( ! sMap ) {   
+    std::stringstream err  ; err << " DDKalDetector::DDKalDetector() - "
+				 << " Could not find surface map for detector: " 
+                                 <<   det.name() << " in SurfaceManager " ;
+    throw Exception( err.str() ) ;
+  }
+  
+  for( SMap::const_iterator it = sMap->begin() ; it != sMap->end() ; ++it){
+    
+    DD4hep::DDRec::Surface* surf =  it-second ;
+    
+    streamlog_out( DEBUG ) << " ------------------------- "
+			   << "  surface: "  << *surf         << std::endl
+			   << " ------------------------- "  << std::endl ;
 
     if( surf->type().isCylinder() ) {
 
