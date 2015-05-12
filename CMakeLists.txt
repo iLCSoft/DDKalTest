@@ -29,7 +29,7 @@ ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-find_package( DD4hep REQUIRED)
+find_package( DD4hep REQUIRED COMPONENTS DDRec )
 
 set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake ) 
 include( DD4hep )
@@ -86,13 +86,13 @@ file(GLOB sources ./src/*cc )
 
 add_library(${PackageName} SHARED ${sources})
 
-target_link_libraries(${PackageName} ${DD4hep_LIBRARIES}
+target_link_libraries(${PackageName} ${DD4hep_LIBRARIES} ${DD4hep_COMPONENT_LIBRARIES}
   ${ROOT_LIBRARIES} ${ROOT_COMPONENT_LIBRARIES} 
   )
 
 
 add_executable( printSurfaces ./examples/printSurfaces.cc )
-target_link_libraries( printSurfaces ${DD4hep_LIBRARIES} ${PackageName})
+target_link_libraries( printSurfaces ${DD4hep_LIBRARIES} ${DD4hep_COMPONENT_LIBRARIES} ${PackageName})
 
 
 #---Rootmap generation--------------------------------------------------------------

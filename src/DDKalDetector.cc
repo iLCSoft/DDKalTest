@@ -9,6 +9,7 @@
 #include "DD4hep/DD4hepUnits.h"
 #include "DDRec/SurfaceManager.h"
 
+#include <lcio.h>
 #include "Exceptions.h"
 
 #include "streamlog/streamlog.h"
@@ -51,12 +52,12 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
     std::stringstream err  ; err << " DDKalDetector::DDKalDetector() - "
 				 << " Could not find surface map for detector: " 
                                  <<   det.name() << " in SurfaceManager " ;
-    throw Exception( err.str() ) ;
+    throw lcio::Exception( err.str() ) ;
   }
   
   for( SMap::const_iterator it = sMap->begin() ; it != sMap->end() ; ++it){
     
-    DD4hep::DDRec::Surface* surf =  it-second ;
+    DD4hep::DDRec::Surface* surf =  it->second ;
     
     streamlog_out( DEBUG ) << " ------------------------- "
 			   << "  surface: "  << *surf         << std::endl
