@@ -65,6 +65,15 @@ DDCylinderMeasLayer::DDCylinderMeasLayer(DD4hep::DDRec::Surface* surf,
 			<< " CellID = " << DDKalTest::CellIDEncoding::valueString( surf->id() ) 
 			<< " name = " << this->DDVMeasLayer::GetName()  
 			<< std::endl ;
+
+  // for a cylindrical layer we also set the side to 0 in the layerId 
+  // ( in the case the cylinder is split between forward and backward )
+  encoder[ DDKalTest::CellIDEncoding::instance().side() ] = 0;
+  encoder[ DDKalTest::CellIDEncoding::instance().module() ] = 0;
+  encoder[ DDKalTest::CellIDEncoding::instance().sensor() ] = 0;
+  
+  _layerID = encoder.lowWord();
+
 }
 
 
@@ -91,15 +100,15 @@ TKalMatrix DDCylinderMeasLayer::XvToMv(const TVector3 &xv) const
   TKalMatrix mv( fMDim , 1 );
   
   DDSurfaces::Vector2D lv = _surf->globalToLocal( DDSurfaces::Vector3D( xv.X()*dd4hep::mm ,  
-										  xv.Y()*dd4hep::mm ,  
-										  xv.Z()*dd4hep::mm ) ) ;
+									xv.Y()*dd4hep::mm ,  
+									xv.Z()*dd4hep::mm ) ) ;
   
   mv(0,0) = lv[0] / dd4hep::mm ; 
   
   if( fMDim == 2 )
     mv(1,0) = lv[1] / dd4hep::mm ;
   
-  streamlog_out(DEBUG0) << "\t DDPlanarMeasLayer::XvToMv: "
+  streamlog_out(DEBUG0) << "\t DDCylinderMeasLayer::XvToMv: "
 			<< " x = " << xv.X() 
 			<< " y = " << xv.Y() 
 			<< " z = " << xv.Z() 
@@ -350,8 +359,8 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
   //order defined in ./helpers/utilities.cc
   //  L3 type: [ Omega, tan(lambda), phi_0, d_0, z_0 ]
   trkParam.setReferencePoint( aidaTT::Vector3D( ref_point.X()*dd4hep::mm , 
-						ref_point.Y()*dd4hep::mm, 
-						ref_point.Z()*dd4hep::mm ) ) ;
+  						ref_point.Y()*dd4hep::mm, 
+  						ref_point.Z()*dd4hep::mm ) ) ;
 
   aidaTT::trajectory traj( trkParam , 0 ) ;
   
@@ -370,7 +379,7 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
      			    << "       at s = " << s 
      			    << "       xx   = ( " << xx.X() << ", " << xx.Y() << ", " << xx.Z() << ") " << std::endl 
         		    << " track parameters: " << trkParam 
-			    << " mode: " << mode
+  			    << " mode: " << mode
      			    <<  std::endl ;
     
     phi = -s * omega ; 
@@ -378,9 +387,9 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
   } else {
 
     streamlog_out( DEBUG0 ) << " ++++ no intersection found for surface : " << DDKalTest::CellIDEncoding::valueString(_surf->id()) << std::endl
-			    << " track parameters: " << trkParam 
-			    << " mode : " << mode
-			    << std::endl ;
+  			    << " track parameters: " << trkParam 
+  			    << " mode : " << mode
+  			    << std::endl ;
 
     return 0 ;
   }
@@ -389,31 +398,34 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
   //=============================================================================================
 
   streamlog_out(DEBUG1) << "DDCylinderMeasLayer::CalcXingPointWith:on surface:" <<  IsOnSurface(xx) 
-			<< "  (chg*phi*mode)<0: " <<  ((chg*phi*mode)<0)
-			<< " x = " << xx.X()
-			<< " y = " << xx.Y()
-			<< " z = " << xx.Z()
-			<< " r = " << xx.Perp()
-			<< " phi = " << xx.Phi()
-			<< " dphi = " <<  phi
-			<< " " << this->TVMeasLayer::GetName() 
-			<< std::endl;
+  			<< "  (chg*phi*mode)<0: " <<  ((chg*phi*mode)<0)
+  			<< " x = " << xx.X()
+  			<< " y = " << xx.Y()
+  			<< " z = " << xx.Z()
+  			<< " r = " << xx.Perp()
+  			<< " phi = " << xx.Phi()
+  			<< " dphi = " <<  phi
+  			<< " " << this->TVMeasLayer::GetName() 
+  			<< std::endl;
   
     
 #if 0  // DEBUG compare w/ KalTest code for crossing points
+
   TVector3 xxDeb ;
+
+  // this code seems to be quite a bit faster  - need to check  !!!!!
   TCylinder::CalcXingPointWith( hel,xxDeb,phi,mode,eps) ;
 
    streamlog_out(DEBUG1) << "TCylinder::CalcXingPointWith:on surface:          " <<  IsOnSurface(xxDeb) 
-			<< "  (chg*phi*mode)<0: " <<  ((chg*phi*mode)<0)
-			<< " x = " << xxDeb.X()
-			<< " y = " << xxDeb.Y()
-			<< " z = " << xxDeb.Z()
-			<< " r = " << xxDeb.Perp()
-			<< " phi = " << xxDeb.Phi()
-			<< " dphi = " <<  phi
-			<< " " << this->TVMeasLayer::GetName() 
-			<< std::endl;
+   			<< "  (chg*phi*mode)<0: " <<  ((chg*phi*mode)<0)
+   			<< " x = " << xxDeb.X()
+   			<< " y = " << xxDeb.Y()
+   			<< " z = " << xxDeb.Z()
+   			<< " r = " << xxDeb.Perp()
+   			<< " phi = " << xxDeb.Phi()
+   			<< " dphi = " <<  phi
+   			<< " " << this->TVMeasLayer::GetName() 
+   			<< std::endl;
 
    streamlog_out( DEBUG ) << "DDCylinderMeasLayer::CalcXingPointWith: point on trajectory at given s (aidaTT ): " << traj.pointAt( s * dd4hep::mm ) << std::endl ;
    streamlog_out( DEBUG ) << "DDCylinderMeasLayer::CalcXingPointWith: point on trajectory at given s (KalTest): " << traj.pointAt( - phi / omega * dd4hep::mm ) << std::endl ;
@@ -422,7 +434,7 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
 
    streamlog_out( DEBUG ) << "DDCylinderMeasLayer::CalcXingPointWith: distance to surface (KalTest): " <<  _surf->distance( aidaTT::Vector3D( xxDeb.X() *dd4hep::mm,  xxDeb.Y()*dd4hep::mm ,   xxDeb.Z()*dd4hep::mm  )  ) << std::endl ;
 
-
+//  xx = xxDeb ;
 #endif
  
 

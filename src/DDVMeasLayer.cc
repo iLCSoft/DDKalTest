@@ -199,7 +199,7 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   
   Double_t edep = dedx * dnsty * projectedPath ;
 
-  streamlog_out( DEBUG6) << "\n ** in  DDVMeasLayer::GetEnergyLoss: " 
+  streamlog_out( DEBUG1) << "\n ** in  DDVMeasLayer::GetEnergyLoss: " 
 			 << "\n outer material: " << mat_o.GetName()  
 			 << "\n dedx: " << dedx 
 			 << "\n path: " << path
@@ -225,7 +225,7 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   
   edep += dedx * dnsty * projectedPath ;
 
-  streamlog_out( DEBUG6) << "\n ** in  DDVMeasLayer::GetEnergyLoss: " 
+  streamlog_out( DEBUG1) << "\n ** in  DDVMeasLayer::GetEnergyLoss: " 
 			 << "\n inner material: " << mat_i.GetName()  
 			 << "\n dedx: " << dedx 
 			 << "\n path: " << path
