@@ -1,0 +1,46 @@
+###########################################################################
+#
+#  DDKalTest - interface between KalTest fitter and DD4hep based geometry
+#
+#
+#  F.Gaede, CERN/DESY
+#  June 2015
+#
+###########################################################################
+
+  Re-implentation of some of the code in KalDet, now using the DDRec:Surface
+  provided by a DD4hep based tracking geometry as input for the measurement
+  surfaces needed in KalTest.
+  Intersection calculation is currently done in aidaTT.
+  Material effects use averaged material from the DDRec:Surface.
+
+  Main classes:
+
+  - cylindrical measurement layers (1D,2D):
+    DDCylinderMeasLayer
+    DDCylinderHit
+
+  - planar measurement layers (1D,2D, along and orthogonal to z):
+
+     DDParallelPlanarMeasLayer
+     DDPlanarMeasLayer 
+     DDDiskMeasLayer ( same as DDPlanarMeasLayer)
+     DDPlanarHit
+
+  - generic detector set up from a DD4hep based tracking model
+
+    DDKalDetector
+
+  - measurement layer base classes: handles material effects (E-loss and MSq)
+    DDVMeasLayer
+
+
+===========================================================================================
+
+ Release notes
+
+  --------
+ | v00-01 |
+  --------
+
+      - first release with basic functionality

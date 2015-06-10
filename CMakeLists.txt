@@ -8,7 +8,7 @@ project(${PackageName})
 
 # project version
 SET( ${PackageName}_VERSION_MAJOR 0 )
-SET( ${PackageName}_VERSION_MINOR 0 )
+SET( ${PackageName}_VERSION_MINOR 1 )
 SET( ${PackageName}_VERSION_PATCH 0 )
 
 SET( ${PackageName}_VERSION "${${PackageName}_VERSION_MAJOR}.${${PackageName}_VERSION_MINOR}" )
@@ -89,6 +89,10 @@ add_library(${PackageName} SHARED ${sources})
 target_link_libraries(${PackageName} ${DD4hep_LIBRARIES} ${DD4hep_COMPONENT_LIBRARIES}
   ${ROOT_LIBRARIES} ${ROOT_COMPONENT_LIBRARIES} 
   )
+
+
+SET_TARGET_PROPERTIES( ${PackageName} PROPERTIES VERSION ${${PackageName}_VERSION} SOVERSION ${${PackageName}_SOVERSION} )
+
 
 
 add_executable( printSurfaces ./examples/printSurfaces.cc )
