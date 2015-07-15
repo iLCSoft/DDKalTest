@@ -77,7 +77,7 @@ int main(int argc, char** argv ){
 
     for( SurfaceList::const_iterator sit = sL.begin() ; sit != sL.end() ; ++sit ){
     
-      Surface* surf =  *sit ;
+      ISurface* surf =  *sit ;
     
       std::cout << " ------------------------- " 
 		<< " surface: "  << *surf         << std::endl

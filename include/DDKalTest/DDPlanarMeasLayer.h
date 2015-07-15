@@ -4,13 +4,13 @@
 #include "DDVMeasLayer.h"
 #include "TPlane.h"
 
-#include "DDRec/Surface.h"
+#include "DDSurfaces/ISurface.h"
 
 class TVTrackHit;
 class TVector3 ;
 
 /** DDPlanarMeasLayer provides a generic planar measurment for 1-dim and 2-dim hits
- *  using a DD4hep::DDRec::Surface.
+ *  using a DDSurfaces::ISurface.
  *  
  *  @author F.Gaede CERN/DESY
  *  @date Dec 2014
@@ -21,7 +21,7 @@ class DDPlanarMeasLayer : public DDVMeasLayer, public TPlane {
 public:
 
   /// Ctor: initialize with Surface
-  DDPlanarMeasLayer( DD4hep::DDRec::Surface* surf,
+  DDPlanarMeasLayer( DDSurfaces::ISurface* surf,
 		     Double_t   Bz,		    
 		     const Char_t  *name = "DDPlanarMeasL");
   

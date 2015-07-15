@@ -19,7 +19,7 @@ Bool_t   DDVMeasLayer::kDummy = kFALSE;
 
 
 
-DDVMeasLayer::DDVMeasLayer( DD4hep::DDRec::Surface* surf,
+DDVMeasLayer::DDVMeasLayer( DDSurfaces::ISurface* surf,
 			    Double_t   Bz,
 			    const Char_t    *name)  
   : 
@@ -44,7 +44,7 @@ DDVMeasLayer::DDVMeasLayer( DD4hep::DDRec::Surface* surf,
 }
 
 
-DDVMeasLayer::DDVMeasLayer( DD4hep::DDRec::Surface* surf,
+DDVMeasLayer::DDVMeasLayer( DDSurfaces::ISurface* surf,
 			    TMaterial &min,
 			    TMaterial &mout,
 			    Double_t   Bz,
@@ -68,7 +68,7 @@ DDVMeasLayer::DDVMeasLayer( DD4hep::DDRec::Surface* surf,
 }
 
 
-DDVMeasLayer::DDVMeasLayer(  DD4hep::DDRec::Surface* surf,
+DDVMeasLayer::DDVMeasLayer(  DDSurfaces::ISurface* surf,
 			     TMaterial &min,
                              TMaterial &mout,
                              Double_t  Bz,

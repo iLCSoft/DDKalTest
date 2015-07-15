@@ -9,7 +9,7 @@
 #include "kaltest/KalTrackDim.h"
 #include "TString.h"
 
-#include "DDRec/Surface.h"
+#include "DDSurfaces/ISurface.h"
 
 #include <vector>
 
@@ -22,7 +22,7 @@ namespace EVENT{
 }
 
 /** DDVMeasLayer: Virtual measurement layer class used by DD[X]MeasLayer Classes.
- *  Main methods are GetEnergyLoss() and CalcQms() which both use the DD4hep::DDRec::Surface
+ *  Main methods are GetEnergyLoss() and CalcQms() which both use the DDSurfaces::ISurface
  *  and compute energy loss and material from the inner and outer materials assigned
  *  to this surface.
  *  The main difference to the implementation in KalTest::TVMeasLayer is that only
@@ -88,11 +88,11 @@ public:
 protected:
   
   ///Simple c'tor that takes a surface, the b-field and a name - should be the only one !?
-  DDVMeasLayer( DD4hep::DDRec::Surface* surf,
+  DDVMeasLayer( DDSurfaces::ISurface* surf,
 		Double_t   Bz,
 		const Char_t    *name) ;
 
-  DDVMeasLayer( DD4hep::DDRec::Surface* surf,
+  DDVMeasLayer( DDSurfaces::ISurface* surf,
 		TMaterial &min,
                 TMaterial &mout,
                 Double_t  Bz,
@@ -100,7 +100,7 @@ protected:
                 int CellID = -1 , 
                 const Char_t    *name = "DDMeasL");
   
-  DDVMeasLayer( DD4hep::DDRec::Surface* surf,
+  DDVMeasLayer( DDSurfaces::ISurface* surf,
 		TMaterial &min,
 	        TMaterial &mout,
                 Double_t  Bz,
@@ -116,7 +116,7 @@ protected:
 
   bool _isMultiLayer;
 
-  DD4hep::DDRec::Surface* _surf ;
+  DDSurfaces::ISurface* _surf ;
   
 };
 

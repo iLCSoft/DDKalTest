@@ -35,9 +35,9 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
   streamlog_out( DEBUG4 ) << " - use Bz = " << Bz << " Tesla " << std::endl ;
   //-------------
 
-  // DD4hep::DDRec::SurfaceHelper ds( det ) ;
-  // const DD4hep::DDRec::SurfaceList& detSL = ds.surfaceList() ;
-  // for( DD4hep::DDRec::SurfaceList::const_iterator it = detSL.begin() ; it != detSL.end() ; ++it ){
+  // DDSurfaces::ISurfaceHelper ds( det ) ;
+  // const DDSurfaces::ISurfaceList& detSL = ds.surfaceList() ;
+  // for( DDSurfaces::ISurfaceList::const_iterator it = detSL.begin() ; it != detSL.end() ; ++it ){
     
 
   //===========  get the surface map from the SurfaceManager ================
@@ -57,7 +57,7 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
   
   for( SMap::const_iterator it = sMap->begin() ; it != sMap->end() ; ++it){
     
-    DD4hep::DDRec::Surface* surf =  it->second ;
+    DDSurfaces::ISurface* surf =  it->second ;
     
     streamlog_out( DEBUG ) << " ------------------------- "
 			   << "  surface: "  << *surf         << std::endl

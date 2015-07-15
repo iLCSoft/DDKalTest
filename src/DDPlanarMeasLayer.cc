@@ -17,7 +17,7 @@
 
 using namespace UTIL ;
 
-DDPlanarMeasLayer::DDPlanarMeasLayer(DD4hep::DDRec::Surface* surf, Double_t   Bz, const Char_t *name) :
+DDPlanarMeasLayer::DDPlanarMeasLayer(DDSurfaces::ISurface* surf, Double_t   Bz, const Char_t *name) :
   
   DDVMeasLayer(  surf, Bz, name ),
   // DDVMeasLayer(  surf,

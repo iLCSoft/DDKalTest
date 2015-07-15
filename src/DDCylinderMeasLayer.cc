@@ -28,16 +28,16 @@ namespace{
 }
 
 
-DDCylinderMeasLayer::DDCylinderMeasLayer(DD4hep::DDRec::Surface* surf,
+DDCylinderMeasLayer::DDCylinderMeasLayer(DDSurfaces::ISurface* surf,
 					 Double_t   Bz,
 					 const Char_t  *name ) :
   DDVMeasLayer(  surf, Bz, name ) ,
   
-  TCylinder(  static_cast<DD4hep::DDRec::CylinderSurface*>(surf)->radius()/dd4hep::mm , 
-	      surf->volSurface().length_along_v()/dd4hep::mm / 2. , 
-	      surf->volumeOrigin().x()/dd4hep::mm, 
-	      surf->volumeOrigin().y()/dd4hep::mm , 
-	      surf->volumeOrigin().z()/dd4hep::mm ),
+  TCylinder(  dynamic_cast<DDSurfaces::ICylinder*>(surf)->radius()/dd4hep::mm , 
+	      surf->length_along_v()/dd4hep::mm / 2. , 
+	      dynamic_cast<DDSurfaces::ICylinder*>(surf)->center().x()/dd4hep::mm, 
+	      dynamic_cast<DDSurfaces::ICylinder*>(surf)->center().y()/dd4hep::mm , 
+	      dynamic_cast<DDSurfaces::ICylinder*>(surf)->center().z()/dd4hep::mm ),
   
   fSortingPolicy(0.),
   
@@ -50,7 +50,7 @@ DDCylinderMeasLayer::DDCylinderMeasLayer(DD4hep::DDRec::Surface* surf,
 
   int side = encoder[ DDKalTest::CellIDEncoding::instance().side() ] ;
 
-  fSortingPolicy = static_cast<DD4hep::DDRec::CylinderSurface*>(surf)->radius()/dd4hep::mm + side * epsilon ;
+  fSortingPolicy = dynamic_cast<DDSurfaces::ICylinder*>(surf)->radius()/dd4hep::mm + side * epsilon ;
 
   // assumptions made here: the cylinder runs parallel to z and v ...
   
