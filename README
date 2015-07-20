@@ -40,6 +40,12 @@
  Release notes
 
   --------
+ | v00-02 |
+  --------
+
+    - changed to just use abstract ISurface and ICylinder
+
+  --------
  | v00-01 |
   --------
 
