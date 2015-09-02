@@ -45,19 +45,19 @@ namespace DDKalTest{
     // void set_encoding_string( const std::string& enc_str )  { _encoding = enc_str ; }
 
     /// index of subdet in cellID
-    const int subdet() const { return  _subdet ; } 
+    int subdet() const { return  _subdet ; } 
 
     /// index of side in cellID
-    const int side  () const { return  _side   ; }
+    int side  () const { return  _side   ; }
 
     /// index of layer in cellID
-    const int layer () const { return  _layer  ; }
+    int layer () const { return  _layer  ; }
 
     /// index of module in cellID
-    const int module() const { return  _module ; }
+    int module() const { return  _module ; }
 
     /// index of sensor in cellID
-    const int sensor() const { return  _sensor ; }
+    int sensor() const { return  _sensor ; }
 
   protected:
     const int _subdet ;

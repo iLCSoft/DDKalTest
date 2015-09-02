@@ -3,11 +3,14 @@
 #include "DDKalTest/DDCylinderMeasLayer.h"
 #include "DDKalTest/DDParallelPlanarMeasLayer.h"
 #include "DDKalTest/DDDiscMeasLayer.h"
+#include "DDKalTest/DDKalTestConf.h"
+
 //#include "DDKalTest/DDParallelPlanarStripMeasLayer.h"
 
 #include "DD4hep/LCDD.h"
 #include "DD4hep/DD4hepUnits.h"
 #include "DDRec/SurfaceManager.h"
+#include "DDRec/SurfaceHelper.h"
 
 #include <lcio.h>
 #include "Exceptions.h"
@@ -35,11 +38,16 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
   streamlog_out( DEBUG4 ) << " - use Bz = " << Bz << " Tesla " << std::endl ;
   //-------------
 
-  // DDSurfaces::ISurfaceHelper ds( det ) ;
-  // const DDSurfaces::ISurfaceList& detSL = ds.surfaceList() ;
-  // for( DDSurfaces::ISurfaceList::const_iterator it = detSL.begin() ; it != detSL.end() ; ++it ){
-    
 
+#define use_surface_helper 1
+
+#if use_surface_helper
+
+  DD4hep::DDRec::SurfaceHelper ds( det ) ;
+  const DD4hep::DDRec::SurfaceList& detSL = ds.surfaceList() ;
+  for( DD4hep::DDRec::SurfaceList::const_iterator it = detSL.begin() ; it != detSL.end() ; ++it ){
+    
+#else
   //===========  get the surface map from the SurfaceManager ================
 
   DD4hep::DDRec::SurfaceManager& surfMan = *lcdd.extension<DD4hep::DDRec::SurfaceManager>() ;
@@ -58,7 +66,14 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
   for( SMap::const_iterator it = sMap->begin() ; it != sMap->end() ; ++it){
     
     DDSurfaces::ISurface* surf =  it->second ;
-    
+
+#endif    
+
+    DDSurfaces::ISurface* surf =  *it ;
+
+    streamlog_out( DEBUG5 ) << "DDKalDetector:  install surface for : " << DDKalTest::CellIDEncoding::valueString( surf->id() ) << std::endl ;
+
+
     streamlog_out( DEBUG ) << " ------------------------- "
 			   << "  surface: "  << *surf         << std::endl
 			   << " ------------------------- "  << std::endl ;

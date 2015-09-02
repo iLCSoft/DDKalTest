@@ -314,19 +314,21 @@ void DDVMeasLayer::CalcQms( Bool_t        isoutgoing,
 
   // ------------------------------------------------------------------
   // Very Crude Treatment!!
-  Double_t tmp = 1. + kMS2 * TMath::Log(TMath::Max(1.e-4, xl));
+  //  Double_t tmp = 1. + kMS2 * TMath::Log(TMath::Max(1.e-4, xl));
+  //fg: we should not limit the path length here, as we have less surfaces...
+  Double_t tmp = 1. + kMS2 * TMath::Log( xl );
   tmp /= (mom * beta);
   Double_t sgms2 = kMS12 * xl * tmp * tmp;
   // ------------------------------------------------------------------
 
 
-  streamlog_out( DEBUG1 ) << " ** in  DDVMeasLayer::CalcQms: "
-			  << "\n inner material: " << mat_i.name()  
-			  << "\n outer material: " << mat_o.name()  
-			  << "\n path: " << path
-			  << "\n x0inv: " << x0inv
-			  << "\n sgms2: " << sgms2
-			  << "\n cosTrk: " << cosTrk
+  streamlog_out( WARNING7 ) << " ** in  DDVMeasLayer::CalcQms: "
+			  << " inner material: " << mat_i.name()  
+			  << " outer material: " << mat_o.name()  << std::scientific
+			  << " path: " << path
+			  << " x0inv: " << x0inv
+			  << " sgms2: " << sgms2
+			  << " cosTrk: " << cosTrk
 			  << std::endl ;
 
 

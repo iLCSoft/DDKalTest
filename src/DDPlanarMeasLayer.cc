@@ -147,6 +147,17 @@ void DDPlanarMeasLayer::CalcDhDa(const TVTrackHit &vht,
   
   //------------------------------------------------------
   
+  streamlog_out(DEBUG0) << "\t DDPlanarMeasLayer::CalcDhDa: "
+			<< " dudx = " << dudx[0]
+			<< " dudy = " << dudx[1]
+			<< " dudz = " << dudx[2]
+			<< " dvdx = " << dvdx[0] 
+			<< " dvdy = " << dvdx[1] 
+			<< " dvdz = " << dvdx[2] 
+			<< " xxv: " << xxv.X() <<", "  << xxv.Y() <<", "  << xxv.Z() 
+			<< std::endl;
+
+
   for (Int_t i=0; i<hdim; i++) {
     
     H(0,i) =  dudx[0] * dxphiada(0,i) + dudx[1] * dxphiada(1,i) + dudx[2] * dxphiada(2,i) ;   
