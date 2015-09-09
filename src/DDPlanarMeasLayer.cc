@@ -41,10 +41,23 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(DDSurfaces::ISurface* surf, Double_t   Bz, 
   //fg: the sorting policy is used to find the measurment layers that are going to be hit by a track ...
   //    simply add an epslion to the radius in order to have a loop over all sensors in a layer
   //    NB:  this does not deal with the overlap region, e.g. in the VTX
-  //         so in this region we might loose on of two hits on a layer
+  //         so in this region we might loose one of two hits on a layer
   //         -> to be done ...
-  fSortingPolicy = surf->origin().rho()/dd4hep::mm +  epsilon * count++ ;
-  
+
+  if( surf->type().isParallelToZ() ){
+
+    fSortingPolicy = surf->origin().rho()/dd4hep::mm +  epsilon * count++ ;
+
+  } else if( surf->type().isZDisk()  ){
+
+    fSortingPolicy =  std::max( surf->length_along_u(), surf->length_along_v() )/dd4hep::mm/2. +  epsilon * count++ ;
+
+  } else{
+
+    fSortingPolicy =  surf->distance( DDSurfaces::Vector3D( 0.,0.,0.) )/dd4hep::mm   +  epsilon * count++ ;
+  }
+
+
   streamlog_out(DEBUG1) << "DDPlanarMeasLayer created" 
 			<< " Layer x0 = " << this->GetXc().X() 
 			<< " y0 = " << this->GetXc().Y() 
