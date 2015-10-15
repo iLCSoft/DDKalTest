@@ -9,6 +9,8 @@
 #include <UTIL/BitField64.h>
 #include <DDKalTest/DDKalTestConf.h>
 
+#include <DD4hep/DD4hepUnits.h>
+
 #include "streamlog/streamlog.h"
 
 Bool_t   DDVMeasLayer::kActive = kTRUE;
@@ -169,7 +171,12 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   Double_t phi0   = hel.GetPhi0();
   DDSurfaces::Vector3D p( - std::sin( phi0 ), std::cos( phi0 ) , tnl ) ;
   DDSurfaces::Vector3D up = p.unit() ;
-  const DDSurfaces::Vector3D& n = _surf->normal() ;
+
+ // need to get the normal at crossing point ( should be the current helix' reference point) 
+  const TVector3& piv = hel.GetPivot() ;
+  DDSurfaces::Vector3D xx( piv.X()*dd4hep::mm,piv.Y()*dd4hep::mm,piv.Z()*dd4hep::mm) ;
+  const DDSurfaces::Vector3D& n = _surf->normal(xx) ;
+
   Double_t cosTrk = std::fabs( up * n )  ;
   
 
@@ -302,7 +309,12 @@ void DDVMeasLayer::CalcQms( Bool_t        isoutgoing,
   Double_t phi0   = hel.GetPhi0();
   DDSurfaces::Vector3D p( - std::sin( phi0 ), std::cos( phi0 ) , tnl ) ;
   DDSurfaces::Vector3D up = p.unit() ;
-  const DDSurfaces::Vector3D& n = _surf->normal() ;
+
+  // need to get the normal at crossing point ( should be the current helix' reference point) 
+  const TVector3& piv = hel.GetPivot() ;
+  DDSurfaces::Vector3D xx( piv.X()*dd4hep::mm,piv.Y()*dd4hep::mm,piv.Z()*dd4hep::mm) ;
+  const DDSurfaces::Vector3D& n = _surf->normal( xx ) ;
+
   Double_t cosTrk = std::fabs( up * n )  ;
   
   double path = l_i + l_o ;

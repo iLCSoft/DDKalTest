@@ -1,6 +1,7 @@
 
 #include "DDKalTest/DDKalDetector.h"
 #include "DDKalTest/DDCylinderMeasLayer.h"
+#include "DDKalTest/DDConeMeasLayer.h"
 #include "DDKalTest/DDParallelPlanarMeasLayer.h"
 #include "DDKalTest/DDDiscMeasLayer.h"
 #include "DDKalTest/DDKalTestConf.h"
@@ -81,6 +82,11 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
     if( surf->type().isCylinder() ) {
 
       Add( new DDCylinderMeasLayer( surf , Bz ) ) ;
+    }
+
+    else if( surf->type().isCone() ) {
+
+      Add( new DDConeMeasLayer( surf , Bz ) ) ;
     }
     
     else if( surf->type().isPlane() ){ 

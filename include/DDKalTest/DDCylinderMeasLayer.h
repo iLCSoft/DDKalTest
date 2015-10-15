@@ -8,7 +8,7 @@
 
 #include "DDSurfaces/ISurface.h"
 
-/** DDPlanarMeasLayer provides a generic planar measurment for 1-dim and 2-dim hits
+/** DDCylinderMeasLayer provides a generic planar measurement for 1-dim and 2-dim hits
  *  using a DDSurfaces::ISurface.
  *  
  *  @author F.Gaede CERN/DESY

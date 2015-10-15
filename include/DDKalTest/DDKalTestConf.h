@@ -60,12 +60,12 @@ namespace DDKalTest{
     int sensor() const { return  _sensor ; }
 
   protected:
+    std::string _encoding ;
     const int _subdet ;
     const int _side   ;
     const int _layer ;
     const int _module ;
     const int _sensor ;
-    std::string _encoding ;
   } ;
 
 }
