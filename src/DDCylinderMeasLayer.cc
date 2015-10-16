@@ -7,6 +7,7 @@
 #include <lcio.h>
 #include <EVENT/TrackerHit.h>
 #include <EVENT/TrackerHitZCylinder.h>
+#include <UTIL/Operators.h>
 
 #include "DD4hep/DD4hepUnits.h"
 #include "DDSurfaces/Vector3D.h"
@@ -27,6 +28,7 @@ namespace{
   }
 }
 
+using namespace UTIL ;
 
 DDCylinderMeasLayer::DDCylinderMeasLayer(DDSurfaces::ISurface* surf,
 					 Double_t   Bz,
@@ -292,7 +294,14 @@ DDVTrackHit* DDCylinderMeasLayer::ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) 
   << " onSurface = " << hit_on_surface
   << std::endl ;  
   
-  return hit_on_surface ? new DDCylinderHit( *this , x, dx, this->GetBz(), trkhit) : NULL; 
+  // we sometimes get hits which are not on the surface when running with ddsim and the 'old' digitizers
+  // for now just return the hit anyways ...
+  if( ! hit_on_surface ){
+    streamlog_out(DEBUG9) << " DDCylinderMeasLayer::ConvertLCIOTrkHit: hit is not on surface: " << *trkhit << std::endl ;
+  }
+  return  new DDCylinderHit( *this , x, dx, this->GetBz(), trkhit );
+ 
+  //  return hit_on_surface ? new DDCylinderHit( *this , x, dx, this->GetBz(), trkhit) : NULL; 
   
 }
 
