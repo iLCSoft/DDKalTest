@@ -72,25 +72,28 @@ Int_t DDParallelPlanarMeasLayer::CalcXingPointWith(const TVTrack  &hel,
    
   // =============== use code from aidaTT for computing the intersection with the plane =======
 
-  aidaTT::trackParameters trkParam  ;
 
   double d0 = - dr ;
   double phi0_lcio =  toBaseRange( phi0 + M_PI/2. );
 
-  trkParam.setTrackParameters( aidaTT::Vector5( omega/dd4hep::mm , tanl, phi0_lcio , d0*dd4hep::mm ,  z0 *dd4hep::mm )  ) ; 
-
-  //order defined in ./helpers/utilities.cc
-  //  L3 type: [ Omega, tan(lambda), phi_0, d_0, z_0 ]
-  trkParam.setReferencePoint( aidaTT::Vector3D( ref_point.X()*dd4hep::mm , 
-						ref_point.Y()*dd4hep::mm, 
-						ref_point.Z()*dd4hep::mm ) ) ;
-
-  aidaTT::trajectory traj( trkParam , 0 ) ;
+  // aidaTT::trackParameters trkParam  ;
+  // trkParam.setTrackParameters( aidaTT::Vector5( omega/dd4hep::mm , tanl, phi0_lcio , d0*dd4hep::mm ,  z0 *dd4hep::mm )  ) ; 
+  // trkParam.setReferencePoint( aidaTT::Vector3D( ref_point.X()*dd4hep::mm , 
+  // 						ref_point.Y()*dd4hep::mm, 
+  // 						ref_point.Z()*dd4hep::mm ) ) ;
+  // aidaTT::trajectory traj( trkParam , 0 ) ;
+  // double s = 0. ;
+  // aidaTT::Vector3D xxV3 ;
+  // bool foundIntersect = traj._calculateIntersectionWithSurface( _surf , s , ( aidaTT::Vector2D*) 0 , &xxV3 );
   
   double s = 0. ;
   aidaTT::Vector3D xxV3 ;
-  bool foundIntersect = traj._calculateIntersectionWithSurface( _surf , s , ( aidaTT::Vector2D*) 0 , &xxV3 );
-  
+  aidaTT::Vector5 hp( omega/dd4hep::mm , tanl, phi0_lcio , d0*dd4hep::mm ,  z0 *dd4hep::mm ) ;
+  aidaTT::Vector3D rp( ref_point.X()*dd4hep::mm , ref_point.Y()*dd4hep::mm, ref_point.Z()*dd4hep::mm ) ;
+
+  bool foundIntersect =  ( _surf->type().isZDisk() ) ?
+    aidaTT::intersectWithZDisk( _surf, hp, rp, s, xxV3, mode , true )  :
+    aidaTT::intersectWithZPlane( _surf, hp, rp, s, xxV3, mode , true )  ;
   
   if( foundIntersect ){
     
@@ -101,7 +104,7 @@ Int_t DDParallelPlanarMeasLayer::CalcXingPointWith(const TVTrack  &hel,
     streamlog_out( DEBUG0 ) << " ++++  intersection found for surface : " << DDKalTest::CellIDEncoding::valueString(_surf->id()) << std::endl 
      			    << "       at s = " << s 
      			    << "       xx   = ( " << xx.X() << ", " << xx.Y() << ", " << xx.Z() << ") " << std::endl 
-        		    << " track parameters: " << trkParam 
+        		    << " track parameters: " <<  aidaTT::trackParameters( hp, rp ) //trkParam 
 			    << " mode: " << mode
      			    <<  std::endl ;
     
@@ -110,7 +113,7 @@ Int_t DDParallelPlanarMeasLayer::CalcXingPointWith(const TVTrack  &hel,
   } else {
 
     streamlog_out( DEBUG0 ) << " ++++ no intersection found for surface : " << DDKalTest::CellIDEncoding::valueString(_surf->id()) << std::endl
-			    << " track parameters: " << trkParam 
+			    << " track parameters: " <<  aidaTT::trackParameters( hp, rp ) //trkParam 
 			    << " mode : " << mode
 			    << std::endl ;
 
