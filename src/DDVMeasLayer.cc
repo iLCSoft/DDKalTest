@@ -334,7 +334,7 @@ void DDVMeasLayer::CalcQms( Bool_t        isoutgoing,
   // ------------------------------------------------------------------
 
 
-  streamlog_out( DEBUG5 ) << " ** in  DDVMeasLayer::CalcQms: "
+  streamlog_out( DEBUG1 ) << " ** in  DDVMeasLayer::CalcQms: "
 			  << " inner material: " << mat_i.name()  
 			  << " outer material: " << mat_o.name()  << std::scientific
 			  << " path: " << path

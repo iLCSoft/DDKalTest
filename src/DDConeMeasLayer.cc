@@ -136,7 +136,7 @@ Int_t DDConeMeasLayer::CalcXingPointWith(const TVTrack  &hel,
   
   
 
-  streamlog_out(DEBUG2) << "DDConeMeasLayer::CalcXingPointWith:on surface:" 
+  streamlog_out(DEBUG1) << "DDConeMeasLayer::CalcXingPointWith:on surface:" 
 			 <<  IsOnSurface(xx) 
     //			<< "  (chg*phi*mode)<0: " <<  ((chg*phi*mode)<0)
 			 << " x = " << xx.X()

@@ -393,7 +393,7 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
 
     xx.SetXYZ( xxV3[0]/dd4hep::mm , xxV3[1]/dd4hep::mm,  xxV3[2]/dd4hep::mm) ;   
     
-    streamlog_out( DEBUG0 ) << " ++++  intersection found for surface : " << DDKalTest::CellIDEncoding::valueString(_surf->id()) << std::endl 
+    streamlog_out( DEBUG2 ) << " ++++  intersection found for surface : " << DDKalTest::CellIDEncoding::valueString(_surf->id()) << std::endl 
      			    << "       at s = " << s 
      			    << "       xx   = ( " << xx.X() << ", " << xx.Y() << ", " << xx.Z() << ") " << std::endl 
               		    << " track parameters: " <<  aidaTT::trackParameters( hp, rp ) 
