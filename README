@@ -40,6 +40,28 @@
  Release notes
 
   --------
+ | v00-03 |
+  --------
+
+ F.Gaede
+
+ - use new (faster) standalone helix intersection methods
+
+ - workaround for hits that are smeared off the DDRec::surface in the
+   old digitizer
+
+ - added DDConeMeasLayer
+ - fixed bug in energy loss and multiple scattering
+   for non-planar surfaces ( compute normal at x'ing point)
+
+- distinguish between zplanes, disks and generic planes for sorting policy
+
+- switch back to use SurfaceHelper class in order to get
+  all insensitive surfaces ( lost in SurfaceMap )
+- fixed some compiler warnings
+
+
+ --------
  | v00-02 |
   --------
 
