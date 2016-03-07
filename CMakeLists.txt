@@ -35,7 +35,12 @@ set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
 include( DD4hep )
 
 find_package( ROOT REQUIRED )
-set( ROOT_COMPONENT_LIBRARIES Geom Reflex)
+if ( ${ROOT_VERSION_MAJOR} GREATER 5 )
+  set( ROOT_COMPONENT_LIBRARIES Geom )
+else()
+  set( ROOT_COMPONENT_LIBRARIES Geom Reflex)
+endif()
+
 
 if(DD4HEP_USE_XERCESC)
   find_package(XercesC)
