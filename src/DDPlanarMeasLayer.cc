@@ -7,6 +7,9 @@
 #include "DDKalTest/DDKalTestConf.h"
 
 #include "DD4hep/DD4hepUnits.h"
+#include "DD4hep/Volumes.h"
+
+#include "DDRec/Surface.h"
 #include "DDSurfaces/Vector3D.h"
 
 #include <EVENT/TrackerHitPlane.h>
@@ -36,7 +39,8 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(DDSurfaces::ISurface* surf, Double_t   Bz, 
   fSortingPolicy( 0.) {
 
   static int count=0 ;
-  static double epsilon=1e-4 ;
+  static const double epsilon=1e-6 ;
+  static const double epsZ=1e-8 ;
   
   //fg: the sorting policy is used to find the measurment layers that are going to be hit by a track ...
   //    simply add an epslion to the radius in order to have a loop over all sensors in a layer
@@ -45,12 +49,51 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(DDSurfaces::ISurface* surf, Double_t   Bz, 
   //         -> to be done ...
 
   if( surf->type().isParallelToZ() ){
-
+    
     fSortingPolicy = surf->origin().rho()/dd4hep::mm +  epsilon * count++ ;
-
+    
   } else if( surf->type().isZDisk()  ){
+    
+    // need to compute the extend in radius of the surface 
+    // do this along the direction of the origin vector 
+    DD4hep::Geometry::Volume vol = ((DD4hep::DDRec::Surface*)surf)->volume() ;
 
-    fSortingPolicy =  std::max( surf->length_along_u(), surf->length_along_v() )/dd4hep::mm/2. +  epsilon * count++ ;
+    // get global/local origin
+    const DDSurfaces::Vector3D& o = surf->origin() ;
+    const DDSurfaces::Vector3D& oL = ((DD4hep::DDRec::Surface*)surf)->volSurface().origin() ;
+
+    // DDSurfaces::Vector3D oR( o[0] , o[1] , 0 ) ; // radial direction of origin in global coordinates
+    // if ( oR.trans2() < epsilon ){ // if origin has zero length use x-axis 
+    //   oR.fill( 0., 1., 0 ) ;
+    // }
+    // this direction would have to be rotated into the local system of the volume
+    // but we don't have access to the worlTransfrom matrix here, so
+    // for now we use the y-axis ( works for Traps and Tubs )
+    DDSurfaces::Vector3D oR( 0. , 1. , 0 ) ; 
+
+    double dist_r = 0. ;
+
+    if( vol->GetShape()->Contains( oL.const_array() ) ){
+
+      dist_r = vol->GetShape()->DistFromInside( const_cast<double*> ( oL.const_array() ) ,
+						const_cast<double*> ( oR.const_array() ) ) ;
+
+    } else {
+      
+      streamlog_out( WARNING ) << " ZDisk that does not contain its origin : " 
+			       << DDKalTest::CellIDEncoding::valueString( surf->id() ) 
+			       << *surf  << std::endl ;
+    }
+    
+    // streamlog_out( MESSAGE ) << " surface:    " << DDKalTest::CellIDEncoding::valueString( surf->id() )  << *surf 
+    // 			        << " vol shape : " << std::endl ; 
+    // vol->GetShape()->Dump() ;
+    
+    double rMax = o.rho() + std::abs( dist_r ) ;
+
+
+    fSortingPolicy =  rMax/dd4hep::mm + epsilon * count++ ;
+
 
   } else{
 
