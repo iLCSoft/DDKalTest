@@ -173,8 +173,7 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   Double_t   mass = ktp ? ktp->GetMass() : kMpi;
 
 
-  //fixme: hack : use hardcoded muon mass:
-  mass = 0.105658 ;
+  //  mass = 0.105658 ; // use hardcoded muon mass
 
   double edep = 0 ;
 
