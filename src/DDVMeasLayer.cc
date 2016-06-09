@@ -241,7 +241,7 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
     //-------------
     // path = ( projectedPath < path  ?  projectedPath  : path ) ; 
     
-    Double_t edep = dedx * dnsty * projectedPath ;
+    edep = dedx * dnsty * projectedPath ;
     
     streamlog_out( DEBUG1) << "\n ** in  DDVMeasLayer::GetEnergyLoss: " 
 			   << "\n outer material: " << mat_o.GetName()  
@@ -284,9 +284,9 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   }
 
 
-  // streamlog_out(DEBUG7) << " @@@@ eloss aidaTT: " << edepAidaTT << " eloss DDKaltest: " << edep 
-  // 			<< " surface: " << *_surf 
-  // 			<< std::endl ;
+  streamlog_out(DEBUG7) << " eloss DDKaltest: " << edep << ", " << DDKalTest::CellIDEncoding::valueString( _surf->id() )
+  			<< " surface: " << *_surf 
+  			<< std::endl ;
   
   //-----------------------
   // FIXME: Debug hack:

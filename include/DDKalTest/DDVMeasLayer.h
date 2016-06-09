@@ -84,6 +84,7 @@ public:
 			Double_t  df,
 			TKalMatrix  &Qms) const ;
     
+  const DDSurfaces::ISurface* surface() const { return _surf ; }
 
 protected:
   
