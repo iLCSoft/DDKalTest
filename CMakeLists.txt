@@ -7,8 +7,8 @@ set( PackageName DDKalTest )
 project(${PackageName})
 
 # project version
-SET( ${PackageName}_VERSION_MAJOR 0 )
-SET( ${PackageName}_VERSION_MINOR 3 )
+SET( ${PackageName}_VERSION_MAJOR 1 )
+SET( ${PackageName}_VERSION_MINOR 0 )
 SET( ${PackageName}_VERSION_PATCH 0 )
 
 SET( ${PackageName}_VERSION "${${PackageName}_VERSION_MAJOR}.${${PackageName}_VERSION_MINOR}" )

@@ -40,6 +40,23 @@
  Release notes
 
   --------
+ | v01-00 |
+  --------
+
+ F.Gaede
+
+  - fixed the sorting policy for zdisks -> major improvement in forward track fitting
+
+   - crosscheck of energy loss from aidaTT commented out
+
+    - made compatible with c++11 and ROOT6
+
+     - added DDSurfaces::ISurface* surface() and some debug output
+
+      - remove hard coded muon mass for track fits
+
+
+  --------
  | v00-03 |
   --------
 
