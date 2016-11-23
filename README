@@ -39,6 +39,15 @@
 
  Release notes
 
+  -----------
+ | v01-00-01 |
+  -----------
+
+ A.Sailer
+
+  - DDParallelPlanarMeasLayer: protect against basically infinite loop if phi value is very very large
+  - DDKaltest: Ignore warnings from external header files
+ 
   --------
  | v01-00 |
   --------
