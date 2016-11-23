@@ -68,8 +68,13 @@ Int_t DDParallelPlanarMeasLayer::CalcXingPointWith(const TVTrack  &hel,
 			 << "      Kappa = 0 is invalid for a helix "          << std::endl;
     return -1;
   }
-  
-   
+
+  if( std::fabs(phi0) > 1e3) {
+    streamlog_out(ERROR) << ">>>> Error >>>> DDParallelPlanarMeasLayer::CalcXingPointWith" << std::endl
+			 << "      |phi| > 1e3 is not useful " << std::endl;
+    return -1;
+  }
+    
   // =============== use code from aidaTT for computing the intersection with the plane =======
 
 
