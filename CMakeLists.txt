@@ -73,7 +73,7 @@ FIND_PACKAGE( GSL REQUIRED )
 FOREACH( pkg KalTest LCIO streamlog aidaTT GSL)
 
   IF( ${pkg}_FOUND )
-    INCLUDE_DIRECTORIES( ${${pkg}_INCLUDE_DIRS} )
+    INCLUDE_DIRECTORIES( SYSTEM ${${pkg}_INCLUDE_DIRS} )
     LINK_LIBRARIES( ${${pkg}_LIBRARIES} )
   ENDIF()
 
@@ -82,10 +82,12 @@ ENDFOREACH()
 add_definitions( -D AIDATT_USE_DD4HEP ) 
 #-------------------------------------------------------------
 
-include_directories( ${CMAKE_SOURCE_DIR}/include
+include_directories( SYSTEM
   ${DD4hep_INCLUDE_DIRS}
   ${ROOT_INCLUDE_DIR}
- )
+  )
+
+include_directories( BEFORE ${CMAKE_SOURCE_DIR}/include )
 
 file(GLOB sources ./src/*cc )
 
