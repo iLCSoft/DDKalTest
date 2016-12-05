@@ -25,6 +25,7 @@ namespace DDKalTest{
 
     /// c'tor initialize the encoding string with the 'canonical' encoding 
     CellIDEncoding() : _encoding("subdet:5,side:-2,layer:9,module:8,sensor:8" ),
+		       _accessed(false),
 		       _subdet (0),
 		       _side   (1),
 		       _layer  (2),
@@ -33,16 +34,29 @@ namespace DDKalTest{
     }
 
     // get the current encoding string
-    const std::string& encoding_string() { return _encoding ; }
+    const std::string& encoding_string() {
+      _accessed = true;
+      return _encoding ;
+    }
 
     /// return a string with the details of the given id:
     static std::string valueString( unsigned val ){
+      instance().setAccessed();
       UTIL::BitField64 encoder( instance().encoding_string() ) ;
       encoder.setValue( val ) ;
       return encoder.valueString() ;
     }
 
-    // void set_encoding_string( const std::string& enc_str )  { _encoding = enc_str ; }
+    /// set the encoding string. Throws exception if it was already accessed to prevent inconsistencies
+    void set_encoding_string( const std::string& encoding_string ) {
+      if( _accessed ) throw std::logic_error( "The encoding string was already accessed! Changing it now will lead to inconsistencies! Fix your code!" );
+      _encoding = encoding_string;
+    }
+
+    /// set accessed to true
+    void setAccessed() {
+      _accessed = true;
+    }
 
     /// index of subdet in cellID
     int subdet() const { return  _subdet ; } 
@@ -61,6 +75,7 @@ namespace DDKalTest{
 
   protected:
     std::string _encoding ;
+    bool _accessed;
     const int _subdet ;
     const int _side   ;
     const int _layer ;
