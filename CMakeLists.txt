@@ -70,6 +70,10 @@ FIND_PACKAGE( aidaTT REQUIRED )
 FIND_PACKAGE( GSL REQUIRED )
 
 #NB: need ROOT before KalTest (needed on case sensitive systems and classes that differ only in capitalization)
+include_directories( SYSTEM ${DD4hep_INCLUDE_DIRS}
+  ${ROOT_INCLUDE_DIRS}
+)
+      
 FOREACH( pkg KalTest LCIO streamlog aidaTT GSL)
 
   IF( ${pkg}_FOUND )
@@ -82,10 +86,6 @@ ENDFOREACH()
 add_definitions( -D AIDATT_USE_DD4HEP ) 
 #-------------------------------------------------------------
 
-include_directories( SYSTEM
-  ${DD4hep_INCLUDE_DIRS}
-  ${ROOT_INCLUDE_DIR}
-  )
 
 include_directories( BEFORE ${CMAKE_SOURCE_DIR}/include )
 
