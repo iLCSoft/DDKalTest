@@ -39,6 +39,17 @@
 
  Release notes
 
+
+  --------
+ | v01-01 |
+  --------
+
+ A.Sailer
+  - DDKalTest::CellIDEncoding: implement set_encoding_string and add access protection.
+
+ F.Gaede
+  - fix treatment of ROOT in CMakeLists.txt
+
   -----------
  | v01-00-01 |
   -----------
