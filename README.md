@@ -14,20 +14,20 @@ Re-implentation of some of the code in KalDet, now using the DDRec:Surface provi
 Main classes:
 
 * cylindrical measurement layers (1D,2D):
- * DDCylinderMeasLayer
- * DDCylinderHit
+  * DDCylinderMeasLayer
+  * DDCylinderHit
 
 * planar measurement layers (1D,2D, along and orthogonal to z):
- * DDParallelPlanarMeasLayer
- * DDPlanarMeasLayer 
- * DDDiskMeasLayer ( same as DDPlanarMeasLayer)
- * DDPlanarHit
+  * DDParallelPlanarMeasLayer
+  * DDPlanarMeasLayer
+  * DDDiskMeasLayer ( same as DDPlanarMeasLayer)
+  * DDPlanarHit
 
 * generic detector set up from a DD4hep based tracking model
- * DDKalDetector
+  * DDKalDetector
 
 * measurement layer base classes: handles material effects (E-loss and MSq)
- * DDVMeasLayer
+  * DDVMeasLayer
 
 ## License and Copyright
 Copyright (C), DDKalTest Authors
