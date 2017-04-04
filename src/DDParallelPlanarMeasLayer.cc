@@ -1,5 +1,5 @@
 #include "DDKalTest/DDParallelPlanarMeasLayer.h"
-#include "DDKalTest/DDKalTestConf.h"
+#include <UTIL/LCTrackerConf.h>
 
 #include "TVTrack.h"
 
@@ -106,7 +106,7 @@ Int_t DDParallelPlanarMeasLayer::CalcXingPointWith(const TVTrack  &hel,
 
     xx.SetXYZ( xxV3[0]/dd4hep::mm , xxV3[1]/dd4hep::mm,  xxV3[2]/dd4hep::mm) ;   
     
-    streamlog_out( DEBUG0 ) << " ++++  intersection found for surface : " << DDKalTest::CellIDEncoding::valueString(_surf->id()) << std::endl 
+    streamlog_out( DEBUG0 ) << " ++++  intersection found for surface : " << UTIL::LCTrackerCellID::valueString(_surf->id()) << std::endl 
      			    << "       at s = " << s 
      			    << "       xx   = ( " << xx.X() << ", " << xx.Y() << ", " << xx.Z() << ") " << std::endl 
         		    << " track parameters: " <<  aidaTT::trackParameters( hp, rp ) //trkParam 
@@ -117,7 +117,7 @@ Int_t DDParallelPlanarMeasLayer::CalcXingPointWith(const TVTrack  &hel,
     
   } else {
 
-    streamlog_out( DEBUG0 ) << " ++++ no intersection found for surface : " << DDKalTest::CellIDEncoding::valueString(_surf->id()) << std::endl
+    streamlog_out( DEBUG0 ) << " ++++ no intersection found for surface : " << UTIL::LCTrackerCellID::valueString(_surf->id()) << std::endl
 			    << " track parameters: " <<  aidaTT::trackParameters( hp, rp ) //trkParam 
 			    << " mode : " << mode
 			    << std::endl ;

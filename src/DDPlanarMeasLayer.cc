@@ -4,7 +4,7 @@
 #include "DDKalTest/DDPlanarMeasLayer.h"
 #include "DDKalTest/DDPlanarHit.h"
 //include "DDKalTest/MaterialMap.h"
-#include "DDKalTest/DDKalTestConf.h"
+#include <UTIL/LCTrackerConf.h>
 
 #include "DD4hep/DD4hepUnits.h"
 #include "DD4hep/Volumes.h"
@@ -81,11 +81,11 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(DDSurfaces::ISurface* surf, Double_t   Bz, 
     } else {
       
       streamlog_out( WARNING ) << " ZDisk that does not contain its origin : " 
-			       << DDKalTest::CellIDEncoding::valueString( surf->id() ) 
+			       << UTIL::LCTrackerCellID::valueString( surf->id() ) 
 			       << *surf  << std::endl ;
     }
     
-    // streamlog_out( MESSAGE ) << " surface:    " << DDKalTest::CellIDEncoding::valueString( surf->id() )  << *surf 
+    // streamlog_out( MESSAGE ) << " surface:    " << UTIL::LCTrackerCellID::valueString( surf->id() )  << *surf 
     // 			        << " vol shape : " << std::endl ; 
     // vol->GetShape()->Dump() ;
     
@@ -109,7 +109,7 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(DDSurfaces::ISurface* surf, Double_t   Bz, 
 			<< " phi = " << this->GetXc().Phi() 
 			<< " soting policy : " << fSortingPolicy
 			<< " is_active = " << surf->type().isSensitive()  
-			<< " CellID = " << DDKalTest::CellIDEncoding::valueString( surf->id() ) 
+			<< " CellID = " << UTIL::LCTrackerCellID::valueString( surf->id() ) 
 			<< " name = " << this->DDVMeasLayer::GetName()  
 			<< std::endl ;
   }
@@ -314,7 +314,7 @@ DDVTrackHit* DDPlanarMeasLayer::ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) co
   if( ! hit_on_surface )   
     streamlog_out( WARNING )  << "DDPlanarMeasLayer::ConvertLCIOTrkHit: hit is not on surface : " 
 			      <<  *plane_hit 
-			      << " cellID: " << DDKalTest::CellIDEncoding::valueString( plane_hit->getCellID0() ) 
+			      << " cellID: " << UTIL::LCTrackerCellID::valueString( plane_hit->getCellID0() ) 
 			      << std::endl ;
   
   return hit_on_surface ? new DDPlanarHit( *this , x, dx, this->GetBz(), trkhit, fMDim ) : NULL; 

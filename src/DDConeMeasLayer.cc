@@ -1,5 +1,5 @@
 #include "DDKalTest/DDConeMeasLayer.h"
-#include "DDKalTest/DDKalTestConf.h"
+#include <UTIL/LCTrackerConf.h>
 #include "DD4hep/DD4hepUnits.h"
 #include "DDSurfaces/Vector3D.h"
 

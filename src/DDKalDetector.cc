@@ -4,7 +4,7 @@
 #include "DDKalTest/DDConeMeasLayer.h"
 #include "DDKalTest/DDParallelPlanarMeasLayer.h"
 #include "DDKalTest/DDDiscMeasLayer.h"
-#include "DDKalTest/DDKalTestConf.h"
+#include <UTIL/LCTrackerConf.h>
 
 //#include "DDKalTest/DDParallelPlanarStripMeasLayer.h"
 
@@ -72,7 +72,7 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
 
     DDSurfaces::ISurface* surf =  *it ;
 
-    streamlog_out( DEBUG5 ) << "DDKalDetector:  install surface for : " << DDKalTest::CellIDEncoding::valueString( surf->id() ) << std::endl ;
+    streamlog_out( DEBUG5 ) << "DDKalDetector:  install surface for : " << UTIL::LCTrackerCellID::valueString( surf->id() ) << std::endl ;
 
 
     streamlog_out( DEBUG ) << " ------------------------- "
