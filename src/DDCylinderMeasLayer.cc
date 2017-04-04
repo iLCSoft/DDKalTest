@@ -2,7 +2,7 @@
 
 #include "DDKalTest/DDCylinderMeasLayer.h"
 #include "DDKalTest/DDCylinderHit.h"
-#include "DDKalTest/DDKalTestConf.h"
+#include <UTIL/LCTrackerConf.h>
 
 #include <lcio.h>
 #include <EVENT/TrackerHit.h>
@@ -47,10 +47,10 @@ DDCylinderMeasLayer::DDCylinderMeasLayer(DDSurfaces::ISurface* surf,
   
   static double epsilon=1e-4 ;
 
-  UTIL::BitField64 encoder( DDKalTest::CellIDEncoding::instance().encoding_string() ) ;
+  UTIL::BitField64 encoder( UTIL::LCTrackerCellID::encoding_string() ) ;
   encoder.setValue( surf->id() );
 
-  int side = encoder[ DDKalTest::CellIDEncoding::instance().side() ] ;
+  int side = encoder[ UTIL::LCTrackerCellID::side() ] ;
 
   fSortingPolicy = dynamic_cast<DDSurfaces::ICylinder*>(surf)->radius()/dd4hep::mm + side * epsilon ;
 
@@ -64,15 +64,15 @@ DDCylinderMeasLayer::DDCylinderMeasLayer(DDSurfaces::ISurface* surf,
 			<< " phi = " << this->GetXc().Phi() 
     			<< " sorting policy : " << GetSortingPolicy()
 			<< " is_active = " << surf->type().isSensitive()  
-			<< " CellID = " << DDKalTest::CellIDEncoding::valueString( surf->id() ) 
+			<< " CellID = " << UTIL::LCTrackerCellID::valueString( surf->id() ) 
 			<< " name = " << this->DDVMeasLayer::GetName()  
 			<< std::endl ;
 
   // for a cylindrical layer we also set the side to 0 in the layerId 
   // ( in the case the cylinder is split between forward and backward )
-  encoder[ DDKalTest::CellIDEncoding::instance().side() ] = 0;
-  encoder[ DDKalTest::CellIDEncoding::instance().module() ] = 0;
-  encoder[ DDKalTest::CellIDEncoding::instance().sensor() ] = 0;
+  encoder[ UTIL::LCTrackerCellID::side() ] = 0;
+  encoder[ UTIL::LCTrackerCellID::module() ] = 0;
+  encoder[ UTIL::LCTrackerCellID::sensor() ] = 0;
   
   _layerID = encoder.lowWord();
 
@@ -393,7 +393,7 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
 
     xx.SetXYZ( xxV3[0]/dd4hep::mm , xxV3[1]/dd4hep::mm,  xxV3[2]/dd4hep::mm) ;   
     
-    streamlog_out( DEBUG2 ) << " ++++  intersection found for surface : " << DDKalTest::CellIDEncoding::valueString(_surf->id()) << std::endl 
+    streamlog_out( DEBUG2 ) << " ++++  intersection found for surface : " << UTIL::LCTrackerCellID::valueString(_surf->id()) << std::endl 
      			    << "       at s = " << s 
      			    << "       xx   = ( " << xx.X() << ", " << xx.Y() << ", " << xx.Z() << ") " << std::endl 
               		    << " track parameters: " <<  aidaTT::trackParameters( hp, rp ) 
@@ -404,7 +404,7 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
     
   } else {
 
-    streamlog_out( DEBUG0 ) << " ++++ no intersection found for surface : " << DDKalTest::CellIDEncoding::valueString(_surf->id()) << std::endl
+    streamlog_out( DEBUG0 ) << " ++++ no intersection found for surface : " << UTIL::LCTrackerCellID::valueString(_surf->id()) << std::endl
 			    << " track parameters: " <<  aidaTT::trackParameters( hp, rp ) 
   			    << " mode : " << mode
   			    << std::endl ;

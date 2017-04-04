@@ -1,7 +1,7 @@
 #include "DDKalTest/DDPolygonBarrelMeasLayer.h"
 
 #include <UTIL/BitField64.h>
-#include <DDKalTest/DDKalTestConf.h>
+#include <UTIL/LCTrackerConf.h>
 
 #include "TVTrack.h"
 #include "TVector3.h"
@@ -178,10 +178,10 @@ int DDPolygonBarrelMeasLayer::getIntersectionAndCellID(const TVTrack  &hel,
     
     unsigned int plane = this->get_plane_index( xx.Phi() );
     
-    lcio::BitField64 bf(  DDKalTest::CellIDEncoding::instance().encoding_string() ) ;
+    lcio::BitField64 bf(  UTIL::LCTrackerCellID::encoding_string() ) ;
    bf.setValue( this->getCellIDs()[0] ) ; // get the first cell_ID, this will have the correct sensor value
     
-   bf[ DDKalTest::CellIDEncoding::instance().module() ] = plane;
+   bf[ lcio::LCTrackerCellID::module() ] = plane;
    CellID = bf.lowWord();
 
   }

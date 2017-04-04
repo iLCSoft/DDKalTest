@@ -9,7 +9,7 @@
 #include "aidaTT/materialUtils.hh"
 
 #include <UTIL/BitField64.h>
-#include <DDKalTest/DDKalTestConf.h>
+#include <UTIL/LCTrackerConf.h>
 
 #include <DD4hep/DD4hepUnits.h>
 
@@ -46,10 +46,10 @@ DDVMeasLayer::DDVMeasLayer( DDSurfaces::ISurface* surf,
   unsigned cellID = surf->id() ;
   _cellIDs.push_back( cellID );
   
-  UTIL::BitField64 encoder( DDKalTest::CellIDEncoding::instance().encoding_string() ) ; 
+  UTIL::BitField64 encoder( UTIL::LCTrackerCellID::encoding_string() ) ; 
   encoder.setValue(cellID);
-  encoder[ DDKalTest::CellIDEncoding::instance().module() ] = 0;
-  encoder[ DDKalTest::CellIDEncoding::instance().sensor() ] = 0;
+  encoder[ UTIL::LCTrackerCellID::module() ] = 0;
+  encoder[ UTIL::LCTrackerCellID::sensor() ] = 0;
   
   _layerID = encoder.lowWord();
   
@@ -70,10 +70,10 @@ DDVMeasLayer::DDVMeasLayer( DDSurfaces::ISurface* surf,
 {
   _cellIDs.push_back(cellID);
   
-  UTIL::BitField64 encoder( DDKalTest::CellIDEncoding::instance().encoding_string() ) ; 
+  UTIL::BitField64 encoder( UTIL::LCTrackerCellID::encoding_string() ) ; 
   encoder.setValue(cellID);
-  encoder[ DDKalTest::CellIDEncoding::instance().module() ] = 0;
-  encoder[ DDKalTest::CellIDEncoding::instance().sensor() ] = 0;
+  encoder[ UTIL::LCTrackerCellID::module() ] = 0;
+  encoder[ UTIL::LCTrackerCellID::sensor() ] = 0;
   
   _layerID = encoder.lowWord();
   
@@ -98,10 +98,10 @@ DDVMeasLayer::DDVMeasLayer(  DDSurfaces::ISurface* surf,
     streamlog_out(ERROR) << __FILE__ << " line " << __LINE__ << " size of cellIDs == 0" << std::endl;
   }
   
-  UTIL::BitField64 encoder( DDKalTest::CellIDEncoding::instance().encoding_string() ) ;
+  UTIL::BitField64 encoder( UTIL::LCTrackerCellID::encoding_string() ) ;
   encoder.setValue(cellIDs.at(0));
-  encoder[DDKalTest::CellIDEncoding::instance().module() ] = 0;
-  encoder[DDKalTest::CellIDEncoding::instance().sensor() ] = 0;
+  encoder[ UTIL::LCTrackerCellID::module() ] = 0;
+  encoder[ UTIL::LCTrackerCellID::sensor() ] = 0;
   
   _layerID = encoder.lowWord();
 
@@ -284,7 +284,7 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   }
 
 
-  streamlog_out(DEBUG7) << " eloss DDKaltest: " << edep << ", " << DDKalTest::CellIDEncoding::valueString( _surf->id() )
+  streamlog_out(DEBUG7) << " eloss LCTracker: " << edep << ", " << UTIL::LCTrackerCellID::valueString( _surf->id() )
   			<< " surface: " << *_surf 
   			<< std::endl ;
   

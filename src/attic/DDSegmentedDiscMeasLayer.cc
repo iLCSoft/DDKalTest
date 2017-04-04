@@ -2,7 +2,7 @@
 #include "DDKalTest/DDPlanarHit.h"
 
 #include <UTIL/BitField64.h>
-#include <DDKalTest/DDKalTestConf.h>
+#include <UTIL/LCTrackerConf.h>
 
 #include "TVTrack.h"
 #include "TVector3.h"
@@ -191,10 +191,10 @@ TVector3 DDSegmentedDiscMeasLayer::HitToXv(const TVTrackHit &vht) const
 //  
 //  double z = this->GetXc().Z() ;
 
-  UTIL::BitField64 encoder( DDKalTest::CellIDEncoding::instance().encoding_string() ) ;
+  UTIL::BitField64 encoder( UTIL::LCTrackerCellID::encoding_string() ) ;
   EVENT::TrackerHit* hit = mv.getLCIOTrackerHit();
   encoder.setValue(hit->getCellID0());
-  int segmentIndex = encoder[ DDKalTest::CellIDEncoding::instance().module() ] / 2 ;
+  int segmentIndex = encoder[ UTIL::LCTrackerCellID::module() ] / 2 ;
   
   TVector3 XC = this->get_segment_centre(segmentIndex);
   
@@ -560,10 +560,10 @@ int DDSegmentedDiscMeasLayer::getIntersectionAndCellID(const TVTrack  &hel,
     
     const std::vector<int>& cellIds = this->getCellIDs();
     
-    lcio::BitField64 bf(  DDKalTest::CellIDEncoding::instance().encoding_string() ) ;
+    lcio::BitField64 bf(  UTIL::LCTrackerCellID::encoding_string() ) ;
     bf.setValue( this->getCellIDs()[0] ) ; // get the first cell_ID, this will have the correct sensor value
     
-    bf[ DDKalTest::CellIDEncoding::instance().module() ] = cellIds.at(segment);
+    bf[ lcio::LCTrackerCellID::module() ] = cellIds.at(segment);
     CellID = bf.lowWord();
 
   }

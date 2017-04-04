@@ -4,7 +4,7 @@
 #include "DDKalTest/DDPlanarStripHit.h"
 
 #include <UTIL/BitField64.h>
-#include <DDKalTest/DDKalTestConf.h>
+#include <UTIL/LCTrackerConf.h>
 
 #include "TVTrack.h"
 #include "TVector3.h"
@@ -114,10 +114,10 @@ TVector3 DDSegmentedDiscStripMeasLayer::HitToXv(const TVTrackHit &vht) const
   
   const DDPlanarStripHit &mv = dynamic_cast<const DDPlanarStripHit &>(vht);
   
-  UTIL::BitField64 encoder( DDKalTest::CellIDEncoding::instance().encoding_string() ) ;
+  UTIL::BitField64 encoder( UTIL::LCTrackerCellID::encoding_string() ) ;
   EVENT::TrackerHit* hit = mv.getLCIOTrackerHit();
   encoder.setValue(hit->getCellID0());
-  int segmentIndex = encoder[ DDKalTest::CellIDEncoding::instance().module() ] / 2 ;
+  int segmentIndex = encoder[ UTIL::LCTrackerCellID::module() ] / 2 ;
 
   TVector3 XC = this->get_segment_centre(segmentIndex);
   
