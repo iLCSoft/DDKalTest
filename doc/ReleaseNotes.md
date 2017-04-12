@@ -1,3 +1,8 @@
+# v01-02
+
+* 2017-04-07 Emilia Leogrande ([PR#2](https://github.com/iLCSoft/DDKalTest/pull/2))
+  - DDKalTestConf replaced by LCTrackerConf
+
 # v01-01
 A.Sailer
 * DDKalTest::CellIDEncoding: implement set_encoding_string and add access protection.
