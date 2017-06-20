@@ -44,16 +44,16 @@ DDKalDetector::DDKalDetector( dd4hep::DetElement det ){
 
 #if use_surface_helper
 
-  DD4hep::DDRec::SurfaceHelper ds( det ) ;
-  const DD4hep::DDRec::SurfaceList& detSL = ds.surfaceList() ;
-  for( DD4hep::DDRec::SurfaceList::const_iterator it = detSL.begin() ; it != detSL.end() ; ++it ){
+  dd4hep::rec::SurfaceHelper ds( det ) ;
+  const dd4hep::rec::SurfaceList& detSL = ds.surfaceList() ;
+  for( dd4hep::rec::SurfaceList::const_iterator it = detSL.begin() ; it != detSL.end() ; ++it ){
     
 #else
   //===========  get the surface map from the SurfaceManager ================
 
-  DD4hep::DDRec::SurfaceManager& surfMan = *lcdd.extension<DD4hep::DDRec::SurfaceManager>() ;
+  dd4hep::rec::SurfaceManager& surfMan = *lcdd.extension<dd4hep::rec::SurfaceManager>() ;
 
-  typedef DD4hep::DDRec::SurfaceMap SMap ;
+  typedef dd4hep::rec::SurfaceMap SMap ;
 
   const SMap* sMap = surfMan.map( det.name() ) ;
 
@@ -66,11 +66,11 @@ DDKalDetector::DDKalDetector( dd4hep::DetElement det ){
   
   for( SMap::const_iterator it = sMap->begin() ; it != sMap->end() ; ++it){
     
-    DDSurfaces::ISurface* surf =  it->second ;
+    dd4hep::rec::ISurface* surf =  it->second ;
 
 #endif    
 
-    DDSurfaces::ISurface* surf =  *it ;
+    dd4hep::rec::ISurface* surf =  *it ;
 
     streamlog_out( DEBUG5 ) << "DDKalDetector:  install surface for : " << UTIL::LCTrackerCellID::valueString( surf->id() ) << std::endl ;
 

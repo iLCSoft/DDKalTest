@@ -56,11 +56,11 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(dd4hep::rec::ISurface* surf, Double_t   Bz,
     
     // need to compute the extend in radius of the surface 
     // do this along the direction of the origin vector 
-    dd4hep::Volume vol = ((DD4hep::DDRec::Surface*)surf)->volume() ;
+    dd4hep::Volume vol = ((dd4hep::rec::Surface*)surf)->volume() ;
 
     // get global/local origin
     const dd4hep::rec::Vector3D& o = surf->origin() ;
-    const dd4hep::rec::Vector3D& oL = ((DD4hep::DDRec::Surface*)surf)->volSurface().origin() ;
+    const dd4hep::rec::Vector3D& oL = ((dd4hep::rec::Surface*)surf)->volSurface().origin() ;
 
     // dd4hep::rec::Vector3D oR( o[0] , o[1] , 0 ) ; // radial direction of origin in global coordinates
     // if ( oR.trans2() < epsilon ){ // if origin has zero length use x-axis 
