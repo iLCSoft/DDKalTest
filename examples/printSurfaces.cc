@@ -8,7 +8,6 @@
 //  Author     : F.Gaede, CERN/DESY
 //  Date       : 07 Nov 2014
 //====================================================================
-#include "DD4hep/LCDD.h"
 #include "DD4hep/DD4hepUnits.h"
 
 #include "DDRec/Surface.h"
@@ -19,11 +18,12 @@
 
 
 using namespace std ;
-using namespace DD4hep ;
-using namespace DD4hep::Geometry;
-using namespace DD4hep::DDRec;
-using namespace DDSurfaces ;
-using namespace dd4hep ;
+
+using dd4hep::Detector;
+using dd4hep::DetElement;
+using dd4hep::rec::SurfaceHelper;
+using dd4hep::rec::SurfaceList;
+using dd4hep::rec::ISurface;
 
 //=============================================================================
 
@@ -36,11 +36,11 @@ int main(int argc, char** argv ){
   
   std::string inFile =  argv[1] ;
 
-  LCDD& lcdd = LCDD::getInstance();
+  Detector& theDetector = Detector::getInstance();
 
-  lcdd.fromCompact( inFile );
+  theDetector.fromCompact( inFile );
 
-  DetElement world = lcdd.world() ;
+  DetElement world = theDetector.world() ;
 
   std::cout << "############################################################################### "  << std::endl  << std::endl  ;
 	

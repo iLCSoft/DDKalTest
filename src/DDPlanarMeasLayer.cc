@@ -20,7 +20,7 @@
 
 using namespace UTIL ;
 
-DDPlanarMeasLayer::DDPlanarMeasLayer(DDSurfaces::ISurface* surf, Double_t   Bz, const Char_t *name) :
+DDPlanarMeasLayer::DDPlanarMeasLayer(dd4hep::rec::ISurface* surf, Double_t   Bz, const Char_t *name) :
   
   DDVMeasLayer(  surf, Bz, name ),
   // DDVMeasLayer(  surf,
@@ -56,20 +56,20 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(DDSurfaces::ISurface* surf, Double_t   Bz, 
     
     // need to compute the extend in radius of the surface 
     // do this along the direction of the origin vector 
-    DD4hep::Geometry::Volume vol = ((DD4hep::DDRec::Surface*)surf)->volume() ;
+    dd4hep::Volume vol = ((DD4hep::DDRec::Surface*)surf)->volume() ;
 
     // get global/local origin
-    const DDSurfaces::Vector3D& o = surf->origin() ;
-    const DDSurfaces::Vector3D& oL = ((DD4hep::DDRec::Surface*)surf)->volSurface().origin() ;
+    const dd4hep::rec::Vector3D& o = surf->origin() ;
+    const dd4hep::rec::Vector3D& oL = ((DD4hep::DDRec::Surface*)surf)->volSurface().origin() ;
 
-    // DDSurfaces::Vector3D oR( o[0] , o[1] , 0 ) ; // radial direction of origin in global coordinates
+    // dd4hep::rec::Vector3D oR( o[0] , o[1] , 0 ) ; // radial direction of origin in global coordinates
     // if ( oR.trans2() < epsilon ){ // if origin has zero length use x-axis 
     //   oR.fill( 0., 1., 0 ) ;
     // }
     // this direction would have to be rotated into the local system of the volume
     // but we don't have access to the worlTransfrom matrix here, so
     // for now we use the y-axis ( works for Traps and Tubs )
-    DDSurfaces::Vector3D oR( 0. , 1. , 0 ) ; 
+    dd4hep::rec::Vector3D oR( 0. , 1. , 0 );
 
     double dist_r = 0. ;
 
@@ -97,7 +97,7 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(DDSurfaces::ISurface* surf, Double_t   Bz, 
 
   } else{
 
-    fSortingPolicy =  surf->distance( DDSurfaces::Vector3D( 0.,0.,0.) )/dd4hep::mm   +  epsilon * count++ ;
+    fSortingPolicy =  surf->distance( dd4hep::rec::Vector3D( 0.,0.,0.) )/dd4hep::mm   +  epsilon * count++ ;
   }
 
 
@@ -119,7 +119,7 @@ TKalMatrix DDPlanarMeasLayer::XvToMv(const TVector3 &xv) const {
   
   TKalMatrix mv( fMDim , 1 );
   
-  DDSurfaces::Vector2D lv = _surf->globalToLocal( DDSurfaces::Vector3D( xv.X()*dd4hep::mm ,  xv.Y()*dd4hep::mm ,  xv.Z()*dd4hep::mm ) ) ;
+  dd4hep::rec::Vector2D lv = _surf->globalToLocal( dd4hep::rec::Vector3D( xv.X()*dd4hep::mm ,  xv.Y()*dd4hep::mm ,  xv.Z()*dd4hep::mm ) ) ;
   
   mv(0,0) = lv[0] / dd4hep::mm ; 
   
@@ -147,9 +147,9 @@ TKalMatrix DDPlanarMeasLayer::XvToMv(const TVTrackHit &,
 
 TVector3 DDPlanarMeasLayer::HitToXv(const TVTrackHit &vht) const {
   
-  DDSurfaces::Vector3D v = ( fMDim == 2 ? 
-			     _surf->localToGlobal( DDSurfaces::Vector2D (  vht(0,0)*dd4hep::mm, vht(1,0) *dd4hep::mm ) )  :
-			     _surf->localToGlobal( DDSurfaces::Vector2D (  vht(0,0)*dd4hep::mm,    0.  ) ) 
+  dd4hep::rec::Vector3D v = ( fMDim == 2 ?
+			     _surf->localToGlobal( dd4hep::rec::Vector2D (  vht(0,0)*dd4hep::mm, vht(1,0) *dd4hep::mm ) )  :
+			     _surf->localToGlobal( dd4hep::rec::Vector2D (  vht(0,0)*dd4hep::mm,    0.  ) )
 			     ) ;
   
   double x = v[0] / dd4hep::mm ;
@@ -188,18 +188,18 @@ void DDPlanarMeasLayer::CalcDhDa(const TVTrackHit &vht,
 
   //----------------------------------------------------
   //fixme: the derivatives should be stored either in the surface class or here
-  DDSurfaces::Vector3D u = _surf->u() ;
-  DDSurfaces::Vector3D v = _surf->v() ;
+  dd4hep::rec::Vector3D u = _surf->u() ;
+  dd4hep::rec::Vector3D v = _surf->v() ;
   
   double uv = u * v ;
-  DDSurfaces::Vector3D uprime = ( u - uv * v ).unit() ; 
-  DDSurfaces::Vector3D vprime = ( v - uv * u ).unit() ; 
+  dd4hep::rec::Vector3D uprime = ( u - uv * v ).unit() ;
+  dd4hep::rec::Vector3D vprime = ( v - uv * u ).unit() ;
   double uup = u * uprime ;
   double vvp = v * vprime ;
   
   
-  DDSurfaces::Vector3D dudx =  1./uup * uprime  ;
-  DDSurfaces::Vector3D dvdx =  1./vvp * vprime;
+  dd4hep::rec::Vector3D dudx =  1./uup * uprime  ;
+  dd4hep::rec::Vector3D dvdx =  1./vvp * vprime;
   
   //------------------------------------------------------
   
@@ -236,7 +236,7 @@ Bool_t DDPlanarMeasLayer::IsOnSurface(const TVector3 &xx) const {
   
   //fg: here we ask the surface implementation for the bounds (using the volume) 
   //    this could be optimized by a faster algorithm (for simple bounds) 
-  return _surf->insideBounds( DDSurfaces::Vector3D( xx.x()*dd4hep::mm , xx.Y()*dd4hep::mm,  xx.Z()*dd4hep::mm ) )  ;
+  return _surf->insideBounds( dd4hep::rec::Vector3D( xx.x()*dd4hep::mm , xx.Y()*dd4hep::mm,  xx.Z()*dd4hep::mm ) )  ;
 }
 
 
@@ -263,12 +263,12 @@ DDVTrackHit* DDPlanarMeasLayer::ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) co
   
   
   // get the measurment durections from the surface ( should of course be identical to the ones in the lcio hit ...)
-  DDSurfaces::Vector3D u = _surf->u() ;
-  DDSurfaces::Vector3D v = _surf->v() ;
+  dd4hep::rec::Vector3D u = _surf->u() ;
+  dd4hep::rec::Vector3D v = _surf->v() ;
   
-  // DDSurfaces::Vector3D U(1.0,plane_hit->getU()[1],plane_hit->getU()[0],DDSurfaces::Vector3D::spherical);
-  // DDSurfaces::Vector3D V(1.0,plane_hit->getV()[1],plane_hit->getV()[0],DDSurfaces::Vector3D::spherical);
-  // DDSurfaces::Vector3D Z(0.0,0.0,1.0);
+  // dd4hep::rec::Vector3D U(1.0,plane_hit->getU()[1],plane_hit->getU()[0],dd4hep::rec::Vector3D::spherical);
+  // dd4hep::rec::Vector3D V(1.0,plane_hit->getV()[1],plane_hit->getV()[0],dd4hep::rec::Vector3D::spherical);
+  // dd4hep::rec::Vector3D Z(0.0,0.0,1.0);
   // streamlog_out(DEBUG1) << "DDPlanarMeasLayer::ConvertLCIOTrkHit : " 
   // 			// << "\n U : " << U  
   // 			<< "\n u : " << u 
