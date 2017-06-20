@@ -8,7 +8,7 @@
 
 //#include "DDKalTest/DDParallelPlanarStripMeasLayer.h"
 
-#include "DD4hep/LCDD.h"
+#include "DD4hep/DetElement.h"
 #include "DD4hep/DD4hepUnits.h"
 #include "DDRec/SurfaceManager.h"
 #include "DDRec/SurfaceHelper.h"
@@ -19,7 +19,7 @@
 #include "streamlog/streamlog.h"
 
 
-DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
+DDKalDetector::DDKalDetector( dd4hep::DetElement det ){
   
   
   streamlog_out( DEBUG4 ) << " DDKalDetector::DDKalDetector() initialize surfaces for detector " 
@@ -28,9 +28,9 @@ DDKalDetector::DDKalDetector( DD4hep::Geometry::DetElement det ){
   // --- get B field :
   double origin[3] = { 0., 0., 0. } , bfield[3] ;
 
-  DD4hep::Geometry::LCDD& lcdd = DD4hep::Geometry::LCDD::getInstance();
+  dd4hep::Detector& lcdd = dd4hep::Detector::getInstance();
 
- DD4hep::Geometry::OverlayedField ovField = lcdd.field() ;
+  dd4hep::OverlayedField ovField = lcdd.field() ;
 
   ovField.magneticField( origin , bfield ) ;
 
