@@ -43,12 +43,6 @@ if(DD4HEP_USE_XERCESC)
 endif()
 
 include(DD4hep_XML_setup)
- 
-#fg: fixme: for now need to link against geant4 libraries:
-find_package(Geant4 REQUIRED gdml ui_all vis_all)
-INCLUDE(${Geant4_USE_FILE})   # this also takes care of geant 4 definitions and include dirs
-LINK_LIBRARIES( ${Geant4_LIBRARIES} )
-
 
 
 #-------------------------------------------------------------
