@@ -34,8 +34,7 @@ find_package( DD4hep REQUIRED COMPONENTS DDRec )
 set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake ) 
 include( DD4hep )
 
-find_package( ROOT 6 REQUIRED )
-set( ROOT_COMPONENT_LIBRARIES Geom )
+find_package( ROOT 6 REQUIRED COMPONENTS Geom )
 
 
 if(DD4HEP_USE_XERCESC)
