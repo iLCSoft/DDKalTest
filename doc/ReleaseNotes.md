@@ -1,3 +1,8 @@
+# v01-03-01
+
+* 2017-06-30 Andre Sailer ([PR#6](https://github.com/iLCSoft/DDKalTest/pull/6))
+  - CMake: Drop dependency on DDkalTestLibDeps.cmake
+
 # v01-03
 
 * 2017-05-09 Andre Sailer ([PR#3](https://github.com/iLCSoft/DDKalTest/pull/3))
