@@ -53,16 +53,7 @@ INCLUDE( "@ILCSOFT_CMAKE_MODULES_ROOT@/MacroCheckPackageLibs.cmake" )
 # first argument should be the package name
 CHECK_PACKAGE_LIBS( DDKalTest DDKalTest )
 
-
-
-
-# ---------- libraries dependencies -------------------------------------------
-# this sets DDKalTest_${COMPONENT}_LIB_DEPENDS variables
-INCLUDE( "${DDKalTest_ROOT}/lib/cmake/DDKalTestLibDeps.cmake" )
  
-
-
-
 # ---------- final checking ---------------------------------------------------
 INCLUDE( FindPackageHandleStandardArgs )
 # set KALDET_FOUND to TRUE if all listed variables are TRUE and not empty
