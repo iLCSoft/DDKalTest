@@ -1,3 +1,15 @@
+# v01-03
+
+* 2017-05-09 Andre Sailer ([PR#3](https://github.com/iLCSoft/DDKalTest/pull/3))
+  - Dropped support for root version < 6
+
+* 2017-06-20 Andre Sailer ([PR#4](https://github.com/iLCSoft/DDKalTest/pull/4))
+  - Adapt to namespace changes in DD4hep
+
+* 2017-06-29 Andre Sailer ([PR#5](https://github.com/iLCSoft/DDKalTest/pull/5))
+  - CMake Configuration cleanup: Remove linking against Geant4
+  - Require CMake 3.3 (same as DD4hep)
+
 # v01-02
 
 * 2017-04-07 Emilia Leogrande ([PR#2](https://github.com/iLCSoft/DDKalTest/pull/2))
