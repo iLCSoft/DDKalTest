@@ -284,7 +284,7 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   }
 
 
-  streamlog_out(DEBUG7) << " eloss LCTracker: " << edep << ", " << UTIL::LCTrackerCellID::valueString( _surf->id() )
+  streamlog_out(DEBUG2) << " eloss LCTracker: " << edep << ", " << UTIL::LCTrackerCellID::valueString( _surf->id() )
   			<< " surface: " << *_surf 
   			<< std::endl ;
   

@@ -26,16 +26,16 @@ public:
   
   
   Bool_t IsOnSurface(const TVector3 &xx) const {
-    
+
     //fg: leave this code for now - we are restricted to cylinders around the z-axis
-    bool z = (xx.Z() >= GetZmin() && xx.Z() <= GetZmax());
+    bool z = ( _surf->type().isUnbounded() ?  true : (xx.Z() >= GetZmin() && xx.Z() <= GetZmax()) );
     bool r = std::fabs( (xx-this->GetXc()).Perp() - this->GetR() ) < 1.e-3; // for very short, very stiff tracks this can be poorly defined, so we relax this here a bit to 1 micron
-    
+
     //    streamlog_out(DEBUG0) << "DDCylinderMeasLayer IsOnSurface for " << this->TVMeasLayer::GetName() << " R =  " << this->GetR() 
     //    << "  GetZmin() = " << GetZmin() << " GetZmax() = " << GetZmax()
     //    << " dr = " << std::fabs( (xx-this->GetXc()).Perp() - this->GetR() ) << " r = " << r << " z = " << z 
     //    << std::endl;
-    
+
     return r && z;
   }
 
@@ -85,9 +85,12 @@ public:
                                        Int_t     mode,
                                        Double_t  eps = 1.e-8) const {
     
-    CellID = this->getCellIDs()[0]; // not multilayer
-    return this->CalcXingPointWith(hel,xx,phi,0,eps);
-    
+    int ret = this->CalcXingPointWith(hel,xx,phi,0,eps) ;
+
+    CellID = ( ( this->getCellIDs().size() > 1 && xx.Z() < 0. ) ?
+	       this->getCellIDs()[1] :  this->getCellIDs()[0]  ) ;    // multilayer cylinder ?
+
+    return ret ;
   }
 
   Double_t GetSortingPolicy() const { return fSortingPolicy; }
