@@ -52,6 +52,12 @@ DDCylinderMeasLayer::DDCylinderMeasLayer(DDSurfaces::ISurface* surf,
 
   int side = encoder[ UTIL::LCTrackerCellID::side() ] ;
 
+  // if we have an unbounded surface and the side is set to one, we also add the cellID for the other side (multilayer)
+  if( side == 1 && surf->type().isUnbounded() ){
+    encoder[ UTIL::LCTrackerCellID::side() ] = -1 ;
+    _cellIDs.push_back( encoder.lowWord() ) ;
+  }
+
   fSortingPolicy = dynamic_cast<DDSurfaces::ICylinder*>(surf)->radius()/dd4hep::mm + side * epsilon ;
 
   // assumptions made here: the cylinder runs parallel to z and v ...
@@ -392,19 +398,19 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
     s /= dd4hep::mm ; 
 
     xx.SetXYZ( xxV3[0]/dd4hep::mm , xxV3[1]/dd4hep::mm,  xxV3[2]/dd4hep::mm) ;   
-    
-    streamlog_out( DEBUG2 ) << " ++++  intersection found for surface : " << UTIL::LCTrackerCellID::valueString(_surf->id()) << std::endl 
-     			    << "       at s = " << s 
-     			    << "       xx   = ( " << xx.X() << ", " << xx.Y() << ", " << xx.Z() << ") " << std::endl 
-              		    << " track parameters: " <<  aidaTT::trackParameters( hp, rp ) 
-  			    << " mode: " << mode
-     			    <<  std::endl ;
+
+    streamlog_out( DEBUG3 ) << " ++++  intersection found for surface : " << UTIL::LCTrackerCellID::valueString(_surf->id()) << std::endl
+			    << "       at s = " << s
+			    << "       xx   = ( " << xx.X() << ", " << xx.Y() << ", " << xx.Z() << ") " << std::endl
+			    << " track parameters: " <<  aidaTT::trackParameters( hp, rp )
+			    << " mode: " << mode
+			    <<  std::endl ;
     
     phi = -s * omega ; 
     
   } else {
 
-    streamlog_out( DEBUG0 ) << " ++++ no intersection found for surface : " << UTIL::LCTrackerCellID::valueString(_surf->id()) << std::endl
+    streamlog_out( DEBUG3 ) << " ++++ no intersection found for surface : " << UTIL::LCTrackerCellID::valueString(_surf->id()) << std::endl
 			    << " track parameters: " <<  aidaTT::trackParameters( hp, rp ) 
   			    << " mode : " << mode
   			    << std::endl ;
@@ -467,5 +473,4 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
   //  return TCylinder::CalcXingPointWith( hel,xx,phi,mode,eps) ;
 
   return (IsOnSurface(xx) ? 1 : 0);
-
 }
