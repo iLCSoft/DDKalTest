@@ -1,3 +1,11 @@
+# v01-04
+
+* 2017-10-12 Frank Gaede ([PR#7](https://github.com/iLCSoft/DDKalTest/pull/7))
+  - allow for unbounded DDCylinderMeasLayers 
+     - to be used for the ILD TPC
+     - if VolCylinder is marked as unbounded, we use a 'multilayer', ie.
+       one layer that extends to both sides of the cathode
+
 # v01-03-01
 
 * 2017-06-30 Andre Sailer ([PR#6](https://github.com/iLCSoft/DDKalTest/pull/6))
