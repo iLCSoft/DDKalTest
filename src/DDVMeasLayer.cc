@@ -39,9 +39,8 @@ DDVMeasLayer::DDVMeasLayer( DDSurfaces::ISurface* surf,
 	      MaterialMap::get( surf->outerMaterial() ) ,
 	      surf->type().isSensitive(), 
 	      name),
-  _surf( surf) ,
   _Bz(Bz),
-  _isMultiLayer(false) {
+  _surf( surf) {
   
   unsigned cellID = surf->id() ;
   _cellIDs.push_back( cellID );
@@ -64,10 +63,9 @@ DDVMeasLayer::DDVMeasLayer( DDSurfaces::ISurface* surf,
 			    int        cellID ,
 			    const Char_t    *name)  
   : TVMeasLayer(min, mout, is_active, name),
-    _surf( surf) ,
     _Bz(Bz),
-    _isMultiLayer(false)
-{
+    _surf( surf) {
+
   _cellIDs.push_back(cellID);
   
   UTIL::BitField64 encoder( UTIL::LCTrackerCellID::encoding_string() ) ; 
@@ -88,11 +86,10 @@ DDVMeasLayer::DDVMeasLayer(  DDSurfaces::ISurface* surf,
                              Bool_t    is_active,
                              const Char_t    *name)
   : TVMeasLayer(min, mout, is_active, name),
-    _surf( surf) ,
     _Bz(Bz),
     _cellIDs(cellIDs),
-    _isMultiLayer(true)
-{
+    _isMultiLayer(true),
+    _surf( surf) {
   
   if (cellIDs.size() == 0 ) {
     streamlog_out(ERROR) << __FILE__ << " line " << __LINE__ << " size of cellIDs == 0" << std::endl;
@@ -180,12 +177,9 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
   bool use_aidaTT = false ;
   if( use_aidaTT ){  // ----------------------------------------------
     Double_t dr     = hel.GetDrho();
-    //Double_t kappa  = hel.GetKappa();
     Double_t rho    = hel.GetRho();
     Double_t omega  = 1.0 / rho;
-    //  Double_t r      = TMath::Abs(rho);
     Double_t z0     = hel.GetDz();
-    Double_t tanl   = hel.GetTanLambda();
     double d0 = - dr ;
     double phi0_lcio =  toBaseRange( phi0 + M_PI/2. );
     TVector3 ref_point = hel.GetPivot(); 
@@ -312,9 +306,9 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
 //    calculates process noise matrix for multiple scattering with
 //    thin layer approximation.
 //
-void DDVMeasLayer::CalcQms( Bool_t        isoutgoing,
+void DDVMeasLayer::CalcQms( Bool_t        /*isoutgoing*/,
 			    const TVTrack &hel,
-			    Double_t      df,
+			    Double_t      /*df*/,
 			    TKalMatrix    &Qms) const
 {
   Double_t cpa    = hel.GetKappa();

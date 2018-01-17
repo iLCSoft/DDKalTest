@@ -175,7 +175,7 @@ TVector3 DDCylinderMeasLayer::HitToXv(const TVTrackHit &vht) const
 
 /** Calculate Projector Matrix */
 
-void DDCylinderMeasLayer::CalcDhDa(const TVTrackHit &vht, // tracker hit not used here
+void DDCylinderMeasLayer::CalcDhDa(const TVTrackHit &/*vht*/, // not used here
                                     const TVector3   &xxv,
                                     const TKalMatrix &dxphiada,
                                     TKalMatrix &H) const
@@ -324,7 +324,7 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
 					     TVector3 &xx,
 					     Double_t &phi,
 					     Int_t     mode,
-					     Double_t  eps) const {
+					     Double_t  /*eps*/) const {
   
   // check that direction has one of the correct values
   if( !( mode == 0 || mode == 1 || mode == -1) ) return -1 ;
@@ -344,7 +344,6 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
   Double_t kappa  = hel.GetKappa();
   Double_t rho    = hel.GetRho();
   Double_t omega  = 1.0 / rho;
-  Double_t r      = TMath::Abs(rho);
   Double_t z0     = hel.GetDz();
   Double_t tanl   = hel.GetTanLambda();
   
@@ -467,10 +466,6 @@ Int_t DDCylinderMeasLayer::CalcXingPointWith(const TVTrack  &hel,
       return 0;
     }
   }
-
-
-
-  //  return TCylinder::CalcXingPointWith( hel,xx,phi,mode,eps) ;
 
   return (IsOnSurface(xx) ? 1 : 0);
 }

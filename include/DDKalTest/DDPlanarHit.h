@@ -19,7 +19,7 @@ public:
 	      Double_t           *x,
 	      Double_t           *dx,
 	      Double_t           bfield,
-	      EVENT::TrackerHit* trkhit,
+	      const EVENT::TrackerHit* trkhit,
 	      unsigned dimension ) 
     : DDVTrackHit(ms, x, dx, bfield, dimension ,trkhit)
   { /* no op */ } 

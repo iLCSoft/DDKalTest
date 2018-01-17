@@ -35,7 +35,10 @@ namespace EVENT{
  */
 class DDVMeasLayer : public TVMeasLayer {
 public:
-  
+
+  DDVMeasLayer(const DDVMeasLayer&) = delete ;
+  DDVMeasLayer& operator=(const DDVMeasLayer&) = delete ;
+
   static Bool_t kActive;
   static Bool_t kDummy;
   
@@ -111,13 +114,13 @@ protected:
   
   
   
-  Double_t _Bz ;       // Magnitude of B-Field in Z
-  int _layerID ;
-  std::vector<int> _cellIDs ;
+  Double_t _Bz = 0. ;       // Magnitude of B-Field in Z
+  int _layerID = 0 ;
+  std::vector<int> _cellIDs{} ;
 
-  bool _isMultiLayer;
+  bool _isMultiLayer = false ;
 
-  DDSurfaces::ISurface* _surf ;
+  const DDSurfaces::ISurface* _surf ;
   
 };
 
