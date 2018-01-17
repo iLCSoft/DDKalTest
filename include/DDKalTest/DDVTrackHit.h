@@ -1,9 +1,10 @@
-#ifndef DDVTrackHIT_H
-#define DDVTrackHIT_H
+#ifndef DDVTrackHit_H
+#define DDVTrackHit_H
 
-/** DDVMeasLayer:  Virtual hit class used by DD[X]Hit Classes, which should provide coordinate vector as defined by the MeasLayer
+/** DDVMeasLayer:  Virtual hit class used by DD[X]Hit Classes, which should provide coordinate
+ *  vector as defined by the MeasLayer
  *
- * @author S.Aplin DESY
+ * @author F.Gaede, S.Aplin DESY
  */
 
 
@@ -16,19 +17,22 @@
 class DDVTrackHit : public TVTrackHit {
   
 public:
+  DDVTrackHit(const DDVTrackHit&) = default ;
+  DDVTrackHit& operator=(const DDVTrackHit&) = default ;
+
+  /** Constructor Taking coordinates and associated measurement layer,
+   *  with bfield and number of measurement dimentions.
+   */
+ DDVTrackHit(const TVMeasLayer &ms, Double_t *x, Double_t *dx,
+	     Double_t bfield , Int_t dim, const EVENT::TrackerHit* trkhit)
+   : TVTrackHit(ms, x, dx, bfield, dim),
+    _trkhit(trkhit) {
+  }
+
+  const EVENT::TrackerHit* getLCIOTrackerHit() const { return _trkhit; }
+
+ private:
   
-   /** Constructor Taking coordinates and associated measurement layer, with bfield and number of measurement dimentions*/
-  DDVTrackHit(const TVMeasLayer &ms, Double_t *x, Double_t *dx, 
-               Double_t bfield , Int_t dim, EVENT::TrackerHit* trkhit) 
-  : TVTrackHit(ms, x, dx, bfield, dim), _trkhit(trkhit)
-  { /* no op */ }
-  
-  EVENT::TrackerHit* getLCIOTrackerHit() const { return _trkhit; }
-  
-  
-private:
-  
-  EVENT::TrackerHit* _trkhit;
-  
+  const EVENT::TrackerHit* _trkhit = nullptr ;
 };
 #endif

@@ -21,7 +21,7 @@ using std::resetiosflags;
 
 /** Global to Local coordinates */
 
-TKalMatrix DDCylinderHit::XvToMv(const TVector3 &xv, Double_t t0) const
+TKalMatrix DDCylinderHit::XvToMv(const TVector3 &xv, Double_t /*t0*/) const
 {
   
   return this->GetMeasLayer().XvToMv(*(this), xv);

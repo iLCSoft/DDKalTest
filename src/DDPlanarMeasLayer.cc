@@ -40,7 +40,7 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(dd4hep::rec::ISurface* surf, Double_t   Bz,
 
   static int count=0 ;
   static const double epsilon=1e-6 ;
-  static const double epsZ=1e-8 ;
+  //  static const double epsZ=1e-8 ;
   
   //fg: the sorting policy is used to find the measurment layers that are going to be hit by a track ...
   //    simply add an epslion to the radius in order to have a loop over all sensors in a layer
@@ -170,7 +170,7 @@ TVector3 DDPlanarMeasLayer::HitToXv(const TVTrackHit &vht) const {
 }
 
 
-void DDPlanarMeasLayer::CalcDhDa(const TVTrackHit &vht,
+void DDPlanarMeasLayer::CalcDhDa(const TVTrackHit &/*vht*/,
 				 const TVector3   &xxv,
 				 const TKalMatrix &dxphiada,
 				 TKalMatrix &H)  const {
@@ -244,7 +244,7 @@ int DDPlanarMeasLayer::getIntersectionAndCellID(const TVTrack  &hel,
 						TVector3 &xx,
 						Double_t &phi,
 						Int_t    &CellID,
-						Int_t     mode,
+						Int_t     /*mode*/,
 						Double_t  eps ) const {
   
   CellID = this->getCellIDs()[0]; // not multilayer
@@ -257,24 +257,11 @@ DDVTrackHit* DDPlanarMeasLayer::ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) co
   EVENT::TrackerHitPlane* plane_hit = dynamic_cast<EVENT::TrackerHitPlane*>( trkhit ) ;
   
   if( plane_hit == NULL ){
-    streamlog_out( ERROR ) << " DDPlanarMeasLayer::ConvertLCIOTrkHit called with something that isn't an EVENT::TrackerHitPlane : " << *trkhit << std::endl ;
+    streamlog_out( ERROR ) << " DDPlanarMeasLayer::ConvertLCIOTrkHit"
+			   << " called with something that isn't an EVENT::TrackerHitPlane : "
+			   << *trkhit << std::endl ;
     return NULL; 
   }
-  
-  
-  // get the measurment durections from the surface ( should of course be identical to the ones in the lcio hit ...)
-  dd4hep::rec::Vector3D u = _surf->u() ;
-  dd4hep::rec::Vector3D v = _surf->v() ;
-  
-  // dd4hep::rec::Vector3D U(1.0,plane_hit->getU()[1],plane_hit->getU()[0],dd4hep::rec::Vector3D::spherical);
-  // dd4hep::rec::Vector3D V(1.0,plane_hit->getV()[1],plane_hit->getV()[0],dd4hep::rec::Vector3D::spherical);
-  // dd4hep::rec::Vector3D Z(0.0,0.0,1.0);
-  // streamlog_out(DEBUG1) << "DDPlanarMeasLayer::ConvertLCIOTrkHit : " 
-  // 			// << "\n U : " << U  
-  // 			<< "\n u : " << u 
-  // 			<< "\n V : " << V 
-  // 			<< "\n v : " << v
-  // 			<< std::endl ; 
   
   // remember here the "position" of the hit in fact defines the origin of the plane it defines so u and v are per definition 0. 
   const TVector3 hit( plane_hit->getPosition()[0], plane_hit->getPosition()[1], plane_hit->getPosition()[2]) ;

@@ -9,8 +9,9 @@
 #include "iostream"
 #include "streamlog/streamlog.h"
 
-//helper struct serving as private base
-namespace{
+// helper struct serving as private base
+// needed in order to use the the members in initialization list
+namespace DDConeMeasLayer_Base{
   struct Data{
     Double_t _Z1;      // z of front face
     Double_t _R1;      // r of front face
@@ -27,7 +28,7 @@ namespace{
  *  @date Nov 2015
  *  @version $Id:$
  */
-class DDConeMeasLayer : public DDVMeasLayer, private Data, public TCutCone {
+class DDConeMeasLayer : public DDVMeasLayer, private DDConeMeasLayer_Base::Data, public TCutCone {
 public:
   // Ctors and Dtor
   /// Constructor: initialize with Surface and B-field
@@ -97,13 +98,8 @@ public:
 
    
 private:
-  // Double_t fZ1;      // z of front face
-  // Double_t fR1;      // r of front face
-  // Double_t fZ2;      // z of back end
-  // Double_t fR2;      // r of back end
-  Double_t fsortingPolicy; // used for sorting the layers in to out
 
-  
+  Double_t fsortingPolicy; // used for sorting the layers in to out
 };
 
 #endif
