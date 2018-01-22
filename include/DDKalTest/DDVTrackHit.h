@@ -24,15 +24,15 @@ public:
    *  with bfield and number of measurement dimentions.
    */
  DDVTrackHit(const TVMeasLayer &ms, Double_t *x, Double_t *dx,
-	     Double_t bfield , Int_t dim, const EVENT::TrackerHit* trkhit)
+	     Double_t bfield , Int_t dim, EVENT::TrackerHit* trkhit)
    : TVTrackHit(ms, x, dx, bfield, dim),
     _trkhit(trkhit) {
   }
 
-  const EVENT::TrackerHit* getLCIOTrackerHit() const { return _trkhit; }
+  EVENT::TrackerHit* getLCIOTrackerHit() { return _trkhit; }
 
  private:
   
-  const EVENT::TrackerHit* _trkhit = nullptr ;
+  EVENT::TrackerHit* _trkhit = nullptr ;
 };
 #endif
