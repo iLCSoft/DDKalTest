@@ -18,7 +18,7 @@ public:
   
   /** Constructor Taking R and Rphi coordinates and associated measurement layer, with bfield */
  DDCylinderHit(const TVMeasLayer &ms, Double_t *x, Double_t *dx,
-	       Double_t bfield, const EVENT::TrackerHit* trkhit )
+	       Double_t bfield, EVENT::TrackerHit* trkhit )
    : DDVTrackHit(ms, x, dx, bfield, 2, trkhit) {}
     
   
