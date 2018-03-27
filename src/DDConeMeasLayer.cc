@@ -1,7 +1,7 @@
 #include "DDKalTest/DDConeMeasLayer.h"
 #include <UTIL/LCTrackerConf.h>
 #include "DD4hep/DD4hepUnits.h"
-#include "DDSurfaces/Vector3D.h"
+#include "DDRec/Vector3D.h"
 
 #include "TVTrack.h"
 
@@ -18,14 +18,14 @@
 //}
 
 
-DDConeMeasLayer::DDConeMeasLayer(DDSurfaces::ISurface* surf,
+DDConeMeasLayer::DDConeMeasLayer(dd4hep::rec::ISurface* surf,
 				 Double_t   Bz,
 				 const Char_t  *name ) :
   DDVMeasLayer(  surf, Bz, name ) ,
-  Data(dynamic_cast<DDSurfaces::ICone*>(surf)->z0()/dd4hep::mm ,
-       dynamic_cast<DDSurfaces::ICone*>(surf)->radius0()/dd4hep::mm,
-       dynamic_cast<DDSurfaces::ICone*>(surf)->z1()/dd4hep::mm,
-       dynamic_cast<DDSurfaces::ICone*>(surf)->radius1()/dd4hep::mm ),
+  Data(dynamic_cast<dd4hep::rec::ICone*>(surf)->z0()/dd4hep::mm ,
+       dynamic_cast<dd4hep::rec::ICone*>(surf)->radius0()/dd4hep::mm,
+       dynamic_cast<dd4hep::rec::ICone*>(surf)->z1()/dd4hep::mm,
+       dynamic_cast<dd4hep::rec::ICone*>(surf)->radius1()/dd4hep::mm ),
   TCutCone(_R1*(_Z2-_Z1)/(_R2-_R1), 
    	   _R2*(_Z2-_Z1)/(_R2-_R1), 
    	   (_R2-_R1)/(_Z2-_Z1),

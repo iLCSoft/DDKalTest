@@ -6,10 +6,10 @@
 #include <cmath>
 //#include "streamlog/streamlog.h"
 
-#include "DDSurfaces/ISurface.h"
+#include "DDRec/ISurface.h"
 
 /** DDCylinderMeasLayer provides a generic planar measurement for 1-dim and 2-dim hits
- *  using a DDSurfaces::ISurface.
+ *  using a dd4hep::rec::ISurface.
  *  
  *  @author F.Gaede CERN/DESY
  *  @date Feb 2015
@@ -20,7 +20,7 @@ class DDCylinderMeasLayer : public DDVMeasLayer, public TCylinder {
 public:
   
   /// Constructor: initialize with Surface and B-field
-  DDCylinderMeasLayer(DDSurfaces::ISurface* surf,
+  DDCylinderMeasLayer(dd4hep::rec::ISurface* surf,
 		      Double_t   Bz,
 		      const Char_t    *name = "DDCylinderMeasL") ; 
   

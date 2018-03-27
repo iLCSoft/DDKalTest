@@ -31,7 +31,7 @@ namespace{
 
 
 
-DDVMeasLayer::DDVMeasLayer( DDSurfaces::ISurface* surf,
+DDVMeasLayer::DDVMeasLayer( dd4hep::rec::ISurface* surf,
 			    Double_t   Bz,
 			    const Char_t    *name)  
   : 
@@ -55,7 +55,7 @@ DDVMeasLayer::DDVMeasLayer( DDSurfaces::ISurface* surf,
 }
 
 
-DDVMeasLayer::DDVMeasLayer( DDSurfaces::ISurface* surf,
+DDVMeasLayer::DDVMeasLayer( dd4hep::rec::ISurface* surf,
 			    TMaterial &min,
 			    TMaterial &mout,
 			    Double_t   Bz,
@@ -78,7 +78,7 @@ DDVMeasLayer::DDVMeasLayer( DDSurfaces::ISurface* surf,
 }
 
 
-DDVMeasLayer::DDVMeasLayer(  DDSurfaces::ISurface* surf,
+DDVMeasLayer::DDVMeasLayer(  dd4hep::rec::ISurface* surf,
 			     TMaterial &min,
                              TMaterial &mout,
                              Double_t  Bz,
@@ -200,13 +200,13 @@ Double_t DDVMeasLayer::GetEnergyLoss( Bool_t    isoutgoing,
     //    across the thickness of the surface
     //    also assumes that the reference point is near by 
     //    -fixme: check these conditions !
-    DDSurfaces::Vector3D p( - std::sin( phi0 ), std::cos( phi0 ) , tnl ) ;
-    DDSurfaces::Vector3D up = p.unit() ;
+    dd4hep::rec::Vector3D p( - std::sin( phi0 ), std::cos( phi0 ) , tnl ) ;
+    dd4hep::rec::Vector3D up = p.unit() ;
     
     // need to get the normal at crossing point ( should be the current helix' reference point) 
     const TVector3& piv = hel.GetPivot() ;
-    DDSurfaces::Vector3D xx( piv.X()*dd4hep::mm,piv.Y()*dd4hep::mm,piv.Z()*dd4hep::mm) ;
-    const DDSurfaces::Vector3D& n = _surf->normal(xx) ;
+    dd4hep::rec::Vector3D xx( piv.X()*dd4hep::mm,piv.Y()*dd4hep::mm,piv.Z()*dd4hep::mm) ;
+    const dd4hep::rec::Vector3D& n = _surf->normal(xx) ;
     
     Double_t cosTrk = std::fabs( up * n )  ;
     
@@ -333,8 +333,8 @@ void DDVMeasLayer::CalcQms( Bool_t        /*isoutgoing*/,
 
   // average the X0 of the inner and outer materials:
   // could also move to c'tor and cache value ...
-  const DDSurfaces::IMaterial& mat_i = _surf->innerMaterial() ;
-  const DDSurfaces::IMaterial& mat_o = _surf->outerMaterial() ;
+  const dd4hep::rec::IMaterial& mat_i = _surf->innerMaterial() ;
+  const dd4hep::rec::IMaterial& mat_o = _surf->outerMaterial() ;
   double x_i = mat_i.radiationLength() ;
   double x_o = mat_o.radiationLength() ;
   double l_i = _surf->innerThickness() ;
@@ -344,13 +344,13 @@ void DDVMeasLayer::CalcQms( Bool_t        /*isoutgoing*/,
 
   //compute path as projection of (straight) track to surface normal:
   Double_t phi0   = hel.GetPhi0();
-  DDSurfaces::Vector3D p( - std::sin( phi0 ), std::cos( phi0 ) , tnl ) ;
-  DDSurfaces::Vector3D up = p.unit() ;
+  dd4hep::rec::Vector3D p( - std::sin( phi0 ), std::cos( phi0 ) , tnl ) ;
+  dd4hep::rec::Vector3D up = p.unit() ;
 
   // need to get the normal at crossing point ( should be the current helix' reference point) 
   const TVector3& piv = hel.GetPivot() ;
-  DDSurfaces::Vector3D xx( piv.X()*dd4hep::mm,piv.Y()*dd4hep::mm,piv.Z()*dd4hep::mm) ;
-  const DDSurfaces::Vector3D& n = _surf->normal( xx ) ;
+  dd4hep::rec::Vector3D xx( piv.X()*dd4hep::mm,piv.Y()*dd4hep::mm,piv.Z()*dd4hep::mm) ;
+  const dd4hep::rec::Vector3D& n = _surf->normal( xx ) ;
 
   Double_t cosTrk = std::fabs( up * n )  ;
   

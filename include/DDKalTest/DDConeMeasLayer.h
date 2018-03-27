@@ -22,7 +22,7 @@ namespace DDConeMeasLayer_Base{
 }
 
 /** DDConeMeasLayer provides a conical helper layer (no measurements )
- *  using a DDSurfaces::ISurface.
+ *  using a dd4hep::rec::ISurface.
  *  
  *  @author F.Gaede DESY
  *  @date Nov 2015
@@ -32,7 +32,7 @@ class DDConeMeasLayer : public DDVMeasLayer, private DDConeMeasLayer_Base::Data,
 public:
   // Ctors and Dtor
   /// Constructor: initialize with Surface and B-field
-  DDConeMeasLayer(DDSurfaces::ISurface* surf,
+  DDConeMeasLayer(dd4hep::rec::ISurface* surf,
 		  Double_t   Bz,
 		  const Char_t    *name = "DDConeMeasL") ; 
 
