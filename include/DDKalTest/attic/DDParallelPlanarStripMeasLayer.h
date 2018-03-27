@@ -27,7 +27,7 @@ public:
     double angle = surf->v().theta() * 2. ; // FIXME: had 3.5 in SIT_SimplePlanar_geo !!!
     
     // check sign of rotation via helper vector cerated from cross product w/ z-axis
-    DDSurfaces::Vector3D n  =  surf->v().cross(  DDSurfaces::Vector3D( 0, 0, 1.)  ) ;
+    dd4hep::rec::Vector3D n  =  surf->v().cross(  dd4hep::rec::Vector3D( 0, 0, 1.)  ) ;
     
     // does this point into the same hemisphere as the normal ?
     double ndot = n.dot( surf->normal()  ) ; 

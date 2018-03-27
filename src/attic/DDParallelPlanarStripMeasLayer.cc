@@ -5,7 +5,7 @@
 
 #include <EVENT/TrackerHitPlane.h>
 
-#include "DDSurfaces/Vector3D.h"
+#include "DDRec/Vector3D.h"
 
 #include "streamlog/streamlog.h"
 

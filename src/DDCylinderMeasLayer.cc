@@ -10,7 +10,7 @@
 #include <UTIL/Operators.h>
 
 #include "DD4hep/DD4hepUnits.h"
-#include "DDSurfaces/Vector3D.h"
+#include "DDRec/Vector3D.h"
 
 #include "aidaTT/trajectory.hh"
 
@@ -30,16 +30,16 @@ namespace{
 
 using namespace UTIL ;
 
-DDCylinderMeasLayer::DDCylinderMeasLayer(DDSurfaces::ISurface* surf,
+DDCylinderMeasLayer::DDCylinderMeasLayer(dd4hep::rec::ISurface* surf,
 					 Double_t   Bz,
 					 const Char_t  *name ) :
   DDVMeasLayer(  surf, Bz, name ) ,
   
-  TCylinder(  dynamic_cast<DDSurfaces::ICylinder*>(surf)->radius()/dd4hep::mm , 
+  TCylinder(  dynamic_cast<dd4hep::rec::ICylinder*>(surf)->radius()/dd4hep::mm ,
 	      surf->length_along_v()/dd4hep::mm / 2. , 
-	      dynamic_cast<DDSurfaces::ICylinder*>(surf)->center().x()/dd4hep::mm, 
-	      dynamic_cast<DDSurfaces::ICylinder*>(surf)->center().y()/dd4hep::mm , 
-	      dynamic_cast<DDSurfaces::ICylinder*>(surf)->center().z()/dd4hep::mm ),
+	      dynamic_cast<dd4hep::rec::ICylinder*>(surf)->center().x()/dd4hep::mm,
+	      dynamic_cast<dd4hep::rec::ICylinder*>(surf)->center().y()/dd4hep::mm ,
+	      dynamic_cast<dd4hep::rec::ICylinder*>(surf)->center().z()/dd4hep::mm ),
   
   fSortingPolicy(0.),
   
@@ -58,7 +58,7 @@ DDCylinderMeasLayer::DDCylinderMeasLayer(DDSurfaces::ISurface* surf,
     _cellIDs.push_back( encoder.lowWord() ) ;
   }
 
-  fSortingPolicy = dynamic_cast<DDSurfaces::ICylinder*>(surf)->radius()/dd4hep::mm + side * epsilon ;
+  fSortingPolicy = dynamic_cast<dd4hep::rec::ICylinder*>(surf)->radius()/dd4hep::mm + side * epsilon ;
 
   // assumptions made here: the cylinder runs parallel to z and v ...
   
@@ -107,8 +107,8 @@ TKalMatrix DDCylinderMeasLayer::XvToMv(const TVector3 &xv) const
 
   TKalMatrix mv( fMDim , 1 );
   
-  DDSurfaces::Vector2D lv = _surf->globalToLocal( DDSurfaces::Vector3D( xv.X()*dd4hep::mm ,  
-									xv.Y()*dd4hep::mm ,  
+  dd4hep::rec::Vector2D lv = _surf->globalToLocal( dd4hep::rec::Vector3D( xv.X()*dd4hep::mm ,
+									xv.Y()*dd4hep::mm ,
 									xv.Z()*dd4hep::mm ) ) ;
   
   mv(0,0) = lv[0] / dd4hep::mm ; 
@@ -144,9 +144,9 @@ TVector3 DDCylinderMeasLayer::HitToXv(const TVTrackHit &vht) const
   // Double_t y0   = GetR() * TMath::Sin(phi) + GetXc().Y();
   // return TVector3(x, y, z);
 
-  DDSurfaces::Vector3D v = ( fMDim == 2 ? 
-			     _surf->localToGlobal( DDSurfaces::Vector2D (  vht(0,0)*dd4hep::mm, vht(1,0) *dd4hep::mm ) )  :
-			     _surf->localToGlobal( DDSurfaces::Vector2D (  vht(0,0)*dd4hep::mm,    0.  ) ) 
+  dd4hep::rec::Vector3D v = ( fMDim == 2 ?
+			     _surf->localToGlobal( dd4hep::rec::Vector2D (  vht(0,0)*dd4hep::mm, vht(1,0) *dd4hep::mm ) )  :
+			     _surf->localToGlobal( dd4hep::rec::Vector2D (  vht(0,0)*dd4hep::mm,    0.  ) )
 			     ) ;
   
   double x = v[0] / dd4hep::mm ;
@@ -216,17 +216,17 @@ void DDCylinderMeasLayer::CalcDhDa(const TVTrackHit &/*vht*/, // not used here
   
 #else // ---- new code using surfaces 
 
-  DDSurfaces::Vector3D u = _surf->u(  DDSurfaces::Vector3D( xxv.x(),xxv.Y(),xxv.Z() ) ) ;
-  DDSurfaces::Vector3D v = _surf->v(  DDSurfaces::Vector3D( xxv.x(),xxv.Y(),xxv.Z() ) ) ;
+  dd4hep::rec::Vector3D u = _surf->u(  dd4hep::rec::Vector3D( xxv.x(),xxv.Y(),xxv.Z() ) ) ;
+  dd4hep::rec::Vector3D v = _surf->v(  dd4hep::rec::Vector3D( xxv.x(),xxv.Y(),xxv.Z() ) ) ;
   
   double uv = u * v ;
-  DDSurfaces::Vector3D uprime = ( u - uv * v ).unit() ; 
-  DDSurfaces::Vector3D vprime = ( v - uv * u ).unit() ; 
+  dd4hep::rec::Vector3D uprime = ( u - uv * v ).unit() ;
+  dd4hep::rec::Vector3D vprime = ( v - uv * u ).unit() ;
   double uup = u * uprime ;
   double vvp = v * vprime ;
   
-  DDSurfaces::Vector3D dudx =  1./uup * uprime  ;
-  DDSurfaces::Vector3D dvdx =  1./vvp * vprime;
+  dd4hep::rec::Vector3D dudx =  1./uup * uprime  ;
+  dd4hep::rec::Vector3D dvdx =  1./vvp * vprime;
   
   //------------------------------------------------------
   

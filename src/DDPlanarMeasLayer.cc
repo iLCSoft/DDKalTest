@@ -10,7 +10,7 @@
 #include "DD4hep/Volumes.h"
 
 #include "DDRec/Surface.h"
-#include "DDSurfaces/Vector3D.h"
+#include "DDRec/Vector3D.h"
 
 #include <EVENT/TrackerHitPlane.h>
 #include <UTIL/Operators.h>

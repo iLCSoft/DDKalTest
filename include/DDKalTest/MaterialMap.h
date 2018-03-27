@@ -4,14 +4,14 @@
 #include <map>
 #include <string>
 
-#include "DDSurfaces/IMaterial.h"
+#include "DDRec/IMaterial.h"
 
 #include "streamlog/streamlog.h"
 
 #include "TMaterial.h"
 
 /** Singleton map for holding TMaterial objects, created 
- *  from DDSurfaces::IMaterial objects - assumes that material names 
+ *  from dd4hep::rec::IMaterial objects - assumes that material names
  *  are unique.
  *
  * @author F.Gaede CERN/DESY
@@ -24,7 +24,7 @@ class MaterialMap {
 
 public:
   
-  static TMaterial& get( const DDSurfaces::IMaterial& mat ){
+  static TMaterial& get( const dd4hep::rec::IMaterial& mat ){
 
     static MAP _map ;
 

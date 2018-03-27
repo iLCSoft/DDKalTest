@@ -2,13 +2,13 @@
 #define __DDParallelPlanarMeasLayer__
 
 #include "DDPlanarMeasLayer.h"
-#include "DDSurfaces/ISurface.h"
+#include "DDRec/ISurface.h"
 
 
 /** DDParallelPlanarMeasLayer: specialization of DDPlanarMeasruement layer 
  *  for planes that are parallel to the z-axis, where the crossing point
  *  with a helix can be comuted analytically. 
- *  We use the DDSurfaces::ISurface and aidaTT::trajectory for the implementation 
+ *  We use the dd4hep::rec::ISurface and aidaTT::trajectory for the implementation
  *  of CalcXingPointWith(). 
  * 
  * @author F. Gaede CERN/DESY, S.Aplin DESY
@@ -20,7 +20,7 @@ class DDParallelPlanarMeasLayer : public DDPlanarMeasLayer {
 public:
   
   /// c'tor using a DDRec::Surface
-  DDParallelPlanarMeasLayer( DDSurfaces::ISurface* surf, Double_t   Bz) :  DDPlanarMeasLayer( surf , Bz )  {}
+  DDParallelPlanarMeasLayer( dd4hep::rec::ISurface* surf, Double_t   Bz) :  DDPlanarMeasLayer( surf , Bz )  {}
 
   
   // Parent's pure virtuals that must be implemented

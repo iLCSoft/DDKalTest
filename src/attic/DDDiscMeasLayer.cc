@@ -14,7 +14,7 @@
 
 #include <EVENT/TrackerHitPlane.h>
 
-#include "DDSurfaces/Vector3D.h"
+#include "DDRec/Vector3D.h"
 
 #include "streamlog/streamlog.h"
 
@@ -213,10 +213,10 @@ DDVTrackHit* DDDiscMeasLayer::ConvertLCIOTrkHit( EVENT::TrackerHit* trkhit) cons
   
   if( plane_hit == NULL )  return NULL; // SJA:FIXME: should be replaced with an exception  
   
-  DDSurfaces::Vector3D U(1.0,plane_hit->getU()[1],plane_hit->getU()[0],DDSurfaces::Vector3D::spherical);
-  DDSurfaces::Vector3D V(1.0,plane_hit->getV()[1],plane_hit->getV()[0],DDSurfaces::Vector3D::spherical);
-  DDSurfaces::Vector3D X(1.0,0.0,0.0);
-  DDSurfaces::Vector3D Y(0.0,1.0,0.0);
+  dd4hep::rec::Vector3D U(1.0,plane_hit->getU()[1],plane_hit->getU()[0],dd4hep::rec::Vector3D::spherical);
+  dd4hep::rec::Vector3D V(1.0,plane_hit->getV()[1],plane_hit->getV()[0],dd4hep::rec::Vector3D::spherical);
+  dd4hep::rec::Vector3D X(1.0,0.0,0.0);
+  dd4hep::rec::Vector3D Y(0.0,1.0,0.0);
   
   const float eps = 1.0e-07;
   // U must be the global X axis 
