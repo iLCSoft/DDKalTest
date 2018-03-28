@@ -1,3 +1,17 @@
+# v01-05
+
+* 2018-01-19 Frank Gaede ([PR#8](https://github.com/iLCSoft/DDKalTest/pull/8))
+  - fix all compiler warnings (gcc54-ub1604)
+  - use const ptr for lcio::TrackerHit and dd4hep::Surface
+
+* 2018-01-22 Frank Gaede ([PR#9](https://github.com/iLCSoft/DDKalTest/pull/9))
+  - revert usage of const EVENT::TrackerHit*
+
+* 2018-03-28 Marko Petric ([PR#10](https://github.com/iLCSoft/DDKalTest/pull/10))
+  - Fix for the removal of DDSurfaces which have been merged into DDRec 
+    -  includes from `DDSurfaces` -> `DDRec`
+    - namespace `DDSurfaces` -> `dd4hep::rec`
+
 # v01-04
 
 * 2017-10-12 Frank Gaede ([PR#7](https://github.com/iLCSoft/DDKalTest/pull/7))
