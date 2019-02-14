@@ -43,7 +43,7 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(dd4hep::rec::ISurface* surf, Double_t   Bz,
   //  static const double epsZ=1e-8 ;
   
   //fg: the sorting policy is used to find the measurment layers that are going to be hit by a track ...
-  //    simply add an epslion to the radius in order to have a loop over all sensors in a layer
+  //    simply add an epsilon to the radius in order to have a loop over all sensors in a layer
   //    NB:  this does not deal with the overlap region, e.g. in the VTX
   //         so in this region we might loose one of two hits on a layer
   //         -> to be done ...
@@ -68,8 +68,10 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(dd4hep::rec::ISurface* surf, Double_t   Bz,
     // }
     // this direction would have to be rotated into the local system of the volume
     // but we don't have access to the worlTransfrom matrix here, so
-    // for now we use the y-axis ( works for Traps and Tubs )
-    dd4hep::rec::Vector3D oR( 0. , 1. , 0 );
+    // for now we use the y-axis (works for Traps and Tubs), and z-axis for Trapezoids
+    auto oR = std::string(vol->GetShape()->ClassName()) == "TGeoTrd2" ?
+      dd4hep::rec::Vector3D(0.0, 0.0, 1.0): // "Trapezoids"
+      dd4hep::rec::Vector3D(0.0, 1.0, 0.0); // Other things (Traps following y-Axis conventions, and Tubs)
 
     double dist_r = 0. ;
 
