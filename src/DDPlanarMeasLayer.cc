@@ -9,6 +9,7 @@
 #include "DD4hep/DD4hepUnits.h"
 #include "DD4hep/Volumes.h"
 
+#include "DDRec/DetectorData.h"
 #include "DDRec/Surface.h"
 #include "DDRec/Vector3D.h"
 
@@ -16,6 +17,7 @@
 #include <UTIL/Operators.h>
 
 #include "streamlog/streamlog.h"
+#include <string>
 
 
 using namespace UTIL ;
@@ -102,6 +104,17 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(dd4hep::rec::ISurface* surf, Double_t   Bz,
     fSortingPolicy =  surf->distance( dd4hep::rec::Vector3D( 0.,0.,0.) )/dd4hep::mm   +  epsilon * count++ ;
   }
 
+  auto detElement = static_cast<dd4hep::rec::Surface*>(surf)->detElement();
+  if(detElement.isValid()) {
+    try {
+      auto* ext = detElement.extension<dd4hep::rec::DoubleParameters>();
+      fSortingPolicy = ext->doubleParameters.find("SortingPolicy")->second/dd4hep::mm + epsilon * count++;
+      streamlog_out(DEBUG3) << "Found manual sorting policy for " << detElement.path()
+                            << " value [mm] " << fSortingPolicy
+                            << std::endl;
+    } catch(...) {
+    }
+  }
 
   streamlog_out(DEBUG1) << "DDPlanarMeasLayer created" 
 			<< " Layer x0 = " << this->GetXc().X() 
