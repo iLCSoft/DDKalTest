@@ -108,11 +108,17 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(dd4hep::rec::ISurface* surf, Double_t   Bz,
   if(detElement.isValid()) {
     try {
       auto* ext = detElement.extension<dd4hep::rec::DoubleParameters>();
-      fSortingPolicy = ext->doubleParameters.find("SortingPolicy")->second/dd4hep::mm + epsilon * count++;
+      fSortingPolicy = ext->doubleParameters.at("SortingPolicy")/dd4hep::mm + epsilon * count++;
       streamlog_out(DEBUG3) << "Found manual sorting policy for " << detElement.path()
                             << " value [mm] " << fSortingPolicy
                             << std::endl;
-    } catch(...) {
+    } catch(std::runtime_error &) {
+      streamlog_out(DEBUG3) << "Extension DoubleParameters not found for DetElement:"
+                            << detElement.path()
+                            << std::endl;
+    } catch(std::out_of_range &) {
+      streamlog_out(DEBUG3) << "'SortingPolicy' not found in DoubleParameters extension"
+                            << std::endl;
     }
   }
 
