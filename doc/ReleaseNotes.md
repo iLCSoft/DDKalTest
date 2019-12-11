@@ -1,3 +1,10 @@
+# v01-06
+
+* 2019-02-19 Andre Sailer ([PR#11](https://github.com/iLCSoft/DDKalTest/pull/11))
+  - DDPlanarMeasLayer: use proper "height" to calculate sortingPolicy for DD4hep::Trapezoids, a.k.a. TGeoTrd2
+  - DDPlanarMeasLayer: if SortingPolicy value is present in the DoubleParameters extension for the DetElement of a surface use that number, plus epsilon.
+  - Requires AidaSoft/DD4hep#486 to compile, iLCSoft/lcgeo#234 with an example that sets this extension
+
 # v01-05
 
 * 2018-01-19 Frank Gaede ([PR#8](https://github.com/iLCSoft/DDKalTest/pull/8))
