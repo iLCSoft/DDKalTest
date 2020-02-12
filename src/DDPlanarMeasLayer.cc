@@ -62,7 +62,8 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(dd4hep::rec::ISurface* surf, Double_t   Bz,
 
     // get global/local origin
     const dd4hep::rec::Vector3D& o = surf->origin() ;
-    const dd4hep::rec::Vector3D& oL = ((dd4hep::rec::Surface*)surf)->volSurface().origin() ;
+    dd4hep::rec::VolSurface vs = ((dd4hep::rec::Surface*)surf)->volSurface();
+    const dd4hep::rec::Vector3D& oL = vs.origin() ;
 
     // dd4hep::rec::Vector3D oR( o[0] , o[1] , 0 ) ; // radial direction of origin in global coordinates
     // if ( oR.trans2() < epsilon ){ // if origin has zero length use x-axis 
