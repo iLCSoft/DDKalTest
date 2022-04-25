@@ -136,7 +136,7 @@ double computeDEdx( const TMaterial &mat, double mass, double mom2 ){
   else                    del = 0.;
   Double_t tmax = 2.*kMe*bg2 / (1. + meM*(2.*TMath::Sqrt(gm2) + meM)); 
   Double_t dedx = kK * Z/A * gm2/bg2 * (0.5*log(2.*kMe*bg2*tmax / (I*I))
-   					- bg2/gm2 - del);
+   					- bg2/gm2 - 0.5*del);
   
   return dedx ;
 
