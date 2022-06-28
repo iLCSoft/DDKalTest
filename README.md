@@ -1,5 +1,5 @@
 # DDKalTest
-[![Build Status](https://travis-ci.org/iLCSoft/DDKalTest.svg?branch=master)](https://travis-ci.org/iLCSoft/DDKalTest)
+[![linux](https://github.com/iLCSoft/DDKalTest/actions/workflows/linux.yml/badge.svg)](https://github.com/iLCSoft/DDKalTest/actions/workflows/linux.yml)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/12349/badge.svg)](https://scan.coverity.com/projects/ilcsoft-ddkaltest)
 
 interface between KalTest fitter and DD4hep based geometry
