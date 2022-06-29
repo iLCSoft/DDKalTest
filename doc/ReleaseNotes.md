@@ -1,3 +1,11 @@
+# v01-07
+
+* 2022-06-24 Daniel Jeans ([PR#13](https://github.com/iLCSoft/DDKalTest/pull/13))
+  - - add missing factor 0.5 to density term of Bethe-Bloch parameterisation
+
+* 2022-06-17 Thomas Madlener ([PR#14](https://github.com/iLCSoft/DDKalTest/pull/14))
+  - Make CI use github actions instead of travis-CI
+
 # v01-06
 
 * 2019-02-19 Andre Sailer ([PR#11](https://github.com/iLCSoft/DDKalTest/pull/11))
