@@ -107,7 +107,7 @@ DDPlanarMeasLayer::DDPlanarMeasLayer(dd4hep::rec::ISurface* surf, Double_t   Bz,
   auto detElement = static_cast<dd4hep::rec::Surface*>(surf)->detElement();
   if(detElement.isValid()) {
     try {
-      // DD4hep changes behavior slightly here at soe point. For more details
+      // DD4hep changes behavior slightly here at some point. For more details
       // see https://github.com/AIDASoft/DD4hep/issues/1229
       auto* ext = detElement.extension<dd4hep::rec::DoubleParameters>(false);
       if (ext) {
