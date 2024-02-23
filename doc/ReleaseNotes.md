@@ -1,3 +1,12 @@
+# v01-07-01
+
+* 2024-02-15 tmadlener ([PR#16](https://github.com/iLCSoft/DDKalTest/pull/16))
+  - Maintain existing functionality without emitting spurious error messages with latest versions of DD4hep. See [AIDASoft/DD4hep#1229](https://github.com/AIDASoft/DD4hep/issues/1229) for more details and related PRs.
+
+* 2024-02-15 tmadlener ([PR#15](https://github.com/iLCSoft/DDKalTest/pull/15))
+  - Update clicdp nigthles based workflows to use latest clicdp nightlies
+  - Add key4hep based workflows
+
 # v01-07
 
 * 2022-06-24 Daniel Jeans ([PR#13](https://github.com/iLCSoft/DDKalTest/pull/13))
