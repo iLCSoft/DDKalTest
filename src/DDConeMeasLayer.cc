@@ -21,11 +21,22 @@
 DDConeMeasLayer::DDConeMeasLayer(dd4hep::rec::ISurface* surf,
 				 Double_t   Bz,
 				 const Char_t  *name ) :
+  DDConeMeasLayer (surf,
+                   dynamic_cast<dd4hep::rec::ICone&>(*surf),
+                   Bz,
+                   name)
+{
+}
+
+DDConeMeasLayer::DDConeMeasLayer(dd4hep::rec::ISurface* surf,
+                                 dd4hep::rec::ICone& icone,
+				 Double_t   Bz,
+				 const Char_t  *name ) :
   DDVMeasLayer(  surf, Bz, name ) ,
-  Data(dynamic_cast<dd4hep::rec::ICone*>(surf)->z0()/dd4hep::mm ,
-       dynamic_cast<dd4hep::rec::ICone*>(surf)->radius0()/dd4hep::mm,
-       dynamic_cast<dd4hep::rec::ICone*>(surf)->z1()/dd4hep::mm,
-       dynamic_cast<dd4hep::rec::ICone*>(surf)->radius1()/dd4hep::mm ),
+  Data(icone.z0()/dd4hep::mm ,
+       icone.radius0()/dd4hep::mm,
+       icone.z1()/dd4hep::mm,
+       icone.radius1()/dd4hep::mm ),
   TCutCone(_R1*(_Z2-_Z1)/(_R2-_R1), 
    	   _R2*(_Z2-_Z1)/(_R2-_R1), 
    	   (_R2-_R1)/(_Z2-_Z1),
