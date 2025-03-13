@@ -100,6 +100,9 @@ protected:
   unsigned fMDim ;
   
 private:
-  
+  DDCylinderMeasLayer(dd4hep::rec::ISurface* surf,
+                      dd4hep::rec::ICylinder& icyl,
+		      Double_t   Bz,
+		      const Char_t    *name = "DDCylinderMeasL") ;
 };
 #endif
