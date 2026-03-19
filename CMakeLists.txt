@@ -115,7 +115,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/this${PackageName}.sh
 #--- install target-------------------------------------
 
 
-FILE(GLOB hfiles "ILD/include/*.h")
+FILE(GLOB hfiles "include/DDKalTest/*.h")
 INSTALL(FILES ${hfiles} 
   DESTINATION include/${PackageName} 
   )
