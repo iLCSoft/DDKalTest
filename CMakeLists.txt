@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.23 FATAL_ERROR)
 
 #---------------------------
 set( PackageName DDKalTest )
@@ -81,6 +81,8 @@ include_directories( BEFORE ${CMAKE_SOURCE_DIR}/include )
 file(GLOB sources ./src/*cc )
 
 add_library(${PackageName} SHARED ${sources})
+file(GLOB_RECURSE top_headers ${PROJECT_SOURCE_DIR}/include/*.h)
+target_sources(${PackageName} PUBLIC FILE_SET headers TYPE HEADERS BASE_DIRS ${PROJECT_SOURCE_DIR}/include FILES ${top_headers})
 
 target_link_libraries(${PackageName} ${DD4hep_LIBRARIES} ${DD4hep_COMPONENT_LIBRARIES}
   ${ROOT_LIBRARIES} ${ROOT_COMPONENT_LIBRARIES} 
@@ -124,6 +126,7 @@ INSTALL(FILES ${hfiles}
 install(TARGETS ${PackageName}  printSurfaces
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
+  FILE_SET headers DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
   )
 # to do: add corresponding uninstall...
 #-------------------------------------------------------
