@@ -33,13 +33,25 @@ using namespace UTIL ;
 DDCylinderMeasLayer::DDCylinderMeasLayer(dd4hep::rec::ISurface* surf,
 					 Double_t   Bz,
 					 const Char_t  *name ) :
+  DDCylinderMeasLayer (surf,
+                       dynamic_cast<dd4hep::rec::ICylinder&>(*surf),
+                       Bz,
+                       name)
+{
+}
+
+
+DDCylinderMeasLayer::DDCylinderMeasLayer(dd4hep::rec::ISurface* surf,
+                                         dd4hep::rec::ICylinder& icyl,
+					 Double_t   Bz,
+					 const Char_t  *name ) :
   DDVMeasLayer(  surf, Bz, name ) ,
   
-  TCylinder(  dynamic_cast<dd4hep::rec::ICylinder*>(surf)->radius()/dd4hep::mm ,
+  TCylinder(  icyl.radius()/dd4hep::mm ,
 	      surf->length_along_v()/dd4hep::mm / 2. , 
-	      dynamic_cast<dd4hep::rec::ICylinder*>(surf)->center().x()/dd4hep::mm,
-	      dynamic_cast<dd4hep::rec::ICylinder*>(surf)->center().y()/dd4hep::mm ,
-	      dynamic_cast<dd4hep::rec::ICylinder*>(surf)->center().z()/dd4hep::mm ),
+	      icyl.center().x()/dd4hep::mm,
+	      icyl.center().y()/dd4hep::mm ,
+	      icyl.center().z()/dd4hep::mm ),
   
   fSortingPolicy(0.),
   
