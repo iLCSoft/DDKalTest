@@ -116,13 +116,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/this${PackageName}.sh
 
 #--- install target-------------------------------------
 
-
-FILE(GLOB hfiles "ILD/include/*.h")
-INSTALL(FILES ${hfiles} 
-  DESTINATION include/${PackageName} 
-  )
-
-
 install(TARGETS ${PackageName}  printSurfaces
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
