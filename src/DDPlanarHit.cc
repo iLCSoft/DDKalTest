@@ -43,3 +43,13 @@ void DDPlanarHit::DebugPrint(Option_t *) const
   }
   cerr << "-------------------------------------------------------" << endl;
 }
+
+void DDPlanarHit::DebugPrint(Option_t *opt, Int_t) const
+{
+  DebugPrint(opt);
+}
+
+void DDPlanarHit::DebugPrint(std::ostream &, Option_t *opt, Int_t) const
+{
+  DebugPrint(opt);
+}
