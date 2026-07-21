@@ -49,3 +49,12 @@ void DDCylinderHit::DebugPrint(Option_t *) const
   cerr << "-------------------------------------------------------"  << endl;
 }
 
+void DDCylinderHit::DebugPrint(Option_t *opt, Int_t) const
+{
+  DebugPrint(opt);
+}
+
+void DDCylinderHit::DebugPrint(std::ostream &, Option_t *opt, Int_t) const
+{
+  DebugPrint(opt);
+}
