@@ -1,3 +1,24 @@
+# v01-07-02
+
+* 2026-07-21 Juan Miguel Carceller ([PR#23](https://github.com/iLCSoft/DDKalTest/pull/23))
+  - Fix a few compiler warnings, some of these appear with GCC 14, and the overrides appear with Clang 22
+
+* 2026-07-21 Juan Miguel Carceller ([PR#22](https://github.com/iLCSoft/DDKalTest/pull/22))
+  - Require CMake 3.10 to be able to build with CMake 4
+
+* 2026-07-21 sss ([PR#21](https://github.com/iLCSoft/DDKalTest/pull/21))
+  - Remove redundant uses of dynamic_cast.
+
+* 2026-07-21 scott snyder ([PR#20](https://github.com/iLCSoft/DDKalTest/pull/20))
+  - Fix compilation warnings observed with current compilers.
+
+* 2026-07-21 Juan Miguel Carceller ([PR#17](https://github.com/iLCSoft/DDKalTest/pull/17))
+  - Install the header files.
+  - Bump the version of cmake to 3.23 because of `FILE_SET`
+
+* 2026-03-19 sss ([PR#18](https://github.com/iLCSoft/DDKalTest/pull/18))
+  - Stop trying to run CI jobs on centos7.
+
 # v01-07-01
 
 * 2024-02-15 tmadlener ([PR#16](https://github.com/iLCSoft/DDKalTest/pull/16))
