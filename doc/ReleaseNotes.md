@@ -1,3 +1,11 @@
+# v01-07-03
+
+* 2026-11-27 Juan Miguel Carceller ([PR#25](https://github.com/iLCSoft/DDKalTest/pull/25))
+  - Link to `ROOT::TGeometry` when available. Since ROOT 6.42, `TMaterial` is in the TGeometry library instead of Graf3d.
+
+* 2026-09-10 Thomas Madlener ([PR#24](https://github.com/iLCSoft/DDKalTest/pull/24))
+  - Switch to the latest version of the key4hep-build workflow
+
 # v01-07-02
 
 * 2026-07-21 Juan Miguel Carceller ([PR#23](https://github.com/iLCSoft/DDKalTest/pull/23))
