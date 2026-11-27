@@ -35,6 +35,10 @@ set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
 include( DD4hep )
 
 find_package( ROOT 6 REQUIRED COMPONENTS Geom )
+# Since ROOT 6.42, TMaterial is in the TGeometry library instead of Graf3d
+if(TARGET ROOT::TGeometry)
+  list(APPEND ROOT_LIBRARIES ROOT::TGeometry)
+endif()
 
 
 if(DD4HEP_USE_XERCESC)
